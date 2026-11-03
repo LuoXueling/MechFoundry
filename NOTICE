@@ -1,0 +1,86 @@
+MechFoundry
+Copyright 2026 Xueling Luo, Marco Conte, and the MechFoundry contributors
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+--------------------------------------------------------------------------------
+Third-party code adapted in this repository
+--------------------------------------------------------------------------------
+
+1. TripoSG (https://github.com/VAST-AI-Research/TripoSG)
+   Copyright (c) 2025 VAST-AI-Research and contributors
+   License: MIT (full text below)
+   Used in:
+   - src/triposg_wrapper/hierarchical_extraction.py: dense-grid, zoom, edge
+     expansion and candidate-band helpers of the hierarchical SDF extractor,
+     adapted from triposg/inference_utils.py (modified: refinement of cells
+     whose corners have mixed SDF signs; search over active cells instead of
+     active nodes).
+   - src/triposg_wrapper/triposg_pipeline_wrapper.py: img2latent, adapted from
+     TripoSGPipeline.__call__ (mesh extraction removed).
+   - src/triposg_wrapper/patches/triposg.patch: a patch to TripoSG's
+     triposg/models/autoencoders/autoencoder_kl_triposg.py (restores the
+     torch_cluster fps import). TripoSG itself is not redistributed here;
+     src/triposg_wrapper/fetch_triposg.sh downloads it from upstream.
+   TripoSG's own NOTICE states that it contains code derived from Diffusers
+   (Apache-2.0), HunyuanDiT and FlashVDM (Tencent Hunyuan community licenses)
+   and BRIA RMBG-1.4 (bria-rmbg-1.4 license); those terms apply to TripoSG as
+   downloaded.
+
+2. torch-sla (https://github.com/walkerchi/torch-sla)
+   Copyright (c) 2024 walker chi
+   License: MIT (the project's license when the code was adapted; full text
+   below)
+   Used in:
+   - src/warp_wrapper/core/preconditioners.py: condition-number estimation,
+     adapted from estimate_condition_number.
+
+3. MISE, multiresolution IsoSurface Extraction, from Occupancy Networks
+   Copyright (c) 2019 Lars Mescheder, Michael Oechsle, Michael Niemeyer,
+   Andreas Geiger, Sebastian Nowozin
+   License: MIT (full text below)
+   as redistributed in NVIDIA Kaolin (https://github.com/NVIDIAGameWorks/kaolin),
+   Copyright (c) NVIDIA CORPORATION & AFFILIATES, License: Apache-2.0
+   Used in:
+   - src/triposg_wrapper/hierarchical_extraction.py: the refinement of cells
+     whose corners have mixed SDF signs follows MISE.
+
+--------------------------------------------------------------------------------
+Third-party assets
+--------------------------------------------------------------------------------
+
+- Stanford Bunny (examples/**/assets/bunny10k_textured.obj and .mtl)
+  Source: The Stanford 3D Scanning Repository,
+  https://graphics.stanford.edu/data/3Dscanrep/
+  Courtesy of the Stanford University Computer Graphics Laboratory. Used and
+  redistributed under the repository's terms: research use with credit; not
+  for commercial use without Stanford's permission. These files are not
+  covered by the Apache License of this repository.
+
+- Wooden Table 02 by Fran Calvente, Poly Haven
+  (examples/boundary_conditions/bc_patch_zip/cad/WoodenTable_02/)
+  Source: https://polyhaven.com/a/WoodenTable_02
+  License: CC0 1.0 (public domain dedication).
+
+--------------------------------------------------------------------------------
+MIT License (applies to the TripoSG, torch-sla and Occupancy Networks code
+named above, under each copyright notice above)
+--------------------------------------------------------------------------------
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
