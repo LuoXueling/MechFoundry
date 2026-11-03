@@ -1,0 +1,25 @@
+{
+ "_comment": "Main-paper figure: six Opus runs from the 50-object batch (output/agentic_batch50_opus), chosen by the user on 2026-10-16 (electric toothbrush, park bench, wooden rocking horse, truck leaf spring, claw hammer, human femur), replacing the earlier eight; on 2026-10-19 the user replaced the wooden rocking horse (row 3) with the car brake disc (drawn smaller with draw_scale), then the brake disc with the car suspension control arm, drawn at 0.9x (draw_scale; the user: \"not necessarily the same sizing, try 0.9x\"), its prompt held to two lines in a smaller face (prompt_max_lines; the user: \"use smaller font size for this box and don't change the figure size\"). Every camera is ar_prep.choose_view's own pick.",
+ "runs": [
+  {
+   "path": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/electric-toothbrush-20261013-210405"
+  },
+  {
+   "path": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/park-bench-20261013-212923"
+  },
+  {
+   "path": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/car-suspension-control-arm-with-rubber-bushings-20261013-230554",
+   "draw_scale": 0.9,
+   "prompt_max_lines": 2
+  },
+  {
+   "path": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/truck-leaf-spring-20261013-231223"
+  },
+  {
+   "path": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/claw-hammer-20261014-002959"
+  },
+  {
+   "path": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/human-femur-20261014-010205"
+  }
+ ]
+}

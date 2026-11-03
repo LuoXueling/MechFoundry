@@ -1,0 +1,101 @@
+{
+  "bandbc": {
+    "image_index": 3,
+    "pixel_sha1": "8fb9bab8738e",
+    "size": [
+      629,
+      629
+    ],
+    "source": "diffused_nitsche.pdf"
+  },
+  "grad_d": {
+    "image_index": 3,
+    "pixel_sha1": "d897c7aba1b0",
+    "size": [
+      832,
+      667
+    ],
+    "source": "hidden_phi_loop.pdf"
+  },
+  "grad_phi": {
+    "image_index": 4,
+    "pixel_sha1": "2bb6b0743ec5",
+    "size": [
+      832,
+      667
+    ],
+    "source": "hidden_phi_loop.pdf"
+  },
+  "initial": {
+    "image_index": 0,
+    "pixel_sha1": "ecf88fe485fb",
+    "size": [
+      832,
+      667
+    ],
+    "source": "hidden_phi_loop.pdf"
+  },
+  "octree": {
+    "image_index": 1,
+    "pixel_sha1": "2d30fcd138dc",
+    "size": [
+      1083,
+      1095
+    ],
+    "source": "bunny_sdf_octree.pdf"
+  },
+  "phi": {
+    "image_index": 1,
+    "pixel_sha1": "96e62ae3f003",
+    "size": [
+      629,
+      629
+    ],
+    "source": "diffused_nitsche.pdf"
+  },
+  "result": {
+    "image_index": 7,
+    "pixel_sha1": "44d9442b9afe",
+    "size": [
+      983,
+      800
+    ],
+    "source": "hidden_phi_loop.pdf"
+  },
+  "sdf": {
+    "image_index": 0,
+    "pixel_sha1": "1c1509221061",
+    "size": [
+      1083,
+      1095
+    ],
+    "source": "bunny_sdf_octree.pdf"
+  },
+  "solve": {
+    "image_index": 2,
+    "pixel_sha1": "41bb557e2861",
+    "size": [
+      836,
+      667
+    ],
+    "source": "hidden_phi_loop.pdf"
+  },
+  "upd_d": {
+    "image_index": 5,
+    "pixel_sha1": "3c43b0e8cb7a",
+    "size": [
+      832,
+      667
+    ],
+    "source": "hidden_phi_loop.pdf"
+  },
+  "upd_phi": {
+    "image_index": 6,
+    "pixel_sha1": "9b6635b6e14a",
+    "size": [
+      832,
+      667
+    ],
+    "source": "hidden_phi_loop.pdf"
+  }
+}

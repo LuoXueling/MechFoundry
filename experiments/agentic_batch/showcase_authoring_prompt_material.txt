@@ -1,0 +1,24 @@
+You are writing 9 material assignments for a demonstration that an automated finite-element workflow handles many different, heterogeneous materials on one body. The body, its segmentation and its supports and loads are fixed; only the materials change.
+
+The object: "a hamburger". Its segments (the parts a material is assigned to; y is up, metres):
+{"id": 0, "label": "lower bun", "area_fraction": 0.192, "centroid_m": [0.0492, 0.0211, 0.0477], "extent_m": [0.092, 0.0174, 0.0912], "facing": {"+x": 0.06, "+y": 0.15, "+z": 0.06, "-x": 0.06, "-y": 0.44, "-z": 0.06}}
+{"id": 1, "label": "top bun", "area_fraction": 0.288, "centroid_m": [0.0465, 0.056, 0.0439], "extent_m": [0.0802, 0.027, 0.0795], "facing": {"+x": 0.06, "+y": 0.39, "-x": 0.05, "-y": 0.28, "-z": 0.07}}
+{"id": 2, "label": "bottom bun", "area_fraction": 0.197, "centroid_m": [0.0446, 0.0064, 0.0468], "extent_m": [0.0769, 0.0144, 0.077], "facing": {"+y": 0.27, "-x": 0.06, "-y": 0.46, "-z": 0.06}}
+{"id": 3, "label": "patty", "area_fraction": 0.154, "centroid_m": [0.0425, 0.0369, 0.0485], "extent_m": [0.0872, 0.0165, 0.0838], "facing": {"+x": 0.07, "+y": 0.46, "+z": 0.07, "-x": 0.07, "-y": 0.13, "-z": 0.08}}
+{"id": 4, "label": "lettuce", "area_fraction": 0.169, "centroid_m": [0.0479, 0.0453, 0.0594], "extent_m": [0.0799, 0.0108, 0.0863], "facing": {"+y": 0.42, "-y": 0.36}}
+
+The case as it was solved before (for context only): {"material_mode": "parts", "parts": [{"density": 800.0, "id": 0, "poisson_ratio": 0.325, "youngs_modulus": 200000.0}, {"density": 565.0, "id": 1, "poisson_ratio": 0.325, "youngs_modulus": 100000.0}, {"density": 565.0, "id": 2, "poisson_ratio": 0.325, "youngs_modulus": 100000.0}, {"density": 1000.0, "id": 3, "poisson_ratio": 0.3, "youngs_modulus": 400000.0}, {"density": 800.0, "id": 4, "poisson_ratio": 0.3, "youngs_modulus": 200000.0}], "youngs_modulus_range": [100000.0, 400000.0], "youngs_modulus_contrast": 4.0, "held": [{"name": "bottom_bun_underside", "components": [0, 1, 2]}], "loaded": [{"name": "top_bun_upward_traction", "traction": [0.0, -11202.543009648658, 0.0]}], "body_loads": {"acceleration": [0.0, -9.80665, 0.0], "body_force": [0.0, 0.0, 0.0]}, "generation_seeds": {"geometry": 1, "image": 1, "texture": 0}}
+
+Look at these pictures of the body and its segments with the Read tool first: /home/xl2254/implicit_optimize/output/agentic_batch50/hamburger-20261013-203610/workflow/24c883a572fb/operator/texture_views.png, /home/xl2254/implicit_optimize/output/agentic_batch50/hamburger-20261013-203610/workflow/24c883a572fb/operator/segments.png
+
+Rules:
+- Every assignment is heterogeneous: at least two different materials, on different segments, and the stiffest Young's modulus at least 5 times and at most 500 times the softest (the workflow models per-part materials only above a 2x contrast, and stiffens parts more than 1000x softer).
+- Assign materials freely and on purpose, WITHOUT considering what the real object or a part of that shape would be made of: e.g. rubber legs on a steel body, a glass shell over foam, a wooden head on a concrete base. The point is variety, not realism.
+- Every segment id gets a material. Use real materials with handbook values: E between 1e5 and 3e11 Pa, Poisson's ratio between 0.2 and 0.45 (0.45 for rubber-like and gel-like materials), density between 20 and 20000 kg/m3.
+- The 9 assignments differ from one another: different segments soft and stiff, different material families (metals, glass, ceramics, stone, concrete, woods, polymers, rubbers, foams, gels, composites, bone, ice ...), and different patterns (one soft part on a stiff body, alternating parts, a soft core part, ...). No two share the same set of materials.
+- The label and the description name exactly the materials the parts list gives, segment by segment (no material in the words that is not in the parts).
+
+Reply with only a JSON array of 9 objects, no prose, each:
+{"label": "<at most 8 words naming the assignment, e.g. rubber legs, glass shell>",
+  "description": "<one sentence: which segment is which material>",
+  "parts": [{"segment": <id>, "segment_label": "<the segment's label above>", "material": "<material>", "youngs_modulus": <Pa>, "poisson_ratio": <nu>, "density": <kg/m3>}, ...]}

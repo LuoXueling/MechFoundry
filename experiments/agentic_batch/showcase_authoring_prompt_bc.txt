@@ -1,0 +1,53 @@
+You are writing 9 load cases (supports and loads) for a demonstration that an automated finite-element workflow handles many different boundary conditions on one body. The body, its segmentation and its materials are fixed; only the supports and loads change.
+
+The object: "a claw hammer", about 0.1372 x 0.3333 x 0.0306 m (x, y, z; y is up). Its segments (id, the workflow's label, area share, centroid and extent in metres, and the share of each segment's area facing each direction within 45 degrees):
+{"id": 0, "label": "head", "area_fraction": 0.274, "centroid_m": [0.0838, 0.3078, 0.0144], "extent_m": [0.1093, 0.0569, 0.0278], "facing": {"+x": 0.09, "+y": 0.21, "+z": 0.22, "-y": 0.15, "-z": 0.24}}
+{"id": 1, "label": "handle", "area_fraction": 0.364, "centroid_m": [0.065, 0.1804, 0.0148], "extent_m": [0.0351, 0.2076, 0.0291], "facing": {"+x": 0.2, "+z": 0.3, "-x": 0.21, "-z": 0.29}}
+{"id": 2, "label": "front grip", "area_fraction": 0.179, "centroid_m": [0.0644, 0.0404, 0.0209], "extent_m": [0.0369, 0.1071, 0.0306], "facing": {"+x": 0.19, "+z": 0.42, "-x": 0.24, "-y": 0.1}}
+{"id": 3, "label": "back grip", "area_fraction": 0.092, "centroid_m": [0.066, 0.053, 0.003], "extent_m": [0.035, 0.1229, 0.0128], "facing": {"+x": 0.16, "-x": 0.07, "-z": 0.76}}
+{"id": 4, "label": "claw", "area_fraction": 0.09, "centroid_m": [0.0159, 0.3133, 0.0144], "extent_m": [0.0416, 0.032, 0.03], "facing": {"+y": 0.21, "+z": 0.19, "-x": 0.17, "-y": 0.18, "-z": 0.21}}
+
+Its brief (the real object's use, size and material, for context):
+## Use
+A carpenter pulls a nail out of a board with the claw of a 16 oz (about 0.45 kg head) steel-head, hickory-handle claw hammer: the claw is hooked under the nail head, the hand grips the handle and levers it. The question is the deflection and the stress pattern. The nail's pull-out force on the claw is the hand's lever action: a light-to-firm hand pull (decided) of 100 N at the grip, 0.28 m from the claw hook's 0.07 m lever, gives the nail force on the claw. The weight acts together. The strike (driving a nail) is a shock; not run (the pull is the static working state).
+
+Use table: {"actions": {"A1": {"load": "nail pull-out force on the claw", "state": "working", "kind": "applied", "source": "derived: 100 N x 0.28 m / 0.07 m", "unit": "N", "direction": [0, -1, 0], "enters": "claw", "held": ["hand grip"]}, "A2": {"load": "weight", "state": "working", "kind": "weight", "source": "0.6 kg x g x 1", "direction": [0, -1, 0], "enters": "head", "held": ["hand grip"]}}, "run": "working", "uncovered": {}}
+
+## Contacts
+- hand grip: the hand closes round the lower handle (about 0.09 m, one hand's width), fixes x, y, z (0, 1, 2): a grip transmits force and moment (decided).
+
+{"hand grip": {"transmits": "force and moment", "kind": "grip", "over_m": 0.09, "member": "handle"}}
+
+## Load
+The nail's pull-out force on the underside of the claw's split, along -y in the use frame (hammer upright, head up, claw toward +x); size derived above (about 400 N), shared over the claw's load face. Self-weight always, 0.6 kg x g along -y.
+
+## Size and material
+Real mass: 0.6 kg
+Real thinnest member: 0.015 m
+Real section (handle): rectangle 0.030 x 0.022 m
+Governing material: hickory wood along grain, E 1.2e10 Pa
+Materials by part: head and claw = steel, E 2.05e11 Pa; handle = hickory wood, E 1.2e10 Pa
+Real extents: 0.33 x 0.17 x 0.03 m
+Load path: {"claw": "series", "head": "series", "handle": "series"}
+Up in use: the longest extent vertical
+
+Routes (free-form, curved claw and a head on a handle, thinnest member 0.015 m is above 1/50 of 0.33 m, so no built-first): triposg_text (a recognisable hammer from words), drawing (SDXL then TripoSG), hunyuan3d (from the same drawing); cadcoder is left out (curved claw, not prismatic); built is the fallback.
+
+Prediction: bending of the handle about the head, with the peak stress at the handle's neck below the head and the claw root; small deflection at the claw.
+
+The case as it was solved before (for context only): {"material_mode": "parts", "parts": [{"density": 7925.0, "id": 0, "poisson_ratio": 0.285, "youngs_modulus": 205000000000.0}, {"density": 675.0, "id": 1, "poisson_ratio": 0.35, "youngs_modulus": 12000000000.0}, {"density": 675.0, "id": 2, "poisson_ratio": 0.35, "youngs_modulus": 12000000000.0}, {"density": 675.0, "id": 3, "poisson_ratio": 0.35, "youngs_modulus": 12000000000.0}, {"density": 7925.0, "id": 4, "poisson_ratio": 0.285, "youngs_modulus": 205000000000.0}], "youngs_modulus_range": [12000000000.0, 204999999488.0], "youngs_modulus_contrast": 17.083, "held": [{"name": "grip_fix", "components": [0, 1, 2]}], "loaded": [{"name": "claw_traction", "traction": [0.0, -414362.5015936986, 0.0]}], "body_loads": {"acceleration": [0.0, -9.80665, 0.0], "body_force": [0.0, 0.0, 0.0]}, "generation_seeds": {"geometry": 0, "image": null, "texture": null}}
+
+Look at these pictures of the body and its segments with the Read tool first: /home/xl2254/implicit_optimize/output/agentic_batch50/claw-hammer-20261013-194758/workflow/22f07ebe054b/operator/texture_views.png, /home/xl2254/implicit_optimize/output/agentic_batch50/claw-hammer-20261013-194758/workflow/22f07ebe054b/operator/segments.png
+
+Rules:
+- Choose supports and loads freely: they need NOT be the most likely or the governing use of the object. The point is variety.
+- They must be physically possible: every support and load sits on a real surface of the named segments (name the segment ids and which way the faces face, e.g. "the faces of segment 2 facing +x"); the supports together stop every rigid-body motion (at least one support held in all components, e.g. a clamp, a bolted or bonded face, or several separate held patches); loads are plausible for the object's size and mass: forces from a fraction of to about 20 times its weight, or what a person can push, pull or twist (up to about 1 kN, a twist up to about 50 N m for hand-sized parts); a body load as an acceleration of at most 3 g.
+- Each case has one or two supports and one or two loads besides self-weight (self-weight always acts).
+- The 9 cases differ from one another in the support regions, the load regions, the load directions and the kinds of load: among them a point-like load on a small patch, a load distributed over a whole face or segment, a twist (a torsion couple about an axis), a sideways or upward body load (an acceleration), a pull as well as a push; different supports (base, side, top, one end, a single part clamped).
+- Never put a load on a held face.
+
+Reply with only a JSON array of 9 objects, no prose, each:
+{"label": "<at most 8 words, e.g. clamped base, sideways push on arm>",
+  "description": "<2-4 sentences, the whole case in words: each support (where, which faces, held in which components and why it is possible) and each load (where, which faces, kind, direction in x/y/z with y up, size with its unit and the reason for that size)>",
+  "supports": [{"segments": [<ids>], "faces": "<which way they face>", "held": "all" | [<components 0=x,1=y,2=z>]}],
+  "loads": [{"kind": "patch" | "distributed" | "torsion" | "body", "segments": [<ids>], "faces": "<which way they face, or none for a body load>", "direction": [x, y, z], "size": <number>, "unit": "N" | "N m" | "m/s2", "why": "<the basis of the size>"}]}

@@ -1,0 +1,21 @@
+{
+ "partfield_k": 8,
+ "neumann_parts": [
+  5,
+  7
+ ],
+ "dirichlet": "dn_prep bottom 5 %",
+ "neumann_band_elements": 2371,
+ "dirichlet_band_elements": 3386,
+ "cut_y_gd": -0.0453125,
+ "cut_y_gphi": 0.0090625,
+ "traction_z": -0.05,
+ "nodes": 45082,
+ "elements": 35442,
+ "inner_elements": 29549,
+ "frozen_nodes": 15145,
+ "se_raw": 0.00014473973715212196,
+ "umax_surface": 0.262638825956758,
+ "w_vol": 0.0,
+ "decades": 3.0
+}

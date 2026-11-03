@@ -1,0 +1,8 @@
+[11-03-2025,15:51:53] Added flexible Dirichlet BC: 13 nodes, components=all
+[11-03-2025,15:51:53] Added flexible Dirichlet BC: 7 nodes, components=[1]
+[11-03-2025,15:51:53]   Step 1/1 Iter 0: ||R|| = 4.716e-01, rel = 1.000e+00
+[11-03-2025,15:51:53]   Step 1/1 Iter 1: ||R|| = 1.041e-01, rel = 2.208e-01
+[11-03-2025,15:51:53]   Step 1/1 Iter 2: ||R|| = 3.467e-03, rel = 7.352e-03
+[11-03-2025,15:51:53]   Step 1/1 Iter 3: ||R|| = 7.151e-06, rel = 1.516e-05
+[11-03-2025,15:51:53] Saved numpy: displacement_t0.0.npy
+[11-03-2025,15:51:53] Simulation finalized. Open examples_output/two_d_right_boundary_down_disp-2025-11-03-15-51-53/solution.pvd in ParaView to view results.

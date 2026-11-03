@@ -1,0 +1,15 @@
+[11-02-2025,23:16:14] Added flexible Dirichlet BC: 13 nodes, components=all
+[11-02-2025,23:16:14] Added flexible Neumann BC: 13 nodes, traction shape=(13, 2)
+[11-02-2025,23:16:14] Initialized Neo-Hookean solver (2D)
+[11-02-2025,23:16:14] Mesh: 32x12 elements
+[11-02-2025,23:16:14] Nodes: 429, DOFs: 858
+[11-02-2025,23:16:14] Material: E=25.0, nu=0.3
+[11-02-2025,23:16:14] Output: examples_output/two_d_right_boundary_force-2025-11-02-23-16-13
+[11-02-2025,23:16:14] Starting Newton-Raphson solver...
+[11-02-2025,23:16:14]   Step 1/1 Iter 0: ||R|| = 1.510e-02, rel = 1.000e+00
+[11-02-2025,23:16:14]     accepted step (alpha=1.000e+00): ||R|| = 6.203e-05, rel = 4.109e-03
+[11-02-2025,23:16:14]   Step 1/1 Iter 1: ||R|| = 6.203e-05, rel = 4.109e-03
+[11-02-2025,23:16:14]     accepted step (alpha=1.000e+00): ||R|| = 4.278e-06, rel = 2.834e-04
+[11-02-2025,23:16:14]   Step 1/1 Iter 2: ||R|| = 4.278e-06, rel = 2.834e-04
+[11-02-2025,23:16:14] Saved numpy: displacement_t0.0.npy
+[11-02-2025,23:16:14] Simulation finalized. Open examples_output/two_d_right_boundary_force-2025-11-02-23-16-13/solution.pvd in ParaView to view results.

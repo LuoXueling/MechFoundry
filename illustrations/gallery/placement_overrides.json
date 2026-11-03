@@ -1,0 +1,18 @@
+{
+  "why": "user-allowed per-object arrangement, user request 2026-10-19: keep revision 8's layout with these adjustments",
+  "params": {"arc_back": 5.0, "eye_h": 32.0, "span_deg": 120.0, "stagger": 0.0, "row_gap": 0.1, "page_h": 110.0,
+             "rows_n": 4, "pack": 0.0, "balance_rows": true, "close": 1, "row_overlap": 0.3},
+  "widen": {"a TV remote control": 1.15, "a human femur": 1.3225, "an electric toothbrush": 1.15},
+  "row_spacing": {
+    "0": {"factor": 1.12, "reason": "front row spacing a bit wider (user request 2026-10-19)"},
+    "3": {"factor": 1.09, "reason": "back row spacing a little wider (user request 2026-10-19)"}
+  },
+  "seat_nudge": {
+    "a USB stick": {"radial": 0.5, "z": 0.0, "reason": "a bit up, away from the viewer (user request 2026-10-19)"},
+    "an electric toothbrush": {"radial": -0.5, "z": 0.0, "reason": "a bit lower, toward the viewer (user request 2026-10-19)"},
+    "a skyscraper": {"radial": -2.0, "z": -1.5, "reason": "lower on the page (user request 2026-10-19)"},
+    "the Leaning Tower of Pisa": {"radial": -2.0, "z": -1.5, "reason": "lower on the page (user request 2026-10-19)"},
+    "a lighthouse": {"radial": -2.0, "z": -1.5, "reason": "lower on the page (user request 2026-10-19)"},
+    "a natural stone arch": {"radial": -2.0, "z": -1.5, "reason": "lower on the page (user request 2026-10-19)"}
+  }
+}

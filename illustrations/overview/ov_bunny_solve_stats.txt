@@ -1,0 +1,8 @@
+surface_vertices 80786
+surface_faces 161568
+solve_nodes 38898
+solve_elements 29549
+traction_z -0.02
+umax 1.17040822e-01
+newton_iterations 8
+solve_seconds 3.739

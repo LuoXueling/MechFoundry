@@ -1,0 +1,129 @@
+[09-24-2026,00:13:56.802] Added flexible Dirichlet BC: 1155 nodes, components=all
+[09-24-2026,00:13:56.925]   BC selectors resolved: 2 selector(s), surface 17878V 35752F, 1080 total bboxes
+[09-24-2026,00:13:56.925]   LowestSelector: 224 bbox(es)
+[09-24-2026,00:13:56.925]     [0] lo=(-0.8403, -0.1937, -0.7500)  hi=(-0.7450, -0.0850, -0.6750)
+[09-24-2026,00:13:56.925]     [1] lo=(-0.8619, -0.1450, -0.7500)  hi=(-0.7450, -0.0250, -0.6750)
+[09-24-2026,00:13:56.925]     [2] lo=(-0.8697, -0.0850, -0.7500)  hi=(-0.7450, 0.0350, -0.6750)
+[09-24-2026,00:13:56.925]     [3] lo=(-0.8697, -0.0250, -0.7500)  hi=(-0.7450, 0.0950, -0.6750)
+[09-24-2026,00:13:56.925]     [4] lo=(-0.8588, 0.0350, -0.7500)  hi=(-0.7450, 0.1850, -0.6750)
+[09-24-2026,00:13:56.925]     [5] lo=(-0.8342, 0.0950, -0.7433)  hi=(-0.7450, 0.1933, -0.6750)
+[09-24-2026,00:13:56.925]     [6] lo=(-0.7937, -0.2403, -0.7500)  hi=(-0.6850, -0.1450, -0.6750)
+[09-24-2026,00:13:56.926]     [7] lo=(-0.8050, -0.2050, -0.7500)  hi=(-0.6850, -0.0850, -0.6750)
+[09-24-2026,00:13:56.926]     [8] lo=(-0.8050, -0.1450, -0.7500)  hi=(-0.6850, -0.0250, -0.6900)
+[09-24-2026,00:13:56.926]     [9] lo=(-0.8050, -0.0850, -0.7500)  hi=(-0.6850, 0.0350, -0.6900)
+[09-24-2026,00:13:56.926]     [10] lo=(-0.8050, -0.0250, -0.7500)  hi=(-0.6850, 0.0950, -0.6900)
+[09-24-2026,00:13:56.926]     [11] lo=(-0.8050, 0.0350, -0.7500)  hi=(-0.6850, 0.1850, -0.6900)
+[09-24-2026,00:13:56.926]     [12] lo=(-0.8050, 0.0950, -0.7500)  hi=(-0.6850, 0.2384, -0.6750)
+[09-24-2026,00:13:56.926]     [13] lo=(-0.7450, -0.2650, -0.7500)  hi=(-0.6148, -0.1450, -0.6750)
+[09-24-2026,00:13:56.926]     [14] lo=(-0.7450, -0.2050, -0.7500)  hi=(-0.6250, -0.0850, -0.6900)
+[09-24-2026,00:13:56.926]     [15] lo=(-0.7450, -0.1450, -0.7500)  hi=(-0.6250, -0.0250, -0.6900)
+[09-24-2026,00:13:56.926]     ... 208 more
+[09-24-2026,00:13:56.926]   HighestSelector: 856 bbox(es)
+[09-24-2026,00:13:56.926]     [0] lo=(-0.9850, -0.3850, 0.4050)  hi=(-0.8950, -0.2650, 0.5300)
+[09-24-2026,00:13:56.926]     [1] lo=(-1.0015, -0.3550, 0.4050)  hi=(-0.8950, -0.2050, 0.5300)
+[09-24-2026,00:13:56.926]     [2] lo=(-1.0141, -0.2950, 0.4050)  hi=(-0.8950, -0.1450, 0.5300)
+[09-24-2026,00:13:56.927]     [3] lo=(-1.0230, -0.2350, 0.4050)  hi=(-0.8950, -0.0850, 0.5300)
+[09-24-2026,00:13:56.927]     [4] lo=(-1.0282, -0.1450, 0.4050)  hi=(-0.8950, -0.0250, 0.5300)
+[09-24-2026,00:13:56.927]     [5] lo=(-1.0298, -0.0850, 0.4050)  hi=(-0.8950, 0.0350, 0.5300)
+[09-24-2026,00:13:56.927]     [6] lo=(-1.0298, -0.0250, 0.4050)  hi=(-0.8950, 0.0950, 0.5300)
+[09-24-2026,00:13:56.927]     [7] lo=(-1.0279, 0.0350, 0.4050)  hi=(-0.8950, 0.1550, 0.5300)
+[09-24-2026,00:13:56.927]     [8] lo=(-1.0220, 0.0950, 0.4050)  hi=(-0.8950, 0.2150, 0.5300)
+[09-24-2026,00:13:56.927]     [9] lo=(-1.0125, 0.1550, 0.4050)  hi=(-0.8950, 0.2750, 0.5300)
+[09-24-2026,00:13:56.927]     [10] lo=(-0.9991, 0.2150, 0.4050)  hi=(-0.8950, 0.3350, 0.5300)
+[09-24-2026,00:13:56.927]     [11] lo=(-0.9819, 0.2750, 0.4050)  hi=(-0.9005, 0.3950, 0.5250)
+[09-24-2026,00:13:56.927]     [12] lo=(-0.9254, -0.5050, 0.4050)  hi=(-0.8350, -0.4150, 0.5300)
+[09-24-2026,00:13:56.927]     [13] lo=(-0.9550, -0.4750, 0.4050)  hi=(-0.8350, -0.3250, 0.5300)
+[09-24-2026,00:13:56.927]     [14] lo=(-0.9756, -0.4150, 0.4050)  hi=(-0.8350, -0.2650, 0.5300)
+[09-24-2026,00:13:56.928]     [15] lo=(-0.9850, -0.3550, 0.4650)  hi=(-0.8350, -0.2050, 0.5300)
+[09-24-2026,00:13:56.928]     ... 840 more
+[09-24-2026,00:13:56.990] Finish initialization
+[09-24-2026,00:13:56.990] ShapeOpt: freezing SDF at 22745/98296 BC boundary element nodes
+[09-24-2026,00:13:56.992] Using gradient descent optimizer (unconstrained)
+[09-24-2026,00:13:56.992] ===== Optimization Iteration 0 =====
+[09-24-2026,00:13:57.029] Trimmed exterior elements: 80334 -> 66325 (removed 14009)
+[09-24-2026,00:13:57.189]   Floored 8580/61243 beta values to 86.2
+[09-24-2026,00:13:57.190] Beta: [86.15, 15141.82] over 61243 boundary elements
+[09-24-2026,00:13:57.190] Correction domain: 61243/66325 boundary elements
+[09-24-2026,00:13:57.207] Finish initialization
+[09-24-2026,00:13:57.207] ShapeOpt: freezing SDF at 22745/83930 BC boundary element nodes
+[09-24-2026,00:13:57.208]   Remesh BC fix init: 22745/2146689 bg cells frozen (from 22745 octree BC nodes)
+[09-24-2026,00:13:57.257]   BC zip init: 6518 patch verts, radius=0.0600
+[09-24-2026,00:13:57.257] ShapeOptTrimmed: outer 98296 nodes, inner 83930 nodes (trimmed 14366)
+[09-24-2026,00:13:57.339]   scale=1.0000 Iter 0: ||R|| = 7.441e-04, rel = 1.000e+00
+[09-24-2026,00:13:58.711]   scale=1.0000 Iter 1: ||R|| = 3.276e-05, rel = 4.403e-02
+[09-24-2026,00:13:59.283]   scale=1.0000 Iter 2: ||R|| = 3.048e-07, rel = 4.096e-04
+[09-24-2026,00:13:59.654]   SE=1.0000 (raw=1.331389e-04), Vol=3.2982 (raw=3.298174e+00, target=1.6491, norm=1.0000, penalty=1.0000), Total=6.000000e+00
+[09-24-2026,00:13:59.654] Backward for objective
+[09-24-2026,00:13:59.664] Solving adjoint system
+[09-24-2026,00:14:00.323]   BC zip: stitching 5 cached patch(es) into MC surface
+[09-24-2026,00:14:00.590]   SDF reinit (MC): 129^3 bg grid, 0 sentinels clamped, |∇φ| mean 0.9971→0.9973, |∇φ|-1 L∞ 0.0029→0.0027
+[09-24-2026,00:14:00.591]   Surface refinement: 17322 verts, 4224 parent groups (d7:4224), 4224 total must-query positions
+[09-24-2026,00:14:00.675]   Opt iter 0: obj=6.000000e+00, constraints=[none (gd)], rel_red=inf
+[09-24-2026,00:14:00.675] ===== Optimization Iteration 1 =====
+[09-24-2026,00:14:00.683] Added flexible Dirichlet BC: 1053 nodes, components=all
+[09-24-2026,00:14:00.748] ShapeOpt: freezing SDF at 22845/95536 BC boundary element nodes
+[09-24-2026,00:14:00.748]   Remesh: outer octree 98296 → 95536 nodes (applied deferred remesh at step() start)
+[09-24-2026,00:14:00.750] Trimmed exterior elements: 77723 -> 68103 (removed 9620)
+[09-24-2026,00:14:00.914]   Floored 8623/60813 beta values to 86.2
+[09-24-2026,00:14:00.915] Beta: [86.15, 15193.85] over 60813 boundary elements
+[09-24-2026,00:14:00.915] Correction domain: 60813/68103 boundary elements
+[09-24-2026,00:14:00.916] ShapeOpt: freezing SDF at 22845/85436 BC boundary element nodes
+[09-24-2026,00:14:00.957]   Displacement warm-start: 78082 matched, 6573 interpolated, 781 extrapolated
+[09-24-2026,00:14:00.959] ShapeOptTrimmed: outer 95536 nodes, inner 85436 nodes (trimmed 10100)
+[09-24-2026,00:14:00.994]   scale=1.0000 Iter 0: ||R|| = 1.082e-03, rel = 1.000e+00
+[09-24-2026,00:14:01.753]   scale=1.0000 Iter 1: ||R|| = 6.890e-06, rel = 6.367e-03
+[09-24-2026,00:14:02.297]   scale=1.0000 Iter 2: ||R|| = 2.819e-07, rel = 2.605e-04
+[09-24-2026,00:14:02.636]   SE=0.9780 (raw=1.302159e-04), Vol=3.2214 (raw=3.221396e+00, target=1.6491, norm=0.9534, penalty=0.9534), Total=5.745254e+00
+[09-24-2026,00:14:02.637] Backward for objective
+[09-24-2026,00:14:02.639] Solving adjoint system
+[09-24-2026,00:14:03.104]   BC zip: stitching 5 cached patch(es) into MC surface
+[09-24-2026,00:14:03.339]   SDF reinit (MC): 129^3 bg grid, 0 sentinels clamped, |∇φ| mean 0.9972→0.9973, |∇φ|-1 L∞ 0.0028→0.0027
+[09-24-2026,00:14:03.340]   Surface refinement: 17163 verts, 4255 parent groups (d7:4255), 4255 total must-query positions
+[09-24-2026,00:14:03.416]   Opt iter 1: obj=5.745254e+00, constraints=[none (gd)], rel_red=4.245774e-02
+[09-24-2026,00:14:03.416] ===== Optimization Iteration 2 =====
+[09-24-2026,00:14:03.423] Added flexible Dirichlet BC: 1067 nodes, components=all
+[09-24-2026,00:14:03.492] ShapeOpt: freezing SDF at 22841/94875 BC boundary element nodes
+[09-24-2026,00:14:03.493]   Remesh: outer octree 95536 → 94875 nodes (applied deferred remesh at step() start)
+[09-24-2026,00:14:03.494] Trimmed exterior elements: 77279 -> 67723 (removed 9556)
+[09-24-2026,00:14:03.674]   Floored 10579/62805 beta values to 86.2
+[09-24-2026,00:14:03.674] Beta: [86.15, 15028.34] over 62805 boundary elements
+[09-24-2026,00:14:03.674] Correction domain: 62805/67723 boundary elements
+[09-24-2026,00:14:03.676] ShapeOpt: freezing SDF at 22841/85023 BC boundary element nodes
+[09-24-2026,00:14:03.688]   Displacement warm-start: 83427 matched, 1464 interpolated, 132 extrapolated
+[09-24-2026,00:14:03.689] ShapeOptTrimmed: outer 94875 nodes, inner 85023 nodes (trimmed 9852)
+[09-24-2026,00:14:03.724]   scale=1.0000 Iter 0: ||R|| = 2.723e-04, rel = 1.000e+00
+[09-24-2026,00:14:04.427]   scale=1.0000 Iter 1: ||R|| = 4.620e-07, rel = 1.696e-03
+[09-24-2026,00:14:04.769]   SE=0.9807 (raw=1.305743e-04), Vol=3.1509 (raw=3.150919e+00, target=1.6491, norm=0.9107, penalty=0.9107), Total=5.534262e+00
+[09-24-2026,00:14:04.769] Backward for objective
+[09-24-2026,00:14:04.771] Solving adjoint system
+[09-24-2026,00:14:05.219]   BC zip: stitching 5 cached patch(es) into MC surface
+[09-24-2026,00:14:05.456]   SDF reinit (MC): 129^3 bg grid, 0 sentinels clamped, |∇φ| mean 0.9972→0.9973, |∇φ|-1 L∞ 0.0028→0.0027
+[09-24-2026,00:14:05.457]   Surface refinement: 17111 verts, 4207 parent groups (d7:4207), 4207 total must-query positions
+[09-24-2026,00:14:05.525]   Opt iter 2: obj=5.534262e+00, constraints=[none (gd)], rel_red=3.672455e-02
+[09-24-2026,00:14:05.525] ===== Optimization Iteration 3 =====
+[09-24-2026,00:14:05.531] Added flexible Dirichlet BC: 1067 nodes, components=all
+[09-24-2026,00:14:05.596] ShapeOpt: freezing SDF at 22837/95397 BC boundary element nodes
+[09-24-2026,00:14:05.596]   Remesh: outer octree 94875 → 95397 nodes (applied deferred remesh at step() start)
+[09-24-2026,00:14:05.598] Trimmed exterior elements: 77832 -> 67299 (removed 10533)
+[09-24-2026,00:14:05.760]   Floored 10386/61999 beta values to 86.2
+[09-24-2026,00:14:05.760] Beta: [86.15, 15272.31] over 61999 boundary elements
+[09-24-2026,00:14:05.761] Correction domain: 61999/67299 boundary elements
+[09-24-2026,00:14:05.762] ShapeOpt: freezing SDF at 22837/84555 BC boundary element nodes
+[09-24-2026,00:14:05.777]   Displacement warm-start: 82427 matched, 2043 interpolated, 85 extrapolated
+[09-24-2026,00:14:05.778] ShapeOptTrimmed: outer 95397 nodes, inner 84555 nodes (trimmed 10842)
+[09-24-2026,00:14:05.813]   scale=1.0000 Iter 0: ||R|| = 2.576e-04, rel = 1.000e+00
+[09-24-2026,00:14:06.506]   scale=1.0000 Iter 1: ||R|| = 3.532e-07, rel = 1.371e-03
+[09-24-2026,00:14:06.843]   SE=0.9874 (raw=1.314568e-04), Vol=3.0800 (raw=3.080016e+00, target=1.6491, norm=0.8677, penalty=0.8677), Total=5.325913e+00
+[09-24-2026,00:14:06.843] Backward for objective
+[09-24-2026,00:14:06.845] Solving adjoint system
+[09-24-2026,00:14:07.501]   BC zip: stitching 5 cached patch(es) into MC surface
+[09-24-2026,00:14:07.741]   SDF reinit (MC): 129^3 bg grid, 0 sentinels clamped, |∇φ| mean 0.9972→0.9972, |∇φ|-1 L∞ 0.0028→0.0028
+[09-24-2026,00:14:07.742]   Surface refinement: 17051 verts, 4222 parent groups (d7:4222), 4222 total must-query positions
+[09-24-2026,00:14:07.809]   Opt iter 3: obj=5.325913e+00, constraints=[none (gd)], rel_red=3.764699e-02
+[09-24-2026,00:14:07.809]   Did not converge in 4 iterations
+[09-24-2026,00:14:07.809] Saved PVD collection: output/shape_opt_cantilever-2026-09-24-00-13-56/solution.pvd
+[09-24-2026,00:14:07.810] Simulation finalized. Open output/shape_opt_cantilever-2026-09-24-00-13-56/solution.pvd in ParaView to view results.
+[09-24-2026,00:14:07.810] Saved PVD collection: output/shape_opt_cantilever-2026-09-24-00-13-56/sdf.pvd
+[09-24-2026,00:14:07.810] SDF field saved. Open output/shape_opt_cantilever-2026-09-24-00-13-56/sdf.pvd in ParaView to view SDF evolution.
+[09-24-2026,00:14:07.810] Saved PVD collection: output/shape_opt_cantilever-2026-09-24-00-13-56/surface.pvd
+[09-24-2026,00:14:07.810] Surface meshes saved. Open output/shape_opt_cantilever-2026-09-24-00-13-56/surface.pvd in ParaView.

@@ -1,0 +1,693 @@
+{
+ "bench": {
+  "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/park-bench-20261013-212923/workflow/c09fb246962f",
+  "instruction": "a park bench",
+  "wall_clock_s": 516.427,
+  "record": "ar_stats.json",
+  "k": 200.0,
+  "umax": 0.0008565779680407123,
+  "extent": 1.515151508152485,
+  "heading0": 25.549999999999997,
+  "elev": 20.439317573258247,
+  "centre": [
+   0.7499999962747097,
+   0.5891583372014764,
+   0.43181817838922143
+  ],
+  "distance": 5.444223196983131,
+  "box_rest_px": [
+   572.0003271126341,
+   251.19833013729817,
+   1347.9410320697586,
+   968.7997154647028
+  ],
+  "box_all_px": [
+   568.3839291814021,
+   251.19833013729817,
+   1351.613501978216,
+   979.7730082982365
+  ],
+  "tube_r": 0.022727272622287274,
+  "E_GPa_min_max": [
+   12.0,
+   120.0
+  ],
+  "vtu": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/park-bench-20261013-212923/workflow/c09fb246962f/solve/api_fem_forward-2026-10-13-21-36-47/vtu_sdf/solution_t0000.vtu",
+  "octree": {
+   "cells": 136801,
+   "nodes": 163430,
+   "leaf_sizes_m": [
+    0.01136,
+    0.02273,
+    0.04545,
+    0.09091,
+    0.18182
+   ],
+   "cells_per_size": [
+    107512,
+    21113,
+    6017,
+    1878,
+    281
+   ],
+   "drawn": {
+    "source": "rebuilt with build_initial_octree_from_trimesh + sdf2octree (gate: its clip_octree_to_bbox == vtu_sdf cell for cell)",
+    "why_vtu_sdf_is_ragged": "clip_octree_to_bbox keeps a cell iff its centroid is in the geometry bbox + pad",
+    "vtu_sdf_cells": 136801,
+    "vtu_sdf_fill_of_its_bbox": 0.9201774679976721,
+    "root_cube_m": [
+     [
+      -0.6950757567516781,
+      -0.9257002469152211,
+      -1.0146766037934205
+     ],
+     [
+      2.214015152339231,
+      1.9833906621756878,
+      1.8944143052974884
+     ]
+    ],
+    "root_cube_cells": 140470,
+    "clip_bbox_m": [
+     [
+      -0.24053030220622365,
+      -0.24388206509703939,
+      -0.23058569470251147
+     ],
+     [
+      1.7405302947556431,
+      1.2893366044556553,
+      1.0942220514809544
+     ]
+    ],
+    "drawn_box_m": [
+     [
+      -0.3314393931153139,
+      -0.3802457014606748,
+      -0.2874038765206921
+     ],
+     [
+      1.8503787887028713,
+      1.4379361167211462,
+      1.1671415780247647
+     ]
+    ],
+    "drawn_cells": 137334,
+    "leaf_m": 0.011363636363636243,
+    "coarsest_m": 0.1818181818181821,
+    "vtu_sdf_bbox_m": [
+     [
+      -0.33143940567970276,
+      -0.19842751324176788,
+      -0.2874038815498352
+     ],
+     [
+      1.759469747543335,
+      1.2561179399490356,
+      1.1671415567398071
+     ]
+    ]
+   }
+  },
+  "solve_mesh": {
+   "nodes": 133242,
+   "hexes": 107140
+  },
+  "E_range_GPa": [
+   5.0,
+   200.0
+  ],
+  "arrows": 8,
+  "headings_deg": [
+   25.549999999999997,
+   -212.45
+  ],
+  "files": [
+   "ar_0_bc.vtk",
+   "ar_0_bigarrows.vtk",
+   "ar_0_clay.vtk",
+   "ar_0_fit.vtk",
+   "ar_0_grid.vtk",
+   "ar_0_materials.vtk",
+   "ar_0_octfaces.vtk",
+   "ar_0_octree.vtk",
+   "ar_0_painted.vtk",
+   "ar_0_seg.vtk",
+   "ar_0_shadow.vtk",
+   "ar_0_shadow_def.vtk",
+   "ar_0_solve.vtk",
+   "ar_0_support.vtk"
+  ],
+  "notes": []
+ },
+ "tiles": [
+  {
+   "j": 0,
+   "name": "claw-hammer-20261014-002959",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/claw-hammer-20261014-002959/workflow/e523575eda4e",
+   "instruction": "a claw hammer",
+   "label": "Claw hammer",
+   "wall_clock_s": 263.905,
+   "record": "ar_stats.json",
+   "k": 10.0,
+   "umax": 0.0041106680671366734,
+   "extent": 0.33333333767950535,
+   "heading0": 146.56505117707798,
+   "elev": 50.0,
+   "centre": [
+    0.06963160526282791,
+    0.1939304012799951,
+    0.014824667327020353
+   ],
+   "distance": 0.7632043828709625,
+   "box_px_2x": [
+    152.74169026749948,
+    26.386660741992443,
+    359.33452583782156,
+    415.39134399390855
+   ],
+   "notes": []
+  },
+  {
+   "j": 1,
+   "name": "giraffe-20261013-224524",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/giraffe-20261013-224524/workflow/7117203f0330",
+   "instruction": "a giraffe",
+   "label": "Giraffe",
+   "wall_clock_s": 235.848,
+   "record": "ar_stats_agentic_results_animals_opus.json",
+   "k": 2000.0,
+   "umax": 0.0002875272636603899,
+   "extent": 4.776119427755475,
+   "heading0": -48.43494882292204,
+   "elev": 20.439317573258254,
+   "centre": [
+    0.36079971923512755,
+    2.2997717434221436,
+    1.6880463247804816
+   ],
+   "distance": 13.647783186942654,
+   "box_px_2x": [
+    128.47030985967507,
+    26.559992608731704,
+    383.4790182622539,
+    416.1067535770264
+   ],
+   "notes": []
+  },
+  {
+   "j": 2,
+   "name": "taj-mahal-20261014-021519",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/taj-mahal-20261014-021519/workflow/70159b049582",
+   "instruction": "the Taj Mahal",
+   "label": "Taj Mahal",
+   "wall_clock_s": 244.995,
+   "record": "ar_stats_agentic_results_landmarks_opus.json",
+   "k": 3000.0,
+   "umax": 0.0032893079894184027,
+   "extent": 95.95959961414337,
+   "heading0": -33.434948822922,
+   "elev": 50.0,
+   "centre": [
+    47.301052284179896,
+    0.019577776050744733,
+    47.428060097195356
+   ],
+   "distance": 355.1807100106133,
+   "box_px_2x": [
+    60.92349707885438,
+    59.18796933264838,
+    451.11911501222164,
+    384.6898008395229
+   ],
+   "notes": []
+  },
+  {
+   "j": 3,
+   "name": "coffee-mug-20261013-210839",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/coffee-mug-20261013-210839/workflow/2c96c95ab93a",
+   "instruction": "a coffee mug",
+   "label": "Coffee mug",
+   "wall_clock_s": 210.98,
+   "record": "ar_stats_agentic_results_household_items_opus.json",
+   "k": 50000.0,
+   "umax": 3.165647942720477e-07,
+   "extent": 0.10734463291009888,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.04723328844959524,
+    0.03885987609152815,
+    0.035348391954511914
+   ],
+   "distance": 0.33170458880794484,
+   "box_px_2x": [
+    65.30984372627677,
+    26.56019872655918,
+    446.68734593577096,
+    416.10688180444157
+   ],
+   "notes": []
+  },
+  {
+   "j": 4,
+   "name": "human-femur-20261014-010205",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/human-femur-20261014-010205/workflow/66871e3cb342",
+   "instruction": "a human femur",
+   "label": "Human femur",
+   "wall_clock_s": 457.971,
+   "record": "ar_stats.json",
+   "k": 20.0,
+   "umax": 0.0028919460960695363,
+   "extent": 0.45454544154927135,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.0923901869060766,
+    0.2208498959223809,
+    0.05473257415007419
+   ],
+   "distance": 1.2169274339396425,
+   "box_px_2x": [
+    175.40367062492564,
+    26.55999289103832,
+    336.59751922430314,
+    416.10668424089255
+   ],
+   "notes": []
+  },
+  {
+   "j": 5,
+   "name": "himeji-castle-20261014-020226",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/himeji-castle-20261014-020226/workflow/284b39c65126",
+   "instruction": "Himeji Castle",
+   "label": "Himeji Castle",
+   "wall_clock_s": 499.087,
+   "record": "ar_stats_agentic_results_landmarks_opus.json",
+   "k": 10000.0,
+   "umax": 0.0005232224256268829,
+   "extent": 46.86868563294411,
+   "heading0": -33.43494882292201,
+   "elev": 29.999999999999996,
+   "centre": [
+    18.983308890428365,
+    17.49994117693269,
+    22.496556705346695
+   ],
+   "distance": 159.4548411156897,
+   "box_px_2x": [
+    97.86365941080567,
+    26.559908946028827,
+    414.1078088509412,
+    416.10936126380125
+   ],
+   "notes": []
+  },
+  {
+   "j": 6,
+   "name": "teddy-bear-20261013-214602",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/teddy-bear-20261013-214602/workflow/f70ceee7ad2d",
+   "instruction": "a teddy bear",
+   "label": "Teddy bear",
+   "wall_clock_s": 241.514,
+   "record": "ar_stats_agentic_results_toys_opus.json",
+   "k": 5.0,
+   "umax": 0.00808920205798743,
+   "extent": 0.353535350644961,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.1325123298063373,
+    0.16618533131934268,
+    0.07830023031407506
+   ],
+   "distance": 1.006649083602293,
+   "box_px_2x": [
+    122.31950805184849,
+    26.560001967559344,
+    389.69580285308973,
+    416.10664496385886
+   ],
+   "notes": []
+  },
+  {
+   "j": 7,
+   "name": "truck-leaf-spring-20261013-231223",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/truck-leaf-spring-20261013-231223/workflow/569d10b3c6e3",
+   "instruction": "a truck leaf spring",
+   "label": "Truck leaf spring",
+   "wall_clock_s": 511.25,
+   "record": "ar_stats.json",
+   "k": 30.0,
+   "umax": 0.004789186600087164,
+   "extent": 1.379104495048523,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.6901087857799453,
+    0.09044539924468149,
+    0.03986372044821205
+   ],
+   "distance": 3.8318204302431953,
+   "box_px_2x": [
+    61.23239865387961,
+    135.27639078800735,
+    450.7790917737521,
+    307.39028775492613
+   ],
+   "notes": []
+  },
+  {
+   "j": 8,
+   "name": "elephant-20261013-224920",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/elephant-20261013-224920/workflow/82f39e89e2d0",
+   "instruction": "an elephant",
+   "label": "Elephant",
+   "wall_clock_s": 205.034,
+   "record": "ar_stats_agentic_results_animals_opus.json",
+   "k": 3000.0,
+   "umax": 2.8770796507736917e-05,
+   "extent": 4.975124375894666,
+   "heading0": 56.56505117707799,
+   "elev": 20.439317573258254,
+   "centre": [
+    1.0392590245562348,
+    1.0727974897156318,
+    2.5164020736564017
+   ],
+   "distance": 13.320663564294847,
+   "box_px_2x": [
+    61.1976180852391,
+    69.08330439685511,
+    450.74436777855385,
+    373.58340032190273
+   ],
+   "notes": []
+  },
+  {
+   "j": 9,
+   "name": "sofa-20261013-214158",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/sofa-20261013-214158/workflow/03af3db6b4df",
+   "instruction": "a sofa",
+   "label": "Sofa",
+   "wall_clock_s": 243.55,
+   "record": "ar_stats_agentic_results_furniture_opus.json",
+   "k": 5000.0,
+   "umax": 3.899130360439898e-05,
+   "extent": 2.0202020490542054,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.9978697854094207,
+    0.3790847620594806,
+    0.5112071840395499
+   ],
+   "distance": 5.858559603690095,
+   "box_px_2x": [
+    61.22822447710428,
+    79.69884154497149,
+    450.77500411330743,
+    362.96788409144597
+   ],
+   "notes": []
+  },
+  {
+   "j": 10,
+   "name": "electric-toothbrush-20261013-210405",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/electric-toothbrush-20261013-210405/workflow/a3ddf34a5ebf",
+   "instruction": "an electric toothbrush",
+   "label": "Electric toothbrush",
+   "wall_clock_s": 273.755,
+   "record": "ar_stats.json",
+   "k": 3.0,
+   "umax": 0.008273794873091538,
+   "extent": 0.2424242467386648,
+   "heading0": -33.434948822922,
+   "elev": 50.0,
+   "centre": [
+    0.01078022236470133,
+    0.14756409949600738,
+    0.010955260782999424
+   ],
+   "distance": 0.43381210649386925,
+   "box_px_2x": [
+    202.9031527472447,
+    26.3992134572145,
+    309.10584423470186,
+    414.87041497213966
+   ],
+   "notes": []
+  },
+  {
+   "j": 11,
+   "name": "natural-stone-arch-20261014-021045",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/natural-stone-arch-20261014-021045/workflow/6a0218ba407f",
+   "instruction": "a natural stone arch",
+   "label": "Natural stone arch",
+   "wall_clock_s": 272.778,
+   "record": "ar_stats_agentic_results_landmarks_opus.json",
+   "k": 10000.0,
+   "umax": 0.00013597950589646162,
+   "extent": 11.94029843620956,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    5.752416097007746,
+    3.248920862586567,
+    3.1935618105649968
+   ],
+   "distance": 34.488185458977824,
+   "box_px_2x": [
+    61.22564790164503,
+    52.28368933897261,
+    450.77231712542317,
+    390.38297773105376
+   ],
+   "notes": []
+  },
+  {
+   "j": 12,
+   "name": "car-brake-disc-20261013-233035",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/car-brake-disc-20261013-233035/workflow/ca5daddc59b4",
+   "instruction": "a car brake disc",
+   "label": "Car brake disc",
+   "wall_clock_s": 512.049,
+   "record": "ar_stats_agentic_results_vehicle_parts_opus.json",
+   "k": 3000.0,
+   "umax": 1.3678858999520528e-05,
+   "extent": 0.28282829257659614,
+   "heading0": -153.43494882292202,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.1328007079684352,
+    0.007740824393330955,
+    0.13859180259286125
+   ],
+   "distance": 0.7824154704844084,
+   "box_px_2x": [
+    61.24817925497308,
+    114.29670624048094,
+    450.7948711118473,
+    328.36996834318563
+   ],
+   "notes": []
+  },
+  {
+   "j": 13,
+   "name": "bar-stool-20261013-213800",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/bar-stool-20261013-213800/workflow/fae04d03ee0a",
+   "instruction": "a bar stool",
+   "label": "Bar stool",
+   "wall_clock_s": 237.314,
+   "record": "ar_stats_agentic_results_furniture_opus.json",
+   "k": 500.0,
+   "umax": 0.00014748242085680684,
+   "extent": 0.7575757526792586,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.21506828748578533,
+    0.33760814219592467,
+    0.2044202518404635
+   ],
+   "distance": 2.305018662134822,
+   "box_px_2x": [
+    135.8382883962151,
+    26.560011547866992,
+    376.18171797741667,
+    416.10674072638244
+   ],
+   "notes": []
+  },
+  {
+   "j": 14,
+   "name": "pantheon-20261014-015416",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/pantheon-20261014-015416/workflow/451495907e86",
+   "instruction": "the Pantheon",
+   "label": "Pantheon",
+   "wall_clock_s": 488.759,
+   "record": "ar_stats_agentic_results_landmarks_opus.json",
+   "k": 20000.0,
+   "umax": 0.0005097162693167449,
+   "extent": 79.30348205566406,
+   "heading0": -63.43494882292202,
+   "elev": 50.0,
+   "centre": [
+    27.648801336927672,
+    10.142800158291745,
+    39.90549291439561
+   ],
+   "distance": 226.2131784158658,
+   "box_px_2x": [
+    60.997395265510136,
+    31.78416782209743,
+    450.9675473248643,
+    411.7905670926998
+   ],
+   "notes": []
+  },
+  {
+   "j": 15,
+   "name": "industrial-robot-arm-20261014-002011",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/industrial-robot-arm-20261014-002011/workflow/4d0027d7fd41",
+   "instruction": "an industrial robot arm",
+   "label": "Industrial robot arm",
+   "wall_clock_s": 337.289,
+   "record": "ar_stats_agentic_results_machines_and_tools_opus.json",
+   "k": 5000.0,
+   "umax": 2.47220635156159e-05,
+   "extent": 1.3131312699988484,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    0.41122588131749316,
+    0.5777556260621777,
+    0.3751656104922154
+   ],
+   "distance": 4.0477878048306,
+   "box_px_2x": [
+    128.5586668621956,
+    26.560015549659795,
+    383.4148322402152,
+    416.1067348713723
+   ],
+   "notes": []
+  },
+  {
+   "j": 16,
+   "name": "igloo-20261014-013439",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/igloo-20261014-013439/workflow/0f955499102d",
+   "instruction": "an igloo",
+   "label": "Igloo",
+   "wall_clock_s": 486.206,
+   "record": "ar_stats_agentic_results_buildings_opus.json",
+   "k": 1000.0,
+   "umax": 0.0005024226123934516,
+   "extent": 3.4806368350982666,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    1.7399814847837165,
+    0.6250222631598773,
+    1.7404572648271628
+   ],
+   "distance": 9.138039046298722,
+   "box_px_2x": [
+    61.24049926266147,
+    68.84388281898919,
+    450.78712859264897,
+    373.82279458749457
+   ],
+   "notes": []
+  },
+  {
+   "j": 17,
+   "name": "adjustable-wrench-20261014-002549",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/adjustable-wrench-20261014-002549/workflow/06076fc07e03",
+   "instruction": "an adjustable wrench",
+   "label": "Adjustable wrench",
+   "wall_clock_s": 250.034,
+   "record": "ar_stats_agentic_results_machines_and_tools_opus.json",
+   "k": 100.0,
+   "umax": 0.0002796841504543773,
+   "extent": 0.25252526230178773,
+   "heading0": -153.43494882292202,
+   "elev": 40.00000000000001,
+   "centre": [
+    0.0331766242145998,
+    -0.009388861023429888,
+    0.12491304396742146
+   ],
+   "distance": 0.6744411389718696,
+   "box_px_2x": [
+    61.23114115626959,
+    92.78534603612752,
+    450.8252516089761,
+    349.9601183101314
+   ],
+   "notes": []
+  },
+  {
+   "j": 18,
+   "name": "crocodile-20261013-230026",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/crocodile-20261013-230026/workflow/d5f284defbb1",
+   "instruction": "a crocodile",
+   "label": "Crocodile",
+   "wall_clock_s": 327.809,
+   "record": "ar_stats_agentic_results_animals_opus.json",
+   "k": 500.0,
+   "umax": 0.0009034028304302532,
+   "extent": 4.040404233150184,
+   "heading0": 26.56505117707799,
+   "elev": 20.439317573258247,
+   "centre": [
+    2.043324351867813,
+    0.5632233333916526,
+    0.6940148010822994
+   ],
+   "distance": 11.062374659146155,
+   "box_px_2x": [
+    61.213902836849655,
+    117.88155433684311,
+    450.760681302172,
+    324.78520897791327
+   ],
+   "notes": []
+  },
+  {
+   "j": 19,
+   "name": "lumbar-vertebra-20261014-010944",
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus/lumbar-vertebra-20261014-010944/workflow/f37f73faaa4a",
+   "instruction": "a lumbar vertebra",
+   "label": "Lumbar vertebra",
+   "wall_clock_s": 556.341,
+   "record": "ar_stats_agentic_results_medical_and_anatomy_opus.json",
+   "k": 200.0,
+   "umax": 4.4206440514002374e-05,
+   "extent": 0.08080807951046154,
+   "heading0": 146.56505117707798,
+   "elev": 50.0,
+   "centre": [
+    0.03992101643571734,
+    0.034465906351066465,
+    0.02066247267857452
+   ],
+   "distance": 0.21482839381227986,
+   "box_px_2x": [
+    61.29433259433051,
+    66.26465535198994,
+    450.73263429332656,
+    376.15836211542097
+   ],
+   "notes": []
+  }
+ ],
+ "batch_root": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus",
+ "tile_wall_clock_min": [
+  3.4172333333333333,
+  9.27235
+ ],
+ "mean_wall_clock_min_opus50": 6.463270666666667,
+ "mean_wall_clock_source": "metrics.json wall_clock_s of the 50 Opus runs, via agentic_results/ar_stats_agentic_results_*_opus.json (= the Opus columns of agentic_results_compare_time.csv, wall_clock row)",
+ "prep_seconds": 256.0624771118164
+}

@@ -1,0 +1,47 @@
+% intro_overview: challenge_overview stacked ABOVE method_overview, one page.
+%
+% Plain pdfTeX (no LaTeX class, no packages): each figure's PDF is embedded as a
+% form XObject, so every path, glyph and image stays exactly what its own build
+% wrote (vector stays vector; method_overview's rendered panels keep their
+% resolution).  Nothing is rescaled: both figures are 180 mm wide (510.264 bp),
+% and the page is checked to be that width.  The page height is measured, not
+% typed: the two figures' heights plus GAP.  The panel letters a (top) and b
+% (bottom) are one more form laid over the stack: io_letters.pdf, a transparent
+% page of exactly the stacked page's size, drawn by io_letters.py (Arial, which
+% plain pdfTeX cannot set) and checked there to keep clear of both figures.
+%
+% Run by ./build.sh introoverview from this folder (after io_letters.py); reads
+% the two root PDFs.
+\pdfoutput=1
+\pdfcompresslevel=9
+\pdfobjcompresslevel=2
+\catcode`\{=1 \catcode`\}=2 \catcode`\#=6
+\newdimen\gap
+\gap=2mm                  % white space between the two figures (each already has its own ~1.5 mm margin)
+
+\pdfximage{../challenge_overview.pdf}\edef\figtop{\the\pdflastximage}
+\setbox0=\hbox{\pdfrefximage\figtop}
+\pdfximage{../method_overview.pdf}\edef\figbot{\the\pdflastximage}
+\setbox1=\hbox{\pdfrefximage\figbot}
+\pdfximage{io_letters.pdf}\edef\letters{\the\pdflastximage}
+\setbox2=\hbox{\pdfrefximage\letters}
+
+% the same width, or the stack would need a rescale (and two text sizes): refuse
+\ifdim\wd0=\wd1 \else
+  \immediate\write16{widths differ: \the\wd0\space vs \the\wd1}\errmessage{intro_overview: widths differ}
+\fi
+% the letters' page must be the stacked page, or the letters would land off their corners
+\ifdim\dimexpr\wd2-\wd0\relax>0.01bp \errmessage{intro_overview: io_letters.pdf width differs}\fi
+\ifdim\dimexpr\wd0-\wd2\relax>0.01bp \errmessage{intro_overview: io_letters.pdf width differs}\fi
+\ifdim\dimexpr\ht2-\ht0-\gap-\ht1\relax>0.01bp \errmessage{intro_overview: io_letters.pdf height differs}\fi
+\ifdim\dimexpr\ht0+\gap+\ht1-\ht2\relax>0.01bp \errmessage{intro_overview: io_letters.pdf height differs}\fi
+\immediate\write16{intro_overview: width \the\wd0, top \the\ht0, gap \the\gap, bottom \the\ht1}
+
+\pdfpagewidth=\wd0
+\pdfpageheight=\dimexpr\ht0+\gap+\ht1\relax
+\hoffset=-1in \voffset=-1in
+\pdfhorigin=1in \pdfvorigin=1in
+% the stack in a zero-width box, then the letters' page on the same baseline, so the
+% letters are drawn LAST: both figures paint an opaque white background
+\shipout\hbox{\hbox to 0pt{\vbox{\offinterlineskip\box0\kern\gap\box1}\hss}\box2}
+\end

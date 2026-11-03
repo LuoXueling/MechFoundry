@@ -1,0 +1,19 @@
+seed_facets 2264
+seed_components 2
+ear_facets 26024
+ear_components 2
+surface_facets 161568
+eps_tol 0.013594
+seed_fraction 0.05
+front_angle 4.6
+back_angle 3.4
+front_rings 14
+back_rings 14
+front_facets 13079
+back_facets 12945
+focus -0.13360 0.01809 0.33692
+focus_radius 0.28847
+view_dir -0.32815 -0.56914 -0.75392
+focus_dir -0.70643 -0.34304 -0.61909
+ears_center -0.18596 0.12203 0.33692
+ears_radius 0.38607

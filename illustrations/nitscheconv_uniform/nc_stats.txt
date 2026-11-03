@@ -1,0 +1,17 @@
+ref_n=96
+ref_time=779.0428383540129
+half_side=0.75
+theta_deg=45.0
+E=10.0
+nu=0.3
+load_steps=20
+ref_load_steps=40
+depths=3,4,5,6
+show_depth=6
+relative_tol=2e-05
+precision=f32
+amg_backend=jaxamg
+scale_diag=False
+amg_max_iters=1000
+sample_n=64
+box_side=1.5

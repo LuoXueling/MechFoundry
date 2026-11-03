@@ -1,0 +1,219 @@
+{
+ "bunny_display.ply": {
+  "command": "ov_assets.bunny(): bunny.stl * (1,-1,1)",
+  "date": "2026-09-29T13:32:19",
+  "sha256": "027df914bfa2a03409fd2a03bb875e5ea95eaa4904a01afa84437018df180f10",
+  "step": "display"
+ },
+ "bunny_display.stl": {
+  "command": "ov_assets.bunny() as STL",
+  "date": "2026-09-29T13:39:15",
+  "sha256": "db24ccecebca6b8f27be346c80343b2577085621eb8f97c146990f3ec3999017",
+  "step": "display"
+ },
+ "cad/brep_bunny_cut.png": {
+  "command": "ov_assets.step_cadimage: filled outer outline, stroke rim keyed off white",
+  "date": "2026-09-29T22:35:33",
+  "env": "implicit-warp117",
+  "sha256": "6ab466c3e8554a685010dbeb788f4bdf9f5d58924f878ec89cd44ce9792a9e1c",
+  "step": "cadimage"
+ },
+ "cad/brep_bunny_gemini.jpeg": {
+  "command": "supplied by the user: a B-rep-surface bunny, stand-in for a Text2CAD / CAD-Coder output",
+  "date": "2026-09-29T22:35:33",
+  "model": "Gemini (Google) image generation",
+  "sha256": "efb168f6296c6df01ae42b8dea3cee0be18faa715a6899342fbd3205c547de74",
+  "step": "cadimage"
+ },
+ "cad/bunny_cadcoder.py": {
+  "command": "ov_cad_fit.py: sections and ear axes measured on bunny_display + pf_k8",
+  "date": "2026-09-30T00:47:40",
+  "env": "implicit-warp117",
+  "sha256": "46c35797a670f042b52f0addcf8122e437134367a7996ca49e537d2d8f128dbf",
+  "step": "cadmodel"
+ },
+ "cad/cad_bunny.npz": {
+  "command": "ov_cad_build.py: cadcoder_wrapper.sandbox.run_sandboxed + finish_mesh",
+  "date": "2026-09-30T00:47:40",
+  "env": "implicit-cadcoder",
+  "sha256": "d74c7345748340e8d9ba84b8b40035f3feee4bedd883effb21be3afb2407e9b4",
+  "step": "cadmodel"
+ },
+ "input/bunny_image.png": {
+  "command": "pvbatch render_ov_input.py",
+  "date": "2026-09-29T15:40:46",
+  "env": "paraview",
+  "sha256": "ec9a6d2dca6f43a180448b793b7b5514860e0bde54215a7183feeee4d5d8a1ef",
+  "step": "input"
+ },
+ "input/bunny_image_cut.png": {
+  "command": "ov_assets.step_cutout: RMBG-1.4 (TripoSG pretrained_weights) + decontaminate",
+  "date": "2026-09-29T16:53:29",
+  "env": "implicit-warp117",
+  "gpu": "1",
+  "model": "briaai/RMBG-1.4",
+  "sha256": "fb535354a794f3270009cf85c1a14dd79bffca80b8fe13c21e4ecde8a63fd947",
+  "step": "cutout"
+ },
+ "input/scribble.png": {
+  "command": "ov_assets._trace_scribble(bunny_image.png)",
+  "date": "2026-09-29T15:40:46",
+  "env": "implicit-warp117",
+  "sha256": "e977d6ce6921cdffa00b6efc51460747bedd1647eedcb7c32c119e2142a33b9d",
+  "step": "input"
+ },
+ "input/scribble_cut.png": {
+  "command": "ov_assets.step_cutout: scribble ink keyed off white",
+  "date": "2026-09-29T16:53:29",
+  "env": "implicit-warp117",
+  "sha256": "5acebf90eb383ed7e0d7aa019b3ecb61053121a681603c2fc7792cec73b3b41c",
+  "step": "cutout"
+ },
+ "input/sdxl_cut.png": {
+  "command": "ov_assets.step_cutout: RMBG-1.4 (TripoSG pretrained_weights) + decontaminate",
+  "date": "2026-09-29T16:53:29",
+  "env": "implicit-warp117",
+  "gpu": "1",
+  "model": "briaai/RMBG-1.4",
+  "sha256": "ec6040211a737aaa04b42eab316177bc26009f0ac5e3a1e5e8d512ed0bb4dd32",
+  "step": "cutout"
+ },
+ "paint/painted_yup.glb": {
+  "command": "hunyuan3d_wrapper/generate.py --surface --views 9 --paint-resolution 768 --texture-size 2048",
+  "date": "2026-09-29T15:42:51",
+  "env": "implicit-hunyuan3d",
+  "frame": "y-up: (x, y, z)_display -> (x, z, -y)",
+  "model": "Hunyuan3D-2.1 paint + SDXL-base/controlnet-depth-sdxl-1.0",
+  "prompt": "a realistic brown wild rabbit with soft natural fur, photograph",
+  "seed": 1,
+  "sha256": "c25ac6c54cf867d51fd5288f16248103a4f6d97c1680c2667fc850c060b3893b",
+  "step": "paint"
+ },
+ "paint/sdxl.png": {
+  "command": "hunyuan3d_wrapper/generate.py --surface --views 9 --paint-resolution 768 --texture-size 2048",
+  "date": "2026-09-29T15:42:51",
+  "env": "implicit-hunyuan3d",
+  "frame": "y-up: (x, y, z)_display -> (x, z, -y)",
+  "model": "Hunyuan3D-2.1 paint + SDXL-base/controlnet-depth-sdxl-1.0",
+  "prompt": "a realistic brown wild rabbit with soft natural fur, photograph",
+  "seed": 1,
+  "sha256": "b0a66132c8a15b0ca8da2c5ceefa397340dafd542b29cc6be60fb360effc266f",
+  "step": "paint"
+ },
+ "seg/pf_cache/features.npy": {
+  "command": "partfield_wrapper/segment.py (feature cache)",
+  "date": "2026-09-29T13:36:12",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "f189c47d05f44480ecfb736b7bf965a27451411a636ad22899a35b431f33e384",
+  "step": "segments"
+ },
+ "seg/pf_k10.json": {
+  "clusters": 10,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:21",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "f3de37b006ca7b27a243e8e0a8df245c412e5fdc2d8156d938897feddaab4684",
+  "step": "segments"
+ },
+ "seg/pf_k10.npz": {
+  "clusters": 10,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:21",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "34faedec7baa6f5aec676b59413427f5d76c93b17061a7883f1932a6d0123caf",
+  "step": "segments"
+ },
+ "seg/pf_k5.json": {
+  "clusters": 5,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:17",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "98d598d746de1b65314a75384acb065de6becaaa6e5ecb6105baddc6714be5a9",
+  "step": "segments"
+ },
+ "seg/pf_k5.npz": {
+  "clusters": 5,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:17",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "5a8b33022a5cf8f5cef6ce69d5e520b7a0ccc16130a00a8d0e8e44fdbb86461a",
+  "step": "segments"
+ },
+ "seg/pf_k6.json": {
+  "clusters": 6,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:18",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "7ab4403a290788516659c3f1f0a57e7df08e9b47b97da6d3d74f074ce65d76ec",
+  "step": "segments"
+ },
+ "seg/pf_k6.npz": {
+  "clusters": 6,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:18",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "32cad91840e3270dddc885a1f224afe3ff56e66098dcee6b5e23c1ce9f29a0fc",
+  "step": "segments"
+ },
+ "seg/pf_k7.json": {
+  "clusters": 7,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:19",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "d548af3ba18dc6caf61dc203339e3c90c97ee5bd514ec1cee0a7008177c5dcd8",
+  "step": "segments"
+ },
+ "seg/pf_k7.npz": {
+  "clusters": 7,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:19",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "cbe6181c8ba1500f0ca8793b89e1ee11c1ff75eef9936471f7f5ad2da97e9415",
+  "step": "segments"
+ },
+ "seg/pf_k8.json": {
+  "clusters": 8,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:20",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "0f6e11b6aee023f90667829d1131546e5566133f8eb48a0695ea540e66cf522e",
+  "step": "segments"
+ },
+ "seg/pf_k8.npz": {
+  "clusters": 8,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:20",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "1a9d9af41cb1589ab9da90c127f39e67a315ae8e872f16782ed29b2ad7528c8c",
+  "step": "segments"
+ },
+ "seg/pf_k9.json": {
+  "clusters": 9,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:20",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "26f334757641d8fda309def6fe4496da7b29fc4954b50a98a231aa48d7d261dc",
+  "step": "segments"
+ },
+ "seg/pf_k9.npz": {
+  "clusters": 9,
+  "command": "partfield_wrapper/segment.py",
+  "date": "2026-09-29T13:36:20",
+  "env": "partfield",
+  "model": "PartField",
+  "sha256": "900453e0379debb681e48fb9a3c3d7db781ff70a9720c98d54204965cd88a4e4",
+  "step": "segments"
+ }
+}

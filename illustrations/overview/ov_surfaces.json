@@ -1,0 +1,61 @@
+{
+ "segment_tint_min_dE_touching": 16.9,
+ "parts": [
+  {
+   "id": 0,
+   "material": "ABS",
+   "youngs_modulus": 2039607805.437114,
+   "poisson_ratio": 0.35,
+   "density": 1050.0
+  },
+  {
+   "id": 1,
+   "material": "ABS",
+   "youngs_modulus": 2039607805.437114,
+   "poisson_ratio": 0.35,
+   "density": 1050.0
+  },
+  {
+   "id": 2,
+   "material": "ABS",
+   "youngs_modulus": 2039607805.437114,
+   "poisson_ratio": 0.35,
+   "density": 1050.0
+  },
+  {
+   "id": 3,
+   "material": "ABS",
+   "youngs_modulus": 2039607805.437114,
+   "poisson_ratio": 0.35,
+   "density": 1050.0
+  },
+  {
+   "id": 4,
+   "material": "ABS",
+   "youngs_modulus": 2039607805.437114,
+   "poisson_ratio": 0.35,
+   "density": 1050.0
+  },
+  {
+   "id": 5,
+   "material": "hard rubber",
+   "youngs_modulus": 100000000.0,
+   "poisson_ratio": 0.48,
+   "density": 1150.0
+  },
+  {
+   "id": 6,
+   "material": "ABS",
+   "youngs_modulus": 2039607805.437114,
+   "poisson_ratio": 0.35,
+   "density": 1050.0
+  },
+  {
+   "id": 7,
+   "material": "hard rubber",
+   "youngs_modulus": 100000000.0,
+   "poisson_ratio": 0.48,
+   "density": 1150.0
+  }
+ ]
+}

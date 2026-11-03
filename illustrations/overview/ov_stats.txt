@@ -1,0 +1,22 @@
+octree_init_depth 3
+octree_depth 6
+octree_nodes 45082
+octree_hexes 35442
+octree_ms 46.1
+octree_nodes_denser 214073
+octree_hexes_denser 174504
+octree_ms_denser 62.6
+bench_outer_nodes 98296
+bench_inner_nodes 83930
+bench_sdf_truncation 0.03
+bench_sdf_refinement_band 0.027
+bench_h_target 0.03
+bench_iters 4
+bench_iters_timed 3
+iter_s 2.28
+iter_solve_s 1.35
+iter_adjoint_s 0.47
+iter_remesh_s 0.31
+iter_s_all 3.68 2.74 2.11 2.28
+bench_run shape_opt_cantilever-2026-09-24-00-13-56
+gpu NVIDIA RTX A6000

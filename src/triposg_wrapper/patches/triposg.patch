@@ -1,0 +1,21 @@
+diff --git a/triposg/models/autoencoders/autoencoder_kl_triposg.py b/triposg/models/autoencoders/autoencoder_kl_triposg.py
+index f7ec6cd3058d5263a573ef58ba29e7c528300d7c..99958e09dfe4f1a51054bd2754e326b7cf5bc79a 100755
+--- a/triposg/models/autoencoders/autoencoder_kl_triposg.py
++++ b/triposg/models/autoencoders/autoencoder_kl_triposg.py
+@@ -12,10 +12,14 @@ from diffusers.models.normalization import FP32LayerNorm, LayerNorm
+ from diffusers.utils import logging
+ from diffusers.utils.accelerate_utils import apply_forward_hook
+ from einops import repeat
+-# from torch_cluster import fps
++from torch_cluster import fps
+ from tqdm import tqdm
+ 
+-from ..attention_processor import FusedTripoSGAttnProcessor2_0, TripoSGAttnProcessor2_0, FlashTripoSGAttnProcessor2_0
++from ..attention_processor import (
++    FusedTripoSGAttnProcessor2_0,
++    TripoSGAttnProcessor2_0,
++    FlashTripoSGAttnProcessor2_0,
++)
+ from ..embeddings import FrequencyPositionalEmbedding
+ from ..transformers.triposg_transformer import DiTBlock
+ from .vae import DiagonalGaussianDistribution

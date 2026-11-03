@@ -1,0 +1,16 @@
+num_clusters 5
+adjacent_segment_depth 1
+smoothing 0.26
+surface_faces 161568
+seed_faces 2264
+selected_faces 24710
+segments 8
+previous_faces 26024
+overlap_faces 24640
+auto_only_faces 70
+previous_only_faces 1384
+iou 0.94427836
+recall 0.94681829
+precision 0.99716711
+selected_center -0.17439037561416626 0.146034374833107 0.34404829144477844
+selected_radius 0.359880388

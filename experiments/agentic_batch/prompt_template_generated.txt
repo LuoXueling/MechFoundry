@@ -1,0 +1,5 @@
+You are working in the repository {WORKTREE} (run commands from that root). Read the skill at src/agents_wrapper/fem_workflow/operator_skill/SKILL.md and follow it exactly; read what the skill and the runner point you to, no more. Do not edit any file in the skill folder or any source code.
+
+The user's whole instruction is: "{OBJECT}". Always paint the generated shape with the texture step so the body has realistic colours: the result goes into a paper figure. The body must be generated (a text, drawing or image route), not built: this run demonstrates generated shapes.
+
+Carry the task through to the end as the skill says. When you are done (or stopped at a limit), reply briefly with: the session id; the verdict line of operator/judgement.md (do not repeat the judgement: it is read from the file); and, in a few lines, any place where the skill was unclear, where you had to guess, or where you deviated from it.

@@ -1,0 +1,39 @@
+h_min 0.0181250
+eps 0.0090625
+eps_ratio 0.5
+depth 6
+phi_lo 0.001
+band_halfwidth 0.0312962
+band_h_ratio 1.7267
+band_eps_ratio 3.4534
+elements 35442
+nodes 45082
+band_elements 28130
+band_nodes 37995
+init_depth 3
+eps_tol 0.0135937
+ear_facets 26024
+ear_bc_elements 2581
+ear_in_patch_box_nodes 4968
+ear_node_hits 1330
+bottom_facets 26409
+bottom_bc_elements 3386
+bottom_in_patch_box_nodes 4409
+bottom_node_hits 1826
+bottom_fraction 0.05
+seed_fraction 0.05
+trim_before 35442
+trim_after 29549
+trim_nodes 38898
+domain_length 1.16
+cube_half_side 0.58
+surf_extent 0.9961237609386444
+cells_across_model 54.96
+sdf_min -0.24731
+sdf_max 0.71484
+ear_lo -0.42259 -0.38468 0.18177
+ear_hi 0.05067 0.14063 0.49207
+bottom_lo -0.35600 -0.18585 -0.49274
+bottom_hi 0.39930 0.35631 -0.43902
+surf_lo -0.49800 -0.38468 -0.49274
+surf_hi 0.49812 0.38433 0.49207

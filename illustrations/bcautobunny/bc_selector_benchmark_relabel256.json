@@ -1,0 +1,138 @@
+{
+  "mesh_faces": 161568,
+  "mesh_vertices": 80786,
+  "num_rays": 25,
+  "bilateral_window": 9,
+  "segments": 8,
+  "selected_faces": 24710,
+  "boxes": 306,
+  "staged_total_ms": 3080.050187651068,
+  "timings": {
+    "face_attributes": {
+      "median_ms": 0.34422706812620163,
+      "samples_ms": [
+        0.34422706812620163,
+        0.4582880064845085,
+        0.20947307348251343
+      ],
+      "percent_of_staged_total": 0.01117602140076551
+    },
+    "face_adjacency": {
+      "median_ms": 1.1444808915257454,
+      "samples_ms": [
+        70.82158699631691,
+        1.1444808915257454,
+        0.7922640070319176
+      ],
+      "percent_of_staged_total": 0.03715786502812016
+    },
+    "orientation": {
+      "median_ms": 0.3583170473575592,
+      "samples_ms": [
+        20.024646073579788,
+        0.3583170473575592,
+        0.17601298168301582
+      ],
+      "percent_of_staged_total": 0.011633480804766424
+    },
+    "warp_bvh_build": {
+      "median_ms": 0.8657458238303661,
+      "samples_ms": [
+        8.087178226560354,
+        0.8657458238303661,
+        0.6782426498830318
+      ],
+      "percent_of_staged_total": 0.028108172629830036
+    },
+    "ray_cast_and_mad": {
+      "median_ms": 33.08295598253608,
+      "samples_ms": [
+        84.57238925620914,
+        33.08295598253608,
+        32.99334505572915
+      ],
+      "percent_of_staged_total": 1.0741044452839277
+    },
+    "missing_value_repair": {
+      "median_ms": 0.8408958092331886,
+      "samples_ms": [
+        76.08033297583461,
+        0.8408958092331886,
+        0.6440621800720692
+      ],
+      "percent_of_staged_total": 0.02730136712072472
+    },
+    "bilateral_filter": {
+      "median_ms": 99.18398689478636,
+      "samples_ms": [
+        155.53421806544065,
+        99.18398689478636,
+        98.9966131746769
+      ],
+      "percent_of_staged_total": 3.2202068424874217
+    },
+    "normalization": {
+      "median_ms": 0.17573311924934387,
+      "samples_ms": [
+        4.682186059653759,
+        0.17573311924934387,
+        0.13706181198358536
+      ],
+      "percent_of_staged_total": 0.005705527785031413
+    },
+    "gmm": {
+      "median_ms": 7.412235252559185,
+      "samples_ms": [
+        17.62328203767538,
+        7.412235252559185,
+        7.361613679677248
+      ],
+      "percent_of_staged_total": 0.24065306735186553
+    },
+    "alpha_expansion_graphcut": {
+      "median_ms": 2886.053624097258,
+      "samples_ms": [
+        2909.1663346625865,
+        2886.053624097258,
+        2879.516146145761
+      ],
+      "percent_of_staged_total": 93.7015129061336
+    },
+    "connected_segments": {
+      "median_ms": 18.054169602692127,
+      "samples_ms": [
+        20.396243780851364,
+        18.031700048595667,
+        18.054169602692127
+      ],
+      "percent_of_staged_total": 0.5861647863751447
+    },
+    "seed_and_spatial_selection": {
+      "median_ms": 10.473042260855436,
+      "samples_ms": [
+        26.632417924702168,
+        10.473042260855436,
+        10.243718046694994
+      ],
+      "percent_of_staged_total": 0.34002829898179254
+    },
+    "box_cover": {
+      "median_ms": 21.734227892011404,
+      "samples_ms": [
+        29.135162942111492,
+        21.734227892011404,
+        21.08108578249812
+      ],
+      "percent_of_staged_total": 0.705645251468663
+    },
+    "selected_surface_bvh": {
+      "median_ms": 0.32654590904712677,
+      "samples_ms": [
+        0.43670786544680595,
+        0.32654590904712677,
+        0.3202361986041069
+      ],
+      "percent_of_staged_total": 0.010601967148339221
+    }
+  }
+}

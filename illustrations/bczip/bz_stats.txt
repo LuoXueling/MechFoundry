@@ -1,0 +1,29 @@
+grid_n 161
+h 0.007500
+radius 0.015000
+init_faces 111328
+upd_faces 117716
+patch_verts 3616
+patch_faces 1756
+patch_loops 1
+rings 3
+cand_loops_first 1
+cand_loops_last 1
+loops_removed 0
+inner_cap_tris 0
+loops_after_merge 0
+merge_tris 0
+cluster_cap_tris 0
+case table
+zip_pairs 4
+zip_tris 430
+subdiv_before 430
+subdiv_after 11614
+subdiv_threshold 0.022978
+out_faces 119956
+n_base 101314
+n_bc 7028
+n_bridge 11614
+watertight 1
+aabb_lo -0.442096 -0.166337 -0.609784
+aabb_hi -0.165495 0.158015 -0.280108

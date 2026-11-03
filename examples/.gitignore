@@ -1,0 +1,14 @@
+# Example products are reproducible and stay local to their leaf. Keep running
+# the documented commands from dirtying the repository status.
+**/output/
+**/output_scribble/
+**/output*.glb
+**/*.vtk
+**/*.stl
+**/*_stats.txt
+**/*_times.txt
+**/*_traj.txt
+**/*_capture.npz
+**/nc_data.txt
+**/ov_bench_log.txt
+**/bunny_sdf.meta

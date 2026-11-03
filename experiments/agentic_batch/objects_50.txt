@@ -1,0 +1,73 @@
+# Fifty everyday objects in ten categories of five: objects most people recognise from the
+# text alone, or that engineers simulate; few very thin members or walls. At least a third have
+# clearly different materials on separate parts.
+
+# Household items
+a TV remote control
+a USB stick
+an electric toothbrush
+a coffee mug
+a computer mouse
+
+# Furniture
+a school chair with a steel frame and a plastic seat
+a glass-top dining table
+a park bench
+a bar stool
+a sofa
+
+# Toys
+a teddy bear
+a wooden rocking horse
+a pogo stick
+a wooden toy train engine
+a yo-yo
+
+# Food
+a jelly dessert
+a loaf of bread
+a hamburger
+a layered birthday cake
+a slice of watermelon
+
+# Animals
+a giraffe
+an elephant
+a rhinoceros
+a horse
+a crocodile
+
+# Vehicle parts
+a car suspension control arm with rubber bushings
+a truck leaf spring
+a car wheel with its rubber tyre
+a car brake disc
+a crankshaft
+
+# Machines and tools
+a road roller with a steel drum and rubber tyres
+a jackhammer
+an industrial robot arm
+an adjustable wrench
+a claw hammer
+
+# Medical and anatomy
+a dental crown
+a knee implant
+a walking cane with a rubber tip
+a human femur
+a lumbar vertebra
+
+# Buildings
+a skyscraper
+a thatched stone cottage
+a lighthouse
+an igloo
+a log cabin
+
+# Landmarks
+the Leaning Tower of Pisa
+the Pantheon
+Himeji Castle
+a natural stone arch
+the Taj Mahal

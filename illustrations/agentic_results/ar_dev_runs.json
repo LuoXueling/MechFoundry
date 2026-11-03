@@ -1,0 +1,20 @@
+{
+  "_comment": "Development set: five finished operator-skill sessions from acceptance batches 6 and 7 (output/fem_workflow_operator/acceptance_batch{6,7}.md), each with the Claude Code transcript of the trial agent that ran it. Instructions are the batch files' verbatim; tokens, wall clock and model are read from the transcripts. A fresh batch is given as output/agentic_batch/<run_name>/ folders instead (AR_RUNS).",
+  "runs": [
+    {"session": "output/fem_workflow_operator/6c2a4b61097b",
+     "instruction": "a carpenter's chisel",
+     "transcript": "~/.claude/projects/-home-xl2254-implicit-optimize--claude-worktrees-operator-skill-loop/56b280a0-496c-43cb-bff2-ee6a4480a769/subagents/agent-a352ef5d4f1414eb7.jsonl"},
+    {"session": "output/fem_workflow_operator/be85a9d769c8",
+     "instruction": "a totem pole",
+     "transcript": "~/.claude/projects/-home-xl2254-implicit-optimize--claude-worktrees-operator-skill-loop/56b280a0-496c-43cb-bff2-ee6a4480a769/subagents/agent-a9f09f9a726849246.jsonl"},
+    {"session": "output/fem_workflow_operator/5d4ac7e73d06",
+     "instruction": "a stone sundial",
+     "transcript": "~/.claude/projects/-home-xl2254-implicit-optimize--claude-worktrees-operator-skill-loop/56b280a0-496c-43cb-bff2-ee6a4480a769/subagents/agent-aa18275ece5679aff.jsonl"},
+    {"session": "output/fem_workflow_operator/29294fa2e056",
+     "instruction": "a bronze horse statue",
+     "transcript": "~/.claude/projects/-home-xl2254-implicit-optimize--claude-worktrees-operator-skill-loop/56b280a0-496c-43cb-bff2-ee6a4480a769/subagents/agent-a8aa4dc66efd5694a.jsonl"},
+    {"session": "output/fem_workflow_operator/56bf5f3d0ec9",
+     "instruction": "a swimming starting block",
+     "transcript": "~/.claude/projects/-home-xl2254-implicit-optimize--claude-worktrees-operator-skill-loop/56b280a0-496c-43cb-bff2-ee6a4480a769/subagents/agent-a69ce620ecbcc0e21.jsonl"}
+  ]
+}

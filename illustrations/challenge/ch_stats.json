@@ -1,0 +1,21 @@
+{
+ "bunny_outline_points": 65,
+ "bunny_mesh": {
+  "nodes": 116,
+  "triangles": 181,
+  "island_triangles": 2,
+  "folded_facets": 2
+ },
+ "parts_area": {
+  "ears": 0.0661,
+  "head": 0.1025,
+  "body": 0.3945,
+  "tail": 0.012,
+  "feet": 0.0411
+ },
+ "quadtree_leaves": 370,
+ "redesign": {
+  "area_ratio": 0.819,
+  "mesh_triangles": 155
+ }
+}

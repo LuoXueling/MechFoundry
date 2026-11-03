@@ -1,0 +1,3 @@
+gpu=NVIDIA RTX A6000
+n_frames=91
+total_seconds=232.29

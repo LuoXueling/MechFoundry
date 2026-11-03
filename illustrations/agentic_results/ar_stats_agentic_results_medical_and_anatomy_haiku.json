@@ -1,0 +1,2392 @@
+{
+ "E_log10_range_Pa": [
+  8.0,
+  11.5
+ ],
+ "view_dir_default": [
+  1.5,
+  1.25,
+  3.0
+ ],
+ "runs": [
+  {
+   "index": 0,
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/dental-crown-20261014-004152/workflow/9a08c9ef8bf5",
+   "label": null,
+   "view_dir": null,
+   "meta": {
+    "run_name": "dental-crown-20261014-004152",
+    "instruction": "a dental crown",
+    "model": "claude-haiku-5-5",
+    "model_requested": "haiku",
+    "session_id": "9a08c9ef8bf5",
+    "session_ids": [
+     "9a08c9ef8bf5"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "claude_session_id": "89f6c694-ff76-41a8-a69f-fdedd9885e0e",
+    "input_tokens": 64,
+    "cache_read_input_tokens": 1988369,
+    "cache_creation_input_tokens": 100388,
+    "output_tokens": 35454,
+    "tokens_source": "CLI result modelUsage, summed over models (includes sub-agents)",
+    "thinking_tokens": 23600,
+    "effort": "medium",
+    "effort_observed": {
+     "medium": 32
+    },
+    "system_note": "Environment note: the repository root and working directory is /home/xl2254/implicit_optimize. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /home/xl2254/implicit_optimize/.",
+    "main_session_usage": {
+     "input_tokens": 64,
+     "cache_read_input_tokens": 1988369,
+     "cache_creation_input_tokens": 100388,
+     "output_tokens": 35454
+    },
+    "main_transcript_tokens": {
+     "input_tokens": 64,
+     "cache_read_input_tokens": 1988369,
+     "cache_creation_input_tokens": 100388,
+     "output_tokens": 35454,
+     "messages": 32
+    },
+    "subagent_transcript_tokens": {
+     "input_tokens": 0,
+     "cache_read_input_tokens": 0,
+     "cache_creation_input_tokens": 0,
+     "output_tokens": 0,
+     "messages": 0
+    },
+    "subagent_transcripts": 0,
+    "subagents_spawned": 0,
+    "tokens_by_model": {
+     "claude-haiku-5-5": {
+      "inputTokens": 64,
+      "outputTokens": 35454,
+      "cacheReadInputTokens": 1988369,
+      "cacheCreationInputTokens": 100388,
+      "webSearchRequests": 0,
+      "costUSD": 0.07603863,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 23600,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+     }
+    },
+    "cost_usd": 0.07603863,
+    "wall_clock_s": 339.748,
+    "cli_duration_s": 339.018,
+    "cli_duration_api_s": 196.615,
+    "num_turns": 52,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_subtype": "success",
+    "cli_is_error": false,
+    "cli_terminal_reason": "completed",
+    "permission_denials": 1,
+    "drive_commands": {
+     "start": 1,
+     "run": 10,
+     "judge": 2
+    },
+    "runner_runs": 10,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a dental crown",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-10-14T00:41:52-04:00",
+    "finished_at": "2026-10-14T00:47:31-04:00",
+    "transcript_source": "/home/xl2254/.claude/projects/-home-xl2254-implicit-optimize/89f6c694-ff76-41a8-a69f-fdedd9885e0e.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 210000000000.0,
+     "poisson_ratio": 0.31,
+     "density": 6000.0,
+     "held": [
+      {
+       "name": "crown_margin",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "occlusal",
+       "traction": [
+        0.0,
+        -19593284.229478113,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": 0,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-10-14-00-46-18/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 198.3,
+      "geometry_drawing": 25.9,
+      "geometry_generation": 17.6,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 3.0,
+      "setup_segmentation": 18.6,
+      "setup_regions": 2.5,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 14.9,
+      "solve_after": 5.8,
+      "overhead_startup": 17.8,
+      "overhead_between": 3.1,
+      "overhead_stop": 27.3,
+      "overhead_commands": 4.6
+     },
+     "groups": {
+      "agent": 198.3,
+      "workflow": 67.9,
+      "solver": 20.7,
+      "overhead": 52.8
+     },
+     "wall_clock_s": 339.748,
+     "notes": []
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "model": "metrics.json",
+    "model_requested": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "claude_session_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "effort_observed": "metrics.json",
+    "system_note": "metrics.json",
+    "main_session_usage": "metrics.json",
+    "main_transcript_tokens": "metrics.json",
+    "subagent_transcript_tokens": "metrics.json",
+    "subagent_transcripts": "metrics.json",
+    "subagents_spawned": "metrics.json",
+    "tokens_by_model": "metrics.json",
+    "cost_usd": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "cli_duration_s": "metrics.json",
+    "cli_duration_api_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_subtype": "metrics.json",
+    "cli_is_error": "metrics.json",
+    "cli_terminal_reason": "metrics.json",
+    "permission_denials": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "_transcript": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/dental-crown-20261014-004152/claude_session (1 file(s), 32 assistant messages)",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "SDXL \u2192 TripoSG",
+   "surface": {
+    "vertices": 81671,
+    "faces": 163342
+   },
+   "extent": 0.009195402508339612,
+   "dims": [
+    0.009195402508339612,
+    0.008010682003259717,
+    0.009088307198908296
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.772,
+     0.713,
+     0.631
+    ],
+    "rgb_spread": 0.16308786449317264,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "crown_margin",
+      "category": "dirichlet",
+      "faces": 20235,
+      "mean_normal": [
+       -0.093,
+       -0.806,
+       -0.585
+      ],
+      "area": 3.870110899427853e-05,
+      "proj_area": 6.293979846413102e-06,
+      "facing_camera": 0.2573225642131683,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.4910873440285205,
+       "gap": 3.678161003335845e-05,
+       "tube_radius": 5.517241505003767e-05,
+       "why": "faces the camera at 25.7% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "occlusal",
+      "category": "neumann",
+      "faces": 16691,
+      "mean_normal": [
+       -0.039,
+       0.999,
+       0.035
+      ],
+      "area": 3.459359740374607e-05,
+      "proj_area": 1.1952211520088335e-05,
+      "facing_camera": 0.9308332166585697,
+      "unoccluded_facing": 0.9085365407879981
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 3.314976771512351e-07,
+     "surface_watertight": true,
+     "density": 6000.0,
+     "mass": 0.0019889860629074105,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.0019889860629074105,
+     "weight_N": 0.019505290173810957,
+     "real_mass_kg": 0.002,
+     "real_weight_N": 0.0196133,
+     "weight_over_real_weight": 0.9944930314537053,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 9.308798640999797e-05,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "occlusal",
+      "traction": [
+       0.0,
+       -19593284.229478113,
+       0.0
+      ],
+      "tail": [
+       0.007251943525265406,
+       0.009313959971891755,
+       0.003560774283617798
+      ],
+      "tip": [
+       0.007251943525265406,
+       0.007658787520390625,
+       0.003560774283617798
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "occlusal",
+      "traction": [
+       0.0,
+       -19593284.229478113,
+       0.0
+      ],
+      "tail": [
+       0.0036969817707212774,
+       0.009254794744735773,
+       0.0017254305773480058
+      ],
+      "tip": [
+       0.0036969817707212774,
+       0.0075996222932346435,
+       0.0017254305773480058
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "occlusal",
+      "traction": [
+       0.0,
+       -19593284.229478113,
+       0.0
+      ],
+      "tail": [
+       0.003015126718847422,
+       0.00829160675704508,
+       0.003928974373723112
+      ],
+      "tip": [
+       0.003015126718847422,
+       0.00663643430554395,
+       0.003928974373723112
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "occlusal",
+      "traction": [
+       0.0,
+       -19593284.229478113,
+       0.0
+      ],
+      "tail": [
+       0.0015914399507583063,
+       0.009257017676811547,
+       0.005700244631609674
+      ],
+      "tip": [
+       0.0015914399507583063,
+       0.0076018452253104165,
+       0.005700244631609674
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "view": {
+    "dir": [
+     1.5,
+     1.25,
+     3.0
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -19593284.229478113,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 1.3494,
+    "visible_area_over_R2": 2.469,
+    "panel_fill": 0.617,
+    "height_shown": 1.0,
+    "shows": 0.934,
+    "paper_view_shows": 0.934,
+    "turn_from_paper_deg": 0.0,
+    "why": "paper view",
+    "worst_load_shown_fraction_of_its_best": 0.8683104816533245,
+    "worst_support_shown_fraction_of_its_best": 0.4209814428608312
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-10-14-00-46-18",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-10-14-00-46-18/vtu/solution_t0000.vtu",
+    "nodes": 110096,
+    "hexes": 85971,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 4.670885906470169e-18,
+    "outside_points": 0,
+    "umax_surface": 7.192548312792913e-07,
+    "umax_nodes": 7.330585033137996e-07,
+    "umax_workflow_export": 7.18854209935671e-07,
+    "ratio_to_workflow_export": 1.0005573054147603,
+    "umax_surface_m": 7.192548312792913e-07
+   },
+   "scale": {
+    "factor": 2000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 3338.646372001872,
+     "reach": 0.3,
+     "physical_extent": 0.008,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.15643792223928762,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.019688501201934494
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    210000000000.0,
+    210000000000.0
+   ],
+   "E_surface_Pa": [
+    210000000000.0,
+    210000000000.0
+   ],
+   "ground": {
+    "floor": -8.570639873141773e-06,
+    "key_light_ray": [
+     0.2305,
+     -0.8649,
+     -0.446
+    ],
+    "grid": {
+     "cell": 0.002,
+     "rings": 11,
+     "reach": 0.022
+    }
+   },
+   "panels": [
+    "ar_0_arrows.vtk",
+    "ar_0_bc.vtk",
+    "ar_0_fit.vtk",
+    "ar_0_grid.vtk",
+    "ar_0_materials.vtk",
+    "ar_0_painted.vtk",
+    "ar_0_shadow.vtk",
+    "ar_0_shadow_def.vtk",
+    "ar_0_solve.vtk",
+    "ar_0_support.vtk"
+   ]
+  },
+  {
+   "index": 1,
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/knee-implant-20261014-004732/workflow/a3cfe82fec65",
+   "label": null,
+   "view_dir": null,
+   "meta": {
+    "run_name": "knee-implant-20261014-004732",
+    "instruction": "a knee implant",
+    "model": "claude-haiku-5-5",
+    "model_requested": "haiku",
+    "session_id": "a3cfe82fec65",
+    "session_ids": [
+     "27f74db3fae2",
+     "a3cfe82fec65"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary = the one session that got furthest",
+    "claude_session_id": "4c3bfaea-bad5-4936-8b5a-0fd8956ff8b8",
+    "input_tokens": 116,
+    "cache_read_input_tokens": 5847511,
+    "cache_creation_input_tokens": 169157,
+    "output_tokens": 83578,
+    "tokens_source": "CLI result modelUsage, summed over models (includes sub-agents)",
+    "thinking_tokens": 61278,
+    "effort": "medium",
+    "effort_observed": {
+     "medium": 58
+    },
+    "system_note": "Environment note: the repository root and working directory is /home/xl2254/implicit_optimize. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /home/xl2254/implicit_optimize/.",
+    "main_session_usage": {
+     "input_tokens": 116,
+     "cache_read_input_tokens": 5847511,
+     "cache_creation_input_tokens": 169157,
+     "output_tokens": 83578
+    },
+    "main_transcript_tokens": {
+     "input_tokens": 116,
+     "cache_read_input_tokens": 5847511,
+     "cache_creation_input_tokens": 169157,
+     "output_tokens": 83578,
+     "messages": 58
+    },
+    "subagent_transcript_tokens": {
+     "input_tokens": 0,
+     "cache_read_input_tokens": 0,
+     "cache_creation_input_tokens": 0,
+     "output_tokens": 0,
+     "messages": 0
+    },
+    "subagent_transcripts": 0,
+    "subagents_spawned": 0,
+    "tokens_by_model": {
+     "claude-haiku-5-5": {
+      "inputTokens": 116,
+      "outputTokens": 83578,
+      "cacheReadInputTokens": 5847511,
+      "cacheCreationInputTokens": 169157,
+      "webSearchRequests": 0,
+      "costUSD": 0.4162039150000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 61278,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+     }
+    },
+    "cost_usd": 0.4162039150000001,
+    "wall_clock_s": 607.999,
+    "cli_duration_s": 607.253,
+    "cli_duration_api_s": 454.381,
+    "num_turns": 77,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_subtype": "success",
+    "cli_is_error": false,
+    "cli_terminal_reason": "completed",
+    "permission_denials": 1,
+    "drive_commands": {
+     "start": 2,
+     "run": 14,
+     "rewind": 2,
+     "blank": 3,
+     "judge": 1
+    },
+    "runner_runs": 14,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a knee implant",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-10-14T00:47:32-04:00",
+    "finished_at": "2026-10-14T00:57:40-04:00",
+    "transcript_source": "/home/xl2254/.claude/projects/-home-xl2254-implicit-optimize/4c3bfaea-bad5-4936-8b5a-0fd8956ff8b8.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 110000000000.0,
+     "poisson_ratio": 0.33,
+     "density": 4400.0,
+     "held": [
+      {
+       "name": "bone_seat",
+       "components": [
+        1
+       ]
+      },
+      {
+       "name": "bone_stem",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "articular_platform",
+       "traction": [
+        0.0,
+        -215495.2525060577,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": null,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-10-14-00-56-26/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 456.7,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 20.2,
+      "geometry_revision": 5.9,
+      "geometry_built": 14.2,
+      "setup_scale": 5.8,
+      "setup_segmentation": 21.6,
+      "setup_regions": 3.9,
+      "setup_values_material": 0.3,
+      "paint": 6.1,
+      "solve": 12.4,
+      "solve_after": 4.0,
+      "overhead_startup": 21.3,
+      "overhead_between": 3.8,
+      "overhead_stop": 25.6,
+      "overhead_commands": 6.1
+     },
+     "groups": {
+      "agent": 456.7,
+      "workflow": 78.0,
+      "solver": 16.4,
+      "overhead": 56.8
+     },
+     "wall_clock_s": 607.999,
+     "notes": []
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "model": "metrics.json",
+    "model_requested": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "claude_session_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "effort_observed": "metrics.json",
+    "system_note": "metrics.json",
+    "main_session_usage": "metrics.json",
+    "main_transcript_tokens": "metrics.json",
+    "subagent_transcript_tokens": "metrics.json",
+    "subagent_transcripts": "metrics.json",
+    "subagents_spawned": "metrics.json",
+    "tokens_by_model": "metrics.json",
+    "cost_usd": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "cli_duration_s": "metrics.json",
+    "cli_duration_api_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_subtype": "metrics.json",
+    "cli_is_error": "metrics.json",
+    "cli_terminal_reason": "metrics.json",
+    "permission_denials": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "_transcript": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/knee-implant-20261014-004732/claude_session (1 file(s), 58 assistant messages)",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [
+    "materials/texture/textured.glb: near-uniform colour (spread 0.015)"
+   ],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Built (bars)",
+   "surface": {
+    "vertices": 37553,
+    "faces": 75102
+   },
+   "extent": 0.0746268630027771,
+   "dims": [
+    0.0746268630027771,
+    0.043283578008413315,
+    0.04776119440793991
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.734,
+     0.705,
+     0.678
+    ],
+    "rgb_spread": 0.01542846283962359,
+    "near_uniform": true
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "bone_seat",
+      "category": "dirichlet",
+      "faces": 24375,
+      "mean_normal": [
+       -0.0,
+       -1.0,
+       -0.0
+      ],
+      "area": 0.0033481222814406887,
+      "proj_area": 1.182554672765957e-06,
+      "facing_camera": 0.0010099794293272635,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.3289665211062591,
+       "gap": 0.0002985074520111084,
+       "tube_radius": 0.00044776117801666263,
+       "why": "faces the camera at 0.1% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_1",
+      "name": "bone_stem",
+      "category": "dirichlet",
+      "faces": 11954,
+      "mean_normal": [
+       0.004,
+       -1.0,
+       0.007
+      ],
+      "area": 0.0015379661322471086,
+      "proj_area": 0.0004195672059374233,
+      "facing_camera": 0.47464098601012633,
+      "support_seen_through": true,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.0,
+       "gap": 0.0002985074520111084,
+       "tube_radius": 0.00044776117801666263,
+       "why": "faces the camera at 47.5% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_2",
+      "name": "articular_platform",
+      "category": "neumann",
+      "faces": 24954,
+      "mean_normal": [
+       0.0,
+       1.0,
+       0.0
+      ],
+      "area": 0.003413062429202818,
+      "proj_area": 0.0011918931009540796,
+      "facing_camera": 1.0,
+      "unoccluded_facing": 0.9827795440476138
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 2.6147155148236478e-05,
+     "surface_watertight": true,
+     "density": 4400.0,
+     "mass": 0.1150474826522405,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.1150474826522405,
+     "weight_N": 1.1282303957515942,
+     "real_mass_kg": 0.12,
+     "real_weight_N": 1.1767979999999998,
+     "weight_over_real_weight": 0.9587290221020043,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.0021884011413829795,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "articular_platform",
+      "traction": [
+       0.0,
+       -215495.2525060577,
+       0.0
+      ],
+      "tail": [
+       0.01168035933127006,
+       0.05452736192941665,
+       0.03073047784467538
+      ],
+      "tip": [
+       0.01168035933127006,
+       0.041094526588916776,
+       0.03073047784467538
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "articular_platform",
+      "traction": [
+       0.0,
+       -215495.2525060577,
+       0.0
+      ],
+      "tail": [
+       0.02598698188861211,
+       0.05452736192941665,
+       0.02073139262696107
+      ],
+      "tip": [
+       0.02598698188861211,
+       0.041094526588916776,
+       0.02073139262696107
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "articular_platform",
+      "traction": [
+       0.0,
+       -215495.2525060577,
+       0.0
+      ],
+      "tail": [
+       0.04655303433537483,
+       0.05452736192941665,
+       0.023524679864446323
+      ],
+      "tip": [
+       0.04655303433537483,
+       0.041094526588916776,
+       0.023524679864446323
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "articular_platform",
+      "traction": [
+       0.0,
+       -215495.2525060577,
+       0.0
+      ],
+      "tail": [
+       0.06447259088357289,
+       0.05452736192941665,
+       0.01726683663825194
+      ],
+      "tip": [
+       0.06447259088357289,
+       0.041094526588916776,
+       0.01726683663825194
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "view": {
+    "dir": [
+     1.5,
+     1.25,
+     3.0
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -215495.2525060577,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 0.8405,
+    "visible_area_over_R2": 1.9501,
+    "panel_fill": 0.373,
+    "height_shown": 0.938,
+    "shows": 0.745,
+    "paper_view_shows": 0.745,
+    "turn_from_paper_deg": 0.0,
+    "why": "paper view",
+    "worst_load_shown_fraction_of_its_best": 0.9689790708827495,
+    "worst_support_shown_fraction_of_its_best": 0.8516193795061924
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-10-14-00-56-26",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-10-14-00-56-26/vtu/solution_t0000.vtu",
+    "nodes": 37326,
+    "hexes": 29024,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 3.179800655392251e-17,
+    "outside_points": 0,
+    "umax_surface": 2.7959781897367625e-08,
+    "umax_nodes": 2.8433517663834084e-08,
+    "umax_workflow_export": 2.7803997326714125e-08,
+    "ratio_to_workflow_export": 1.0056029558923825,
+    "umax_surface_m": 2.7959781897367625e-08
+   },
+   "scale": {
+    "factor": 300000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 809236.1589454608,
+     "reach": 0.3,
+     "physical_extent": 0.075,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.11239832724709528,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 1.1875511093105454e-06
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    110000000000.0,
+    110000000000.0
+   ],
+   "E_surface_Pa": [
+    110000000000.0,
+    110000000000.0
+   ],
+   "ground": {
+    "floor": -7.46268630027771e-06,
+    "key_light_ray": [
+     0.2305,
+     -0.8649,
+     -0.446
+    ],
+    "grid": {
+     "cell": 0.02,
+     "rings": 9,
+     "reach": 0.18
+    }
+   },
+   "panels": [
+    "ar_1_arrows.vtk",
+    "ar_1_bc.vtk",
+    "ar_1_fit.vtk",
+    "ar_1_grid.vtk",
+    "ar_1_materials.vtk",
+    "ar_1_painted.vtk",
+    "ar_1_shadow.vtk",
+    "ar_1_shadow_def.vtk",
+    "ar_1_solve.vtk",
+    "ar_1_support.vtk",
+    "ar_1_support_hidden.vtk"
+   ]
+  },
+  {
+   "index": 2,
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/walking-cane-with-a-rubber-tip-20261014-005741/workflow/0a395bb30de1",
+   "label": null,
+   "view_dir": null,
+   "meta": {
+    "run_name": "walking-cane-with-a-rubber-tip-20261014-005741",
+    "instruction": "a walking cane with a rubber tip",
+    "model": "claude-haiku-5-5",
+    "model_requested": "haiku",
+    "session_id": "0a395bb30de1",
+    "session_ids": [
+     "0a395bb30de1"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "claude_session_id": "6592fc60-30d9-4230-9b7c-16810314e9f0",
+    "input_tokens": 80,
+    "cache_read_input_tokens": 2991802,
+    "cache_creation_input_tokens": 102648,
+    "output_tokens": 44294,
+    "tokens_source": "CLI result modelUsage, summed over models (includes sub-agents)",
+    "thinking_tokens": 32736,
+    "effort": "medium",
+    "effort_observed": {
+     "medium": 40
+    },
+    "system_note": "Environment note: the repository root and working directory is /home/xl2254/implicit_optimize. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /home/xl2254/implicit_optimize/.",
+    "main_session_usage": {
+     "input_tokens": 80,
+     "cache_read_input_tokens": 2991802,
+     "cache_creation_input_tokens": 102648,
+     "output_tokens": 44294
+    },
+    "main_transcript_tokens": {
+     "input_tokens": 80,
+     "cache_read_input_tokens": 2991802,
+     "cache_creation_input_tokens": 102648,
+     "output_tokens": 44294,
+     "messages": 40
+    },
+    "subagent_transcript_tokens": {
+     "input_tokens": 0,
+     "cache_read_input_tokens": 0,
+     "cache_creation_input_tokens": 0,
+     "output_tokens": 0,
+     "messages": 0
+    },
+    "subagent_transcripts": 0,
+    "subagents_spawned": 0,
+    "tokens_by_model": {
+     "claude-haiku-5-5": {
+      "inputTokens": 80,
+      "outputTokens": 44294,
+      "cacheReadInputTokens": 2991802,
+      "cacheCreationInputTokens": 102648,
+      "webSearchRequests": 0,
+      "costUSD": 0.12708628,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 32736,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+     }
+    },
+    "cost_usd": 0.12708628,
+    "wall_clock_s": 337.427,
+    "cli_duration_s": 336.558,
+    "cli_duration_api_s": 216.234,
+    "num_turns": 55,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_subtype": "success",
+    "cli_is_error": false,
+    "cli_terminal_reason": "completed",
+    "permission_denials": 1,
+    "drive_commands": {
+     "start": 1,
+     "run": 8,
+     "solve-backend": 1,
+     "status": 1,
+     "judge": 3
+    },
+    "runner_runs": 8,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a walking cane with a rubber tip",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-10-14T00:57:41-04:00",
+    "finished_at": "2026-10-14T01:03:18-04:00",
+    "transcript_source": "/home/xl2254/.claude/projects/-home-xl2254-implicit-optimize/6592fc60-30d9-4230-9b7c-16810314e9f0.jsonl",
+    "case": {
+     "material_mode": "parts",
+     "parts": [
+      {
+       "density": 1100.0,
+       "id": 0,
+       "poisson_ratio": 0.45,
+       "youngs_modulus": 150000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 1,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 2,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 3,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 4,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      }
+     ],
+     "youngs_modulus_range": [
+      150000000.0,
+      12000000000.0
+     ],
+     "youngs_modulus_contrast": 80.0,
+     "held": [
+      {
+       "name": "tip_floor",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "handle_top",
+       "traction": [
+        0.0,
+        0.0,
+        -123492.55808895711
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -0.0,
+       -9.80665
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "parts_montage": "materials/parts/montage.png",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-10-14-01-02-01/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 218.3,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 2.8,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.8,
+      "setup_segmentation": 5.5,
+      "setup_regions": 2.0,
+      "setup_values_material": 4.2,
+      "paint": 0.1,
+      "solve": 20.5,
+      "solve_after": 53.5,
+      "overhead_startup": 13.0,
+      "overhead_between": 4.4,
+      "overhead_stop": 5.4,
+      "overhead_commands": 4.9
+     },
+     "groups": {
+      "agent": 218.3,
+      "workflow": 17.4,
+      "solver": 74.0,
+      "overhead": 27.8
+     },
+     "wall_clock_s": 337.427,
+     "notes": []
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "model": "metrics.json",
+    "model_requested": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "claude_session_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "effort_observed": "metrics.json",
+    "system_note": "metrics.json",
+    "main_session_usage": "metrics.json",
+    "main_transcript_tokens": "metrics.json",
+    "subagent_transcript_tokens": "metrics.json",
+    "subagent_transcripts": "metrics.json",
+    "subagents_spawned": "metrics.json",
+    "tokens_by_model": "metrics.json",
+    "cost_usd": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "cli_duration_s": "metrics.json",
+    "cli_duration_api_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_subtype": "metrics.json",
+    "cli_is_error": "metrics.json",
+    "cli_terminal_reason": "metrics.json",
+    "permission_denials": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "_transcript": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/walking-cane-with-a-rubber-tip-20261014-005741/claude_session (1 file(s), 40 assistant messages)",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [
+    "no completed solve"
+   ],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 1559,
+    "faces": 3114
+   },
+   "extent": 0.9090908989310265,
+   "dims": [
+    0.0430827671661973,
+    0.04215483507141471,
+    0.9090908989310265
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.805,
+     0.506,
+     0.261
+    ],
+    "rgb_spread": 0.04570694780635628,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "tip_floor",
+      "category": "dirichlet",
+      "faces": 191,
+      "mean_normal": [
+       0.009,
+       -0.002,
+       -1.0
+      ],
+      "area": 0.0034729813459288077,
+      "proj_area": 0.0006956045672055489,
+      "facing_camera": 0.44221085584782227,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.9230769230769231,
+       "gap": 0.003636363595724106,
+       "tube_radius": 0.005454545393586159,
+       "why": "faces the camera at 44.2% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "handle_top",
+      "category": "neumann",
+      "faces": 142,
+      "mean_normal": [
+       -0.014,
+       1.0,
+       -0.015
+      ],
+      "area": 0.002714042645643385,
+      "proj_area": 0.0009693702273030696,
+      "facing_camera": 0.8990529996447497,
+      "unoccluded_facing": 0.8990529996447497
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -0.0,
+      -9.80665
+     ],
+     "dir": [
+      0.0,
+      -0.0,
+      -1.0
+     ],
+     "g": 1.0,
+     "volume": 0.00039951535201974996,
+     "surface_watertight": true,
+     "density": 692.7493896484375,
+     "mass": 0.2767640162668624,
+     "weight_method": "volume of geometry/physical.glb x mean density of the material field (materials/parts/field/manifest.json) x |loads.acceleration|",
+     "mass_kg": 0.2767640162668624,
+     "weight_N": 2.7141278401234263,
+     "real_mass_kg": 0.25,
+     "real_weight_N": 2.4516625,
+     "weight_over_real_weight": 1.1070560650674497,
+     "projected_fraction": 0.9079593845004517
+    },
+    "surface_proj_area": 0.02015202074414085,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "handle_top",
+      "traction": [
+       0.0,
+       0.0,
+       -123492.55808895711
+      ],
+      "tail": [
+       0.01768133241148533,
+       0.04606054705023147,
+       0.8174530861728624
+      ],
+      "tip": [
+       0.01768133241148533,
+       0.04606054705023147,
+       0.6538167243652776
+      ],
+      "projected_fraction": 0.9079593845004517,
+      "seen_through": false
+     }
+    ]
+   },
+   "view": {
+    "dir": [
+     -0.8381163549234939,
+     0.3492151478847891,
+     0.41905817746174673
+    ],
+    "azimuth_deg": 270,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     0.0,
+     -123492.55808895711
+    ],
+    "line_of_sight_deg": 65.2,
+    "axis_off_deg": 26.5,
+    "silhouette_area_over_R2": 0.097,
+    "visible_area_over_R2": 0.1646,
+    "panel_fill": 0.041,
+    "height_shown": 1.0,
+    "shows": 0.778,
+    "paper_view_shows": 0.678,
+    "turn_from_paper_deg": 83.0,
+    "why": "paper view excluded (within 35 deg of the governing load); the view nearest it within 95% of the best",
+    "worst_load_shown_fraction_of_its_best": 0.7923583461206553,
+    "worst_support_shown_fraction_of_its_best": 0.6189368316289535
+   },
+   "material_mode": "parts",
+   "solve": null,
+   "scale": null,
+   "E_source": "material grid (nearest)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    150000000.0,
+    12000000000.0
+   ],
+   "E_surface_Pa": [
+    150000000.0,
+    12000000000.0
+   ],
+   "ground": {
+    "floor": -0.02298912657404882,
+    "key_light_ray": [
+     0.446,
+     -0.8649,
+     0.2305
+    ],
+    "grid": {
+     "cell": 0.2,
+     "rings": 10,
+     "reach": 2.0
+    }
+   },
+   "panels": [
+    "ar_2_arrows.vtk",
+    "ar_2_bc.vtk",
+    "ar_2_fit.vtk",
+    "ar_2_grid.vtk",
+    "ar_2_materials.vtk",
+    "ar_2_painted.vtk",
+    "ar_2_shadow.vtk",
+    "ar_2_support.vtk"
+   ]
+  },
+  {
+   "index": 3,
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/human-femur-20261014-010319/workflow/1d55dafacb66",
+   "label": null,
+   "view_dir": null,
+   "meta": {
+    "run_name": "human-femur-20261014-010319",
+    "instruction": "a human femur",
+    "model": "claude-haiku-5-5",
+    "model_requested": "haiku",
+    "session_id": "1d55dafacb66",
+    "session_ids": [
+     "1d55dafacb66"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "claude_session_id": "a912bd4f-5356-4f37-a564-528a2fc73225",
+    "input_tokens": 46,
+    "cache_read_input_tokens": 1517907,
+    "cache_creation_input_tokens": 110414,
+    "output_tokens": 50563,
+    "tokens_source": "CLI result modelUsage, summed over models (includes sub-agents)",
+    "thinking_tokens": 37760,
+    "effort": "medium",
+    "effort_observed": {
+     "medium": 23
+    },
+    "system_note": "Environment note: the repository root and working directory is /home/xl2254/implicit_optimize. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /home/xl2254/implicit_optimize/.",
+    "main_session_usage": {
+     "input_tokens": 46,
+     "cache_read_input_tokens": 1517907,
+     "cache_creation_input_tokens": 110414,
+     "output_tokens": 50563
+    },
+    "main_transcript_tokens": {
+     "input_tokens": 46,
+     "cache_read_input_tokens": 1517907,
+     "cache_creation_input_tokens": 110414,
+     "output_tokens": 50563,
+     "messages": 23
+    },
+    "subagent_transcript_tokens": {
+     "input_tokens": 0,
+     "cache_read_input_tokens": 0,
+     "cache_creation_input_tokens": 0,
+     "output_tokens": 0,
+     "messages": 0
+    },
+    "subagent_transcripts": 0,
+    "subagents_spawned": 0,
+    "tokens_by_model": {
+     "claude-haiku-5-5": {
+      "inputTokens": 46,
+      "outputTokens": 50563,
+      "cacheReadInputTokens": 1517907,
+      "cacheCreationInputTokens": 110414,
+      "webSearchRequests": 0,
+      "costUSD": 0.09678270000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 37760,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+     }
+    },
+    "cost_usd": 0.09678270000000001,
+    "wall_clock_s": 291.542,
+    "cli_duration_s": 290.785,
+    "cli_duration_api_s": 239.931,
+    "num_turns": 47,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_subtype": "success",
+    "cli_is_error": false,
+    "cli_terminal_reason": "completed",
+    "permission_denials": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 5,
+     "judge": 1
+    },
+    "runner_runs": 5,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a human femur",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-10-14T01:03:19-04:00",
+    "finished_at": "2026-10-14T01:08:10-04:00",
+    "transcript_source": "/home/xl2254/.claude/projects/-home-xl2254-implicit-optimize/a912bd4f-5356-4f37-a564-528a2fc73225.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 17000000000.0,
+     "poisson_ratio": 0.3,
+     "density": 1900.0,
+     "held": [
+      {
+       "name": "knee_fix",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "head_traction",
+       "traction": [
+        0.0,
+        -331194.84379834915,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-10-14-01-06-33/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 241.6,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 2.8,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 3.5,
+      "setup_segmentation": 6.1,
+      "setup_regions": 4.8,
+      "setup_values_material": 0.3,
+      "paint": 0.1,
+      "solve": 6.7,
+      "solve_after": 2.2,
+      "overhead_startup": 8.0,
+      "overhead_between": 2.0,
+      "overhead_stop": 10.2,
+      "overhead_commands": 3.2
+     },
+     "groups": {
+      "agent": 241.6,
+      "workflow": 17.6,
+      "solver": 8.9,
+      "overhead": 23.5
+     },
+     "wall_clock_s": 291.542,
+     "notes": []
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "model": "metrics.json",
+    "model_requested": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "claude_session_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "effort_observed": "metrics.json",
+    "system_note": "metrics.json",
+    "main_session_usage": "metrics.json",
+    "main_transcript_tokens": "metrics.json",
+    "subagent_transcript_tokens": "metrics.json",
+    "subagent_transcripts": "metrics.json",
+    "subagents_spawned": "metrics.json",
+    "tokens_by_model": "metrics.json",
+    "cost_usd": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "cli_duration_s": "metrics.json",
+    "cli_duration_api_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_subtype": "metrics.json",
+    "cli_is_error": "metrics.json",
+    "cli_terminal_reason": "metrics.json",
+    "permission_denials": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "_transcript": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/human-femur-20261014-010319/claude_session (1 file(s), 23 assistant messages)",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 4609,
+    "faces": 9214
+   },
+   "extent": 0.4545454429462552,
+   "dims": [
+    0.04216861483291723,
+    0.4545454429462552,
+    0.06401891587302089
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.768,
+     0.691,
+     0.544
+    ],
+    "rgb_spread": 0.15036156682205412,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "knee_fix",
+      "category": "dirichlet",
+      "faces": 1563,
+      "mean_normal": [
+       0.036,
+       -0.999,
+       -0.003
+      ],
+      "area": 0.0077214110146843,
+      "proj_area": 0.0019928955330462657,
+      "facing_camera": 0.4765768108331513,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.7096774193548387,
+       "gap": 0.001818181771785021,
+       "tube_radius": 0.002727272657677531,
+       "why": "faces the camera at 47.7% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "head_traction",
+      "category": "neumann",
+      "faces": 220,
+      "mean_normal": [
+       0.086,
+       0.996,
+       -0.02
+      ],
+      "area": 0.0011713611059719874,
+      "proj_area": 0.00040003253528516416,
+      "facing_camera": 0.9546085884607048,
+      "unoccluded_facing": 0.9531987584006134
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 0.0003132480552483409,
+     "surface_watertight": true,
+     "density": 1900.0,
+     "mass": 0.5951713049718478,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.5951713049718478,
+     "weight_N": 5.83663667790217,
+     "real_mass_kg": 0.45,
+     "real_weight_N": 4.4129925,
+     "weight_over_real_weight": 1.3226028999374395,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.012618627501904693,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "head_traction",
+      "traction": [
+       0.0,
+       -331194.84379834915,
+       0.0
+      ],
+      "tail": [
+       0.026014434975535662,
+       0.5342855107650375,
+       0.044163164734515294
+      ],
+      "tip": [
+       0.026014434975535662,
+       0.45246733103471154,
+       0.044163164734515294
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "view": {
+    "dir": [
+     1.5,
+     1.25,
+     3.0
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -331194.84379834915,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 0.2316,
+    "visible_area_over_R2": 0.4237,
+    "panel_fill": 0.047,
+    "height_shown": 1.0,
+    "shows": 0.815,
+    "paper_view_shows": 0.815,
+    "turn_from_paper_deg": 0.0,
+    "why": "paper view",
+    "worst_load_shown_fraction_of_its_best": 0.8430441643027473,
+    "worst_support_shown_fraction_of_its_best": 0.8349903787730943
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-10-14-01-06-33",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-10-14-01-06-33/vtu/solution_t0000.vtu",
+    "nodes": 22851,
+    "hexes": 17612,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 1.1188630228279524e-16,
+    "outside_points": 0,
+    "umax_surface": 0.0002942226364327543,
+    "umax_nodes": 0.00030490114969691453,
+    "umax_workflow_export": 0.00029407007968984544,
+    "ratio_to_workflow_export": 1.0005187768271757,
+    "umax_surface_m": 0.0002942226364327543
+   },
+   "scale": {
+    "factor": 200.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 459.07424564370496,
+     "reach": 0.3,
+     "physical_extent": 0.45,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.12945796333395107,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 7.630929085242512e-10
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    17000000000.0,
+    17000000000.0
+   ],
+   "E_surface_Pa": [
+    17000000000.0,
+    17000000000.0
+   ],
+   "ground": {
+    "floor": -0.01370464262699802,
+    "key_light_ray": [
+     0.2305,
+     -0.8649,
+     -0.446
+    ],
+    "grid": {
+     "cell": 0.1,
+     "rings": 10,
+     "reach": 1.0
+    }
+   },
+   "panels": [
+    "ar_3_arrows.vtk",
+    "ar_3_bc.vtk",
+    "ar_3_fit.vtk",
+    "ar_3_grid.vtk",
+    "ar_3_materials.vtk",
+    "ar_3_painted.vtk",
+    "ar_3_shadow.vtk",
+    "ar_3_shadow_def.vtk",
+    "ar_3_solve.vtk",
+    "ar_3_support.vtk"
+   ]
+  },
+  {
+   "index": 4,
+   "session": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/lumbar-vertebra-20261014-010811/workflow/46b4311a3ba3",
+   "label": null,
+   "view_dir": null,
+   "meta": {
+    "run_name": "lumbar-vertebra-20261014-010811",
+    "instruction": "a lumbar vertebra",
+    "model": "claude-haiku-5-5",
+    "model_requested": "haiku",
+    "session_id": "46b4311a3ba3",
+    "session_ids": [
+     "46b4311a3ba3"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "claude_session_id": "adc132a3-4820-4a2c-b4de-f024e190ff53",
+    "input_tokens": 94,
+    "cache_read_input_tokens": 3560644,
+    "cache_creation_input_tokens": 126690,
+    "output_tokens": 48660,
+    "tokens_source": "CLI result modelUsage, summed over models (includes sub-agents)",
+    "thinking_tokens": 34437,
+    "effort": "medium",
+    "effort_observed": {
+     "medium": 47
+    },
+    "system_note": "Environment note: the repository root and working directory is /home/xl2254/implicit_optimize. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /home/xl2254/implicit_optimize/.",
+    "main_session_usage": {
+     "input_tokens": 94,
+     "cache_read_input_tokens": 3560644,
+     "cache_creation_input_tokens": 126690,
+     "output_tokens": 48660
+    },
+    "main_transcript_tokens": {
+     "input_tokens": 94,
+     "cache_read_input_tokens": 3560644,
+     "cache_creation_input_tokens": 126690,
+     "output_tokens": 48660,
+     "messages": 47
+    },
+    "subagent_transcript_tokens": {
+     "input_tokens": 0,
+     "cache_read_input_tokens": 0,
+     "cache_creation_input_tokens": 0,
+     "output_tokens": 0,
+     "messages": 0
+    },
+    "subagent_transcripts": 0,
+    "subagents_spawned": 0,
+    "tokens_by_model": {
+     "claude-haiku-5-5": {
+      "inputTokens": 94,
+      "outputTokens": 48660,
+      "cacheReadInputTokens": 3560644,
+      "cacheCreationInputTokens": 126690,
+      "webSearchRequests": 0,
+      "costUSD": 0.17289279000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 34437,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+     }
+    },
+    "cost_usd": 0.17289279000000002,
+    "wall_clock_s": 612.383,
+    "cli_duration_s": 611.584,
+    "cli_duration_api_s": 244.035,
+    "num_turns": 61,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_subtype": "success",
+    "cli_is_error": false,
+    "cli_terminal_reason": "completed",
+    "permission_denials": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 21,
+     "blank": 1,
+     "judge": 1
+    },
+    "runner_runs": 21,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a lumbar vertebra",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-10-14T01:08:11-04:00",
+    "finished_at": "2026-10-14T01:18:23-04:00",
+    "transcript_source": "/home/xl2254/.claude/projects/-home-xl2254-implicit-optimize/adc132a3-4820-4a2c-b4de-f024e190ff53.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 1000000000.0,
+     "poisson_ratio": 0.3,
+     "density": 1000.0,
+     "held": [
+      {
+       "name": "inferior_endplate",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "superior_endplate",
+       "traction": [
+        0.0,
+        -373631.24849540525,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": null,
+      "image": null,
+      "texture": 1
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-10-14-01-17-43/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 246.0,
+      "geometry_drawing": 51.5,
+      "geometry_generation": 94.6,
+      "geometry_revision": 0.0,
+      "geometry_built": 7.5,
+      "setup_scale": 3.3,
+      "setup_segmentation": 9.5,
+      "setup_regions": 2.0,
+      "setup_values_material": 0.3,
+      "paint": 69.3,
+      "solve": 10.1,
+      "solve_after": 4.7,
+      "overhead_startup": 49.7,
+      "overhead_between": 2.5,
+      "overhead_stop": 57.7,
+      "overhead_commands": 3.6
+     },
+     "groups": {
+      "agent": 246.0,
+      "workflow": 238.0,
+      "solver": 14.8,
+      "overhead": 113.6
+     },
+     "wall_clock_s": 612.383,
+     "notes": []
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "model": "metrics.json",
+    "model_requested": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "claude_session_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "effort_observed": "metrics.json",
+    "system_note": "metrics.json",
+    "main_session_usage": "metrics.json",
+    "main_transcript_tokens": "metrics.json",
+    "subagent_transcript_tokens": "metrics.json",
+    "subagent_transcripts": "metrics.json",
+    "subagents_spawned": "metrics.json",
+    "tokens_by_model": "metrics.json",
+    "cost_usd": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "cli_duration_s": "metrics.json",
+    "cli_duration_api_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_subtype": "metrics.json",
+    "cli_is_error": "metrics.json",
+    "cli_terminal_reason": "metrics.json",
+    "permission_denials": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "_transcript": "/home/xl2254/implicit_optimize/output/agentic_batch50_haiku/lumbar-vertebra-20261014-010811/claude_session (1 file(s), 47 assistant messages)",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Built (extrude)",
+   "surface": {
+    "vertices": 37681,
+    "faces": 75358
+   },
+   "extent": 0.04477611929178238,
+   "dims": [
+    0.04477611929178238,
+    0.03482586890459061,
+    0.03482586890459061
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.777,
+     0.69,
+     0.464
+    ],
+    "rgb_spread": 0.10090314212553576,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "inferior_endplate",
+      "category": "dirichlet",
+      "faces": 12704,
+      "mean_normal": [
+       0.001,
+       -1.0,
+       -0.004
+      ],
+      "area": 0.001117319636696901,
+      "proj_area": 4.102030563408985e-06,
+      "facing_camera": 0.010367884744474474,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.4847560975609756,
+       "gap": 0.0001791044771671295,
+       "tube_radius": 0.00026865671575069427,
+       "why": "faces the camera at 1.0% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "superior_endplate",
+      "category": "neumann",
+      "faces": 12779,
+      "mean_normal": [
+       -0.0,
+       1.0,
+       -0.005
+      ],
+      "area": 0.0011160649459645271,
+      "proj_area": 0.00038595181302199835,
+      "facing_camera": 0.985738246494265,
+      "unoccluded_facing": 0.9838797944862905
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 3.842818521233113e-05,
+     "surface_watertight": true,
+     "density": 1000.0,
+     "mass": 0.03842818521233113,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.03842818521233113,
+     "weight_N": 0.376851762512507,
+     "real_mass_kg": 0.025,
+     "real_weight_N": 0.24516625,
+     "weight_over_real_weight": 1.537127408493245,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.0016922684536110197,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "superior_endplate",
+      "traction": [
+       0.0,
+       -373631.24849540525,
+       0.0
+      ],
+      "tail": [
+       0.03551927829782168,
+       0.04306467485427857,
+       0.012782470944027105
+      ],
+      "tip": [
+       0.03551927829782168,
+       0.03500497338175774,
+       0.012782470944027105
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "superior_endplate",
+      "traction": [
+       0.0,
+       -373631.24849540525,
+       0.0
+      ],
+      "tail": [
+       0.02686908406515916,
+       0.04306467485427857,
+       0.016819878791769344
+      ],
+      "tip": [
+       0.02686908406515916,
+       0.03500497338175774,
+       0.016819878791769344
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "superior_endplate",
+      "traction": [
+       0.0,
+       -373631.24849540525,
+       0.0
+      ],
+      "tail": [
+       0.01785004511475563,
+       0.04306467485427857,
+       0.019079759096105892
+      ],
+      "tip": [
+       0.01785004511475563,
+       0.03500497338175774,
+       0.019079759096105892
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "superior_endplate",
+      "traction": [
+       0.0,
+       -373631.24849540525,
+       0.0
+      ],
+      "tail": [
+       0.008495784054199854,
+       0.04306467485427857,
+       0.022545597826441128
+      ],
+      "tip": [
+       0.008495784054199854,
+       0.03500497338175774,
+       0.022545597826441128
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "view": {
+    "dir": [
+     1.5,
+     1.25,
+     3.0
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -373631.24849540525,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 1.5253,
+    "visible_area_over_R2": 2.9082,
+    "panel_fill": 0.598,
+    "height_shown": 1.0,
+    "shows": 0.982,
+    "paper_view_shows": 0.982,
+    "turn_from_paper_deg": 0.0,
+    "why": "paper view",
+    "worst_load_shown_fraction_of_its_best": 0.992042604423814
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-10-14-01-17-43",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-10-14-01-17-43/vtu/solution_t0000.vtu",
+    "nodes": 84028,
+    "hexes": 66886,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 2.0888836804026048e-17,
+    "outside_points": 0,
+    "umax_surface": 1.307126197916927e-05,
+    "umax_nodes": 1.3437417243261289e-05,
+    "umax_workflow_export": 1.3053109796601348e-05,
+    "ratio_to_workflow_export": 1.001390640456625,
+    "umax_surface_m": 1.307126197916927e-05
+   },
+   "scale": {
+    "factor": 500.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 1034.2363015681526,
+     "reach": 0.3,
+     "physical_extent": 0.045,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.14596242579655846,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0003312605767382629
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    1000000000.0,
+    1000000000.0
+   ],
+   "E_surface_Pa": [
+    1000000000.0,
+    1000000000.0
+   ],
+   "ground": {
+    "floor": -0.00018358208909630776,
+    "key_light_ray": [
+     0.2305,
+     -0.8649,
+     -0.446
+    ],
+    "grid": {
+     "cell": 0.01,
+     "rings": 10,
+     "reach": 0.1
+    }
+   },
+   "panels": [
+    "ar_4_arrows.vtk",
+    "ar_4_bc.vtk",
+    "ar_4_fit.vtk",
+    "ar_4_grid.vtk",
+    "ar_4_materials.vtk",
+    "ar_4_painted.vtk",
+    "ar_4_shadow.vtk",
+    "ar_4_shadow_def.vtk",
+    "ar_4_solve.vtk",
+    "ar_4_support.vtk"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+h_min 0.0300000
+sdf_truncation 0.0300000
+sdf_refinement_band 0.0270000
+eps 0.0150000
+depth 7
+clip_bbox_lo -1.4350000 -1.4350000 -1.0650000
+clip_bbox_hi 1.4450000 1.4450000 0.8550000
+outer_bbox_volume 15.9252480
+outer_hex_volume 15.9252481
+band_k 3.0
+band_halfwidth 0.0450000
+thin_threshold 0.0300000
+pf_phi_lr 12.0
+gd_lr 8.0
+iters 91
+iter_capture 43
+iter_pf_on 35
+iter_final 90
+evo_iters 0 20 35 45 60 90
+evo_vol 3.2964 2.1474 1.7595 1.6940 1.6917 1.6550
+vol_initial 3.296385
+vol_at_capture 1.664080
+vol_shrink_pct 49.518
+nodes 91096
+elements 74575
+solve_nodes 79153
+solve_elements 62690
+umag_max 1.674793e-02
+deep_nodes 17093
+band_nodes 39710
+gphi_deep_ratio 0.050133
+gsdf_deep_ratio 0.000e+00
+gphi_max 5.046020e-03
+gsdf_max 5.015271e-02
+grad_log_floor 4
+grad_mask_sentinel -1.0
+bc_masked_nodes 34772
+d_step_max 2.845520e-02
+d_step_deep_max 0.000000e+00
+dips_in 41
+dips_kept 39
+affected_elements 112
+n_voids 1
+void_cells 1180
+bc_patch_faces 12481
+stitch_faces 37010

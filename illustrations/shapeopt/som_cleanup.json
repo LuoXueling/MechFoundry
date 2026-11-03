@@ -1,0 +1,1066 @@
+{
+ "objects": [
+  {
+   "name": "claw-hammer",
+   "label": "Claw hammer",
+   "extent": 0.33333333767950535,
+   "tube_r": 0.002000000026077032,
+   "camera": {
+    "lo": [
+     0.001400246168486774,
+     -0.0021489213686436415,
+     -0.0012322632828727365
+    ],
+    "hi": [
+     0.13444404304027557,
+     0.3311328887939453,
+     0.030602682381868362
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/claw-hammer/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/claw-hammer/render/it_34_v0_change.png",
+   "final_iteration": 34,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/claw-hammer/render/it_34.vtk",
+   "updates": 32,
+   "stop_reason": "threshold",
+   "se_ratio": 0.3805966903693033,
+   "vol_ratio": 0.9949141622652085,
+   "d_p99_h": 1.4944132417440414,
+   "d_max_h": 2.279450371861458,
+   "h": 0.005,
+   "standin_material": true,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "claw_fix",
+     "category": "dirichlet",
+     "faces": 1196,
+     "facing_camera": 0.5897935918507428
+    },
+    {
+     "key": "neumann_1",
+     "name": "grip_traction",
+     "category": "neumann",
+     "faces": 729,
+     "arrows": 2,
+     "traction": [
+      -123123.67828927096,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/claw-hammer/results.json"
+  },
+  {
+   "name": "crocodile",
+   "label": "Crocodile",
+   "extent": 4.040404233150184,
+   "tube_r": 0.024242425398901105,
+   "camera": {
+    "lo": [
+     -0.011767026036977768,
+     -0.00522999931126833,
+     -0.0004837083106394857
+    ],
+    "hi": [
+     4.016829013824463,
+     1.2486714124679565,
+     1.427259922027588
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/crocodile/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/crocodile/render/it_40_v0_change.png",
+   "final_iteration": 40,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/crocodile/render/it_40.vtk",
+   "updates": 40,
+   "stop_reason": "cap",
+   "se_ratio": 0.4651109275856307,
+   "vol_ratio": 0.9902799406327315,
+   "d_p99_h": 1.3920066878199577,
+   "d_max_h": 2.5721670985221863,
+   "h": 0.030303030303030304,
+   "standin_material": false,
+   "self_weight_only": true,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "front_soles",
+     "category": "dirichlet",
+     "faces": 409,
+     "facing_camera": 0.00645088334362707,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_1",
+     "name": "hind_soles",
+     "category": "dirichlet",
+     "faces": 390,
+     "facing_camera": 0.02469344110139143,
+     "outline": true
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/crocodile/results.json"
+  },
+  {
+   "name": "elephant",
+   "label": "Elephant",
+   "extent": 4.975124375894666,
+   "tube_r": 0.029850746255367995,
+   "camera": {
+    "lo": [
+     0.02778041549026966,
+     -0.011808107607066631,
+     0.04780997708439827
+    ],
+    "hi": [
+     2.040302038192749,
+     2.819427490234375,
+     4.940306663513184
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/elephant/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/elephant/render/it_7_v0_change.png",
+   "final_iteration": 7,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/elephant/render/it_7.vtk",
+   "updates": 5,
+   "stop_reason": "max",
+   "se_ratio": 0.7485666339780027,
+   "vol_ratio": 0.9873342223836813,
+   "d_p99_h": 0.6697311468422413,
+   "d_max_h": 2.8985042065382007,
+   "h": 0.07462686567164178,
+   "standin_material": false,
+   "self_weight_only": true,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "feet",
+     "category": "dirichlet",
+     "faces": 1072,
+     "facing_camera": 0.007182421543552877,
+     "outline": true
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/elephant/results.json"
+  },
+  {
+   "name": "horse",
+   "label": "Horse",
+   "extent": 2.424242541193962,
+   "tube_r": 0.014545455247163773,
+   "camera": {
+    "lo": [
+     0.00949683878570795,
+     -0.017655014991760254,
+     -0.012237528339028358
+    ],
+    "hi": [
+     0.6400080323219299,
+     2.1219093799591064,
+     2.411590576171875
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/horse/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/horse/render/it_40_v0_change.png",
+   "final_iteration": 40,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/horse/render/it_40.vtk",
+   "updates": 40,
+   "stop_reason": "cap",
+   "se_ratio": 0.6084287082079747,
+   "vol_ratio": 0.9960661576068756,
+   "d_p99_h": 1.141125485301018,
+   "d_max_h": 1.8366891331970696,
+   "h": 0.018181818181818177,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "front_hooves",
+     "category": "dirichlet",
+     "faces": 102,
+     "facing_camera": 0.019395529927320444,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_1",
+     "name": "hind_hooves",
+     "category": "dirichlet",
+     "faces": 103,
+     "facing_camera": 0.013074296356057979,
+     "outline": true
+    },
+    {
+     "key": "neumann_2",
+     "name": "saddle_traction",
+     "category": "neumann",
+     "faces": 1303,
+     "arrows": 1,
+     "traction": [
+      0.0,
+      -5086.20906487225,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/horse/results.json"
+  },
+  {
+   "name": "human-femur",
+   "label": "Human femur",
+   "extent": 0.45454544154927135,
+   "tube_r": 0.0027272726492956283,
+   "camera": {
+    "lo": [
+     0.00022982468362897635,
+     -0.002286902628839016,
+     -0.002970475237816572
+    ],
+    "hi": [
+     0.13590943813323975,
+     0.45126816630363464,
+     0.11246121674776077
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/human-femur/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/human-femur/render/it_40_v0_change.png",
+   "final_iteration": 40,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/human-femur/render/it_40.vtk",
+   "updates": 40,
+   "stop_reason": "cap",
+   "se_ratio": 0.4635590239246581,
+   "vol_ratio": 0.9971199882612389,
+   "d_p99_h": 1.384958028793335,
+   "d_max_h": 1.9341793283820152,
+   "h": 0.006818181818181818,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "knee_fix",
+     "category": "dirichlet",
+     "faces": 6861,
+     "facing_camera": 0.48782148120507884,
+     "outline": true
+    },
+    {
+     "key": "neumann_1",
+     "name": "head_traction",
+     "category": "neumann",
+     "faces": 305,
+     "arrows": 1,
+     "traction": [
+      0.0,
+      -1438835.3772643895,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/human-femur/results.json"
+  },
+  {
+   "name": "industrial-robot-arm",
+   "label": "Robot arm",
+   "extent": 1.3131312699988484,
+   "tube_r": 0.007878787619993092,
+   "camera": {
+    "lo": [
+     0.00996600091457367,
+     -0.007882674224674702,
+     -0.005892615765333176
+    ],
+    "hi": [
+     0.771674394607544,
+     1.304053783416748,
+     0.7084876298904419
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/industrial-robot-arm/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/industrial-robot-arm/render/it_40_v0_change.png",
+   "final_iteration": 40,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/industrial-robot-arm/render/it_40.vtk",
+   "updates": 40,
+   "stop_reason": "cap",
+   "se_ratio": 0.48149240213967387,
+   "vol_ratio": 0.9962622632509022,
+   "d_p99_h": 1.4398645523648996,
+   "d_max_h": 2.4277359132583327,
+   "h": 0.019696969696969695,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "base_bolts",
+     "category": "dirichlet",
+     "faces": 4815,
+     "facing_camera": 0.0017818680902060742,
+     "outline": true
+    },
+    {
+     "key": "neumann_1",
+     "name": "flange_traction",
+     "category": "neumann",
+     "faces": 757,
+     "arrows": 1,
+     "traction": [
+      0.0,
+      -5117.3974699722085,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/industrial-robot-arm/results.json"
+  },
+  {
+   "name": "natural-stone-arch",
+   "label": "Stone arch",
+   "extent": 11.94029843620956,
+   "tube_r": 0.07164179061725735,
+   "camera": {
+    "lo": [
+     0.0261837225407362,
+     0.019526397809386253,
+     -0.01330322865396738
+    ],
+    "hi": [
+     11.890661239624023,
+     8.574974060058594,
+     5.704911708831787
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/natural-stone-arch/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/natural-stone-arch/render/it_12_v0_change.png",
+   "final_iteration": 12,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/natural-stone-arch/render/it_12.vtk",
+   "updates": 10,
+   "stop_reason": "max",
+   "se_ratio": 0.8149985270297911,
+   "vol_ratio": 0.9951749747468686,
+   "d_p99_h": 0.9067879517873128,
+   "d_max_h": 2.536129539211591,
+   "h": 0.17910447761194032,
+   "standin_material": false,
+   "self_weight_only": true,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "left_foot",
+     "category": "dirichlet",
+     "faces": 3635,
+     "facing_camera": 0.003804334172449629,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_1",
+     "name": "right_foot",
+     "category": "dirichlet",
+     "faces": 4255,
+     "facing_camera": 0.0017317147347496618,
+     "outline": true
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/natural-stone-arch/results.json"
+  },
+  {
+   "name": "pantheon",
+   "label": "Pantheon",
+   "extent": 79.30348205566406,
+   "tube_r": 0.4758208923339844,
+   "camera": {
+    "lo": [
+     0.004823741503059864,
+     7.971009097218484e-08,
+     0.004832817241549492
+    ],
+    "hi": [
+     55.119598388671875,
+     43.759334564208984,
+     79.30348205566406
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pantheon/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pantheon/render/it_9_v0_change.png",
+   "final_iteration": 9,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pantheon/render/it_9.vtk",
+   "updates": 7,
+   "stop_reason": "max",
+   "se_ratio": 0.8330030415429102,
+   "vol_ratio": 0.9626503664243959,
+   "d_p99_h": 0.86623697388576,
+   "d_max_h": 1.6440928849850875,
+   "h": 0.594776119402985,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "ground",
+     "category": "dirichlet",
+     "faces": 7575,
+     "facing_camera": 0.0629539428859508,
+     "outline": true
+    },
+    {
+     "key": "neumann_1",
+     "name": "rotunda_left",
+     "category": "neumann",
+     "faces": 4574,
+     "arrows": 1,
+     "traction": [
+      876.9764407258682,
+      0.0,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pantheon/results.json"
+  },
+  {
+   "name": "park-bench",
+   "label": "Park bench",
+   "extent": 1.515151508152485,
+   "tube_r": 0.00909090904891491,
+   "camera": {
+    "lo": [
+     -0.006068951450288296,
+     -0.010780653916299343,
+     0.0033691683784127235
+    ],
+    "hi": [
+     1.504688024520874,
+     1.054663062095642,
+     0.8607707619667053
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/park-bench/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/park-bench/render/it_40_v0_change.png",
+   "final_iteration": 40,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/park-bench/render/it_40.vtk",
+   "updates": 40,
+   "stop_reason": "cap",
+   "se_ratio": 0.5980019931530935,
+   "vol_ratio": 0.997025814076835,
+   "d_p99_h": 1.1156033650040629,
+   "d_max_h": 2.781238824129105,
+   "h": 0.011363636363636362,
+   "standin_material": true,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "front_feet",
+     "category": "dirichlet",
+     "faces": 91,
+     "facing_camera": 0.00015883421700528888,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_1",
+     "name": "rear_feet",
+     "category": "dirichlet",
+     "faces": 85,
+     "facing_camera": 0.00027215945726340505,
+     "outline": true
+    },
+    {
+     "key": "neumann_2",
+     "name": "seat_slats_load",
+     "category": "neumann",
+     "faces": 1326,
+     "arrows": 4,
+     "traction": [
+      0.0,
+      -8829.448066765708,
+      0.0
+     ]
+    },
+    {
+     "key": "neumann_3",
+     "name": "backrest_load",
+     "category": "neumann",
+     "faces": 1098,
+     "arrows": 3,
+     "traction": [
+      0.0,
+      0.0,
+      -1160.3362327211548
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/park-bench/results.json"
+  },
+  {
+   "name": "school-chair-with-a-steel-frame-and-a-plastic-se",
+   "label": "School chair",
+   "extent": 0.808080836199224,
+   "tube_r": 0.004848485017195344,
+   "camera": {
+    "lo": [
+     0.0063907983712852,
+     -0.003728019306436181,
+     0.0029538022354245186
+    ],
+    "hi": [
+     0.5269580483436584,
+     0.8036163449287415,
+     0.5798658728599548
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/school-chair-with-a-steel-frame-and-a-plastic-se/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/school-chair-with-a-steel-frame-and-a-plastic-se/render/it_36_v0_change.png",
+   "final_iteration": 36,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/school-chair-with-a-steel-frame-and-a-plastic-se/render/it_36.vtk",
+   "updates": 34,
+   "stop_reason": "threshold",
+   "se_ratio": 0.4180382810071187,
+   "vol_ratio": 0.9968394556628161,
+   "d_p99_h": 1.4951988961547613,
+   "d_max_h": 2.3282805969938636,
+   "h": 0.012121212121212121,
+   "standin_material": true,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "feet",
+     "category": "dirichlet",
+     "faces": 200,
+     "facing_camera": 0.0007240561231037792,
+     "outline": true
+    },
+    {
+     "key": "neumann_1",
+     "name": "seat_load",
+     "category": "neumann",
+     "faces": 2233,
+     "arrows": 3,
+     "traction": [
+      0.0,
+      -8001.596654453314,
+      0.0
+     ]
+    },
+    {
+     "key": "neumann_2",
+     "name": "backrest_load",
+     "category": "neumann",
+     "faces": 1224,
+     "arrows": 2,
+     "traction": [
+      0.0,
+      0.0,
+      3557.211702791072
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/school-chair-with-a-steel-frame-and-a-plastic-se/results.json"
+  },
+  {
+   "name": "wooden-rocking-horse",
+   "label": "Rocking horse",
+   "extent": 1.0101009584032,
+   "tube_r": 0.006060605750419199,
+   "camera": {
+    "lo": [
+     -0.00262387259863317,
+     -0.002190069993957877,
+     -0.005673112813383341
+    ],
+    "hi": [
+     0.3337674140930176,
+     0.878602147102356,
+     1.003371238708496
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/wooden-rocking-horse/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/wooden-rocking-horse/render/it_32_v0_change.png",
+   "final_iteration": 32,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/wooden-rocking-horse/render/it_32.vtk",
+   "updates": 30,
+   "stop_reason": "threshold",
+   "se_ratio": 0.4773318351866649,
+   "vol_ratio": 0.9939408556060281,
+   "d_p99_h": 1.494134958833456,
+   "d_max_h": 2.048232950270176,
+   "h": 0.015151515151515152,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "rocker_bottoms",
+     "category": "dirichlet",
+     "faces": 938,
+     "facing_camera": 0.03755793357130767,
+     "outline": true
+    },
+    {
+     "key": "neumann_1",
+     "name": "saddle_traction",
+     "category": "neumann",
+     "faces": 3399,
+     "arrows": 3,
+     "traction": [
+      0.0,
+      -4501.069035493033,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/wooden-rocking-horse/results.json"
+  },
+  {
+   "name": "rhinoceros",
+   "label": "Rhinoceros",
+   "extent": 3.838383911177516,
+   "tube_r": 0.023030303467065097,
+   "camera": {
+    "lo": [
+     -0.008978218771517277,
+     -0.015587106347084045,
+     -0.004453322850167751
+    ],
+    "hi": [
+     1.1523410081863403,
+     1.8455684185028076,
+     3.768813371658325
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/rhinoceros/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/rhinoceros/render/it_19_v0_change.png",
+   "final_iteration": 19,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/rhinoceros/render/it_19.vtk",
+   "updates": 17,
+   "stop_reason": "max",
+   "se_ratio": 0.592831979804271,
+   "vol_ratio": 0.9865246102997085,
+   "d_p99_h": 1.1219153396393124,
+   "d_max_h": 2.653899286922656,
+   "h": 0.05757575757575757,
+   "standin_material": false,
+   "self_weight_only": true,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "front_feet",
+     "category": "dirichlet",
+     "faces": 291,
+     "facing_camera": 0.016468572641348718,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_1",
+     "name": "hind_feet",
+     "category": "dirichlet",
+     "faces": 336,
+     "facing_camera": 0.02511913177781177,
+     "outline": true
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/rhinoceros/results.json"
+  },
+  {
+   "name": "layered-birthday-cake",
+   "label": "Birthday cake",
+   "extent": 0.22222222026903182,
+   "tube_r": 0.001333333321614191,
+   "camera": {
+    "lo": [
+     -0.0006746182916685939,
+     1.389145018038107e-05,
+     -0.001027963007800281
+    ],
+    "hi": [
+     0.21955512464046478,
+     0.11243459582328796,
+     0.22066639363765717
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/layered-birthday-cake/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/layered-birthday-cake/render/it_11_v0_change.png",
+   "final_iteration": 11,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/layered-birthday-cake/render/it_11.vtk",
+   "updates": 9,
+   "stop_reason": "threshold",
+   "se_ratio": 0.9545436793404835,
+   "vol_ratio": 0.9948597064151224,
+   "d_p99_h": 1.4838987495750189,
+   "d_max_h": 1.6681082546710968,
+   "h": 0.003333333333333333,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "board_contact",
+     "category": "dirichlet",
+     "faces": 23631,
+     "facing_camera": 0.0023346469958455004,
+     "outline": true
+    },
+    {
+     "key": "neumann_1",
+     "name": "knife_face",
+     "category": "neumann",
+     "faces": 5327,
+     "arrows": 3,
+     "traction": [
+      0.0,
+      -3047.957336086594,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/layered-birthday-cake/results.json"
+  },
+  {
+   "name": "car-suspension-control-arm-with-rubber-bushings",
+   "label": "Control arm",
+   "extent": 0.45454546879045665,
+   "tube_r": 0.00272727281274274,
+   "camera": {
+    "lo": [
+     -0.003281507408246398,
+     -0.001538725453428924,
+     -0.001720570377074182
+    ],
+    "hi": [
+     0.4509657025337219,
+     0.4509983956813812,
+     0.1105850338935852
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/car-suspension-control-arm-with-rubber-bushings/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/car-suspension-control-arm-with-rubber-bushings/render/it_39_v0_change.png",
+   "final_iteration": 39,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/car-suspension-control-arm-with-rubber-bushings/render/it_39.vtk",
+   "updates": 37,
+   "stop_reason": "max",
+   "se_ratio": 0.8309304030125275,
+   "vol_ratio": 0.9979914601326824,
+   "d_p99_h": 1.2658400212725005,
+   "d_max_h": 2.9807423055171967,
+   "h": 0.003409090909090909,
+   "standin_material": true,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "front_bushing",
+     "category": "dirichlet",
+     "faces": 4706,
+     "facing_camera": 0.43149850723232125,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_1",
+     "name": "rear_bushing",
+     "category": "dirichlet",
+     "faces": 7483,
+     "facing_camera": 0.6050906622879433
+    },
+    {
+     "key": "neumann_2",
+     "name": "ball_outboard",
+     "category": "neumann",
+     "faces": 1888,
+     "arrows": 2,
+     "traction": [
+      -506015.0573215542,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "key": "neumann_3",
+     "name": "ball_lower",
+     "category": "neumann",
+     "faces": 861,
+     "arrows": 2,
+     "traction": [
+      0.0,
+      937557.1888560058,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/car-suspension-control-arm-with-rubber-bushings/results.json"
+  },
+  {
+   "name": "dental-crown",
+   "label": "Dental crown",
+   "extent": 0.010101010451762704,
+   "tube_r": 6.060606271057623e-05,
+   "camera": {
+    "lo": [
+     -2.9732060284004547e-05,
+     -6.015951294102706e-05,
+     -4.996237839804962e-05
+    ],
+    "hi": [
+     0.010033282451331615,
+     0.008843797259032726,
+     0.010048174299299717
+    ],
+    "up": "y",
+    "azimuth": 90.0,
+    "elevation": 25.0,
+    "view_override": true,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/dental-crown/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/dental-crown/render/it_40_v0_change.png",
+   "final_iteration": 40,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/dental-crown/render/it_40.vtk",
+   "updates": 40,
+   "stop_reason": "cap",
+   "se_ratio": 0.9937238818446572,
+   "vol_ratio": 0.9967538433635386,
+   "d_p99_h": 0.5782398919109255,
+   "d_max_h": 1.5478295332286507,
+   "h": 0.00015151515151515152,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "cement_bond_fix",
+     "category": "dirichlet",
+     "faces": 2556,
+     "facing_camera": 0.0026746467911499183,
+     "outline": true
+    },
+    {
+     "key": "neumann_1",
+     "name": "occlusal_traction",
+     "category": "neumann",
+     "faces": 3533,
+     "arrows": 4,
+     "traction": [
+      0.0,
+      -10584326.981517607,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/dental-crown/results.json"
+  },
+  {
+   "name": "pogo-stick",
+   "label": "Pogo stick",
+   "extent": 1.1945273876190186,
+   "tube_r": 0.007167164325714111,
+   "camera": {
+    "lo": [
+     5.761656939284876e-05,
+     -3.6652409995951984e-09,
+     0.00034783664159476757
+    ],
+    "hi": [
+     0.39799463748931885,
+     1.1940263509750366,
+     0.05879027023911476
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pogo-stick/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pogo-stick/render/it_29_v0_change.png",
+   "final_iteration": 29,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pogo-stick/render/it_29.vtk",
+   "updates": 27,
+   "stop_reason": "threshold",
+   "se_ratio": 0.48952906260512286,
+   "vol_ratio": 0.9965138149171882,
+   "d_p99_h": 1.491446386260919,
+   "d_max_h": 2.071807122960383,
+   "h": 0.008958955223880596,
+   "standin_material": true,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "ground_contact",
+     "category": "dirichlet",
+     "faces": 57,
+     "facing_camera": 0.0,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_1",
+     "name": "left_grip",
+     "category": "dirichlet",
+     "faces": 506,
+     "facing_camera": 0.42731793134384166,
+     "outline": true
+    },
+    {
+     "key": "dirichlet_2",
+     "name": "right_grip",
+     "category": "dirichlet",
+     "faces": 490,
+     "facing_camera": 0.5729273642665083
+    },
+    {
+     "key": "neumann_3",
+     "name": "left_peg_load",
+     "category": "neumann",
+     "faces": 189,
+     "arrows": 1,
+     "traction": [
+      0.0,
+      -274525.119811893,
+      0.0
+     ]
+    },
+    {
+     "key": "neumann_4",
+     "name": "right_peg_load",
+     "category": "neumann",
+     "faces": 186,
+     "arrows": 1,
+     "traction": [
+      0.0,
+      -275320.9394148325,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/pogo-stick/results.json"
+  },
+  {
+   "name": "truck-leaf-spring",
+   "label": "Leaf spring",
+   "extent": 1.379104495048523,
+   "tube_r": 0.008274626970291138,
+   "camera": {
+    "lo": [
+     0.001997442916035652,
+     7.67034143791534e-05,
+     -2.6154873822292757e-09
+    ],
+    "hi": [
+     1.3762370347976685,
+     0.2476479858160019,
+     0.07960205525159836
+    ],
+    "up": "y",
+    "azimuth": 35.0,
+    "elevation": 25.0,
+    "view_override": false,
+    "source": "/home/xl2254/implicit_optimize/output/geometry_cleanup/truck-leaf-spring/render/camera.json"
+   },
+   "change_png": "/home/xl2254/implicit_optimize/output/geometry_cleanup/truck-leaf-spring/render/it_35_v0_change.png",
+   "final_iteration": 35,
+   "change_vtk": "/home/xl2254/implicit_optimize/output/geometry_cleanup/truck-leaf-spring/render/it_35.vtk",
+   "updates": 33,
+   "stop_reason": "threshold",
+   "se_ratio": 0.5017857538374867,
+   "vol_ratio": 0.9882102896663039,
+   "d_p99_h": 1.484854490876542,
+   "d_max_h": 1.7276632493364519,
+   "h": 0.010343283582089552,
+   "standin_material": false,
+   "self_weight_only": false,
+   "regions": [
+    {
+     "key": "dirichlet_0",
+     "name": "axle_seat",
+     "category": "dirichlet",
+     "faces": 643,
+     "facing_camera": 0.503395070573386
+    },
+    {
+     "key": "neumann_1",
+     "name": "front_eye",
+     "category": "neumann",
+     "faces": 240,
+     "arrows": 1,
+     "traction": [
+      0.0,
+      -3156337.8370997044,
+      0.0
+     ]
+    },
+    {
+     "key": "neumann_2",
+     "name": "rear_eye",
+     "category": "neumann",
+     "faces": 243,
+     "arrows": 1,
+     "traction": [
+      0.0,
+      -3163866.681605968,
+      0.0
+     ]
+    }
+   ],
+   "results": "/home/xl2254/implicit_optimize/output/geometry_cleanup/truck-leaf-spring/results.json"
+  }
+ ],
+ "view": {
+  "azimuth": 35.0,
+  "elevation": 25.0
+ }
+}

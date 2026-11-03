@@ -1,0 +1,47 @@
+{
+  "_comment": [
+    "PLACEHOLDER rows for the showcase (variation) figure.",
+    "Row 'shape' = N realizations of ONE instruction (experiments/agentic_batch/run_realizations.sh, run k seeded S+k).  Here: the realization TEST runs (a wooden dining chair, N=2) in output/showcase_tests/run_realizations once finished; until then one run of one object (never different objects).",
+    "Row 'material' should hold N per-part material sweeps of one solved session (run_material_sweep.sh).  Here: the chess rook six times, its E field overridden per segment (E_override, heterogeneous, contrast 29-250x as the sweep's authoring rule asks) for the input panel only: the deformed panels are all the rook's own marble solve.",
+    "Row 'loading' should hold N load-case sweeps of one solved session (run_bc_sweep.sh).  Here: the sewing machine's one run, four times.",
+    "Real runs: SC_SHAPE_RUNS / SC_MATERIAL_RUNS / SC_LOADING_RUNS (space-separated folders or globs), or a JSON like this one via SC_ROWS_JSON.  A row given by an env var drops its placeholder flag.  See sc_prep.py."
+  ],
+  "rows": [
+    {
+      "key": "shape",
+      "placeholder": true,
+      "runs": [{"path": "output/showcase_tests/run_realizations/wooden-dining-chair-*"}],
+      "finished_only": true,
+      "fallback": [{"path": "output/agentic_batch/marble-chess-rook-20261012-134256"}],
+      "fallback_note": "realization test runs not finished: one run of one object"
+    },
+    {
+      "key": "material",
+      "placeholder": true,
+      "runs": [
+        {"path": "output/agentic_batch/marble-chess-rook-20261012-134256",
+         "E_override": {"default_Pa": 2.0e11, "segments_Pa": {"0": 2.0e11, "1": 2.4e9, "2": 2.0e11, "3": 3.0e10, "4": 8.0e8}}},
+        {"path": "output/agentic_batch/marble-chess-rook-20261012-134256",
+         "E_override": {"default_Pa": 2.4e9, "segments_Pa": {"0": 2.4e9, "1": 7.0e10, "2": 1.2e10, "3": 2.4e9, "4": 7.0e10}}},
+        {"path": "output/agentic_batch/marble-chess-rook-20261012-134256",
+         "E_override": {"default_Pa": 3.0e10, "segments_Pa": {"0": 3.0e10, "1": 3.0e10, "2": 8.0e8, "3": 2.0e11, "4": 1.2e10}}},
+        {"path": "output/agentic_batch/marble-chess-rook-20261012-134256",
+         "E_override": {"default_Pa": 1.2e10, "segments_Pa": {"0": 1.2e10, "1": 2.0e11, "2": 2.4e9, "3": 7.0e10, "4": 2.4e9}}},
+        {"path": "output/agentic_batch/marble-chess-rook-20261012-134256",
+         "E_override": {"default_Pa": 8.0e8, "segments_Pa": {"0": 8.0e8, "1": 1.2e10, "2": 7.0e10, "3": 8.0e8, "4": 2.0e11}}},
+        {"path": "output/agentic_batch/marble-chess-rook-20261012-134256",
+         "E_override": {"default_Pa": 7.0e10, "segments_Pa": {"0": 7.0e10, "1": 8.0e8, "2": 3.0e10, "3": 1.2e10, "4": 8.0e8}}}
+      ]
+    },
+    {
+      "key": "loading",
+      "placeholder": true,
+      "runs": [
+        {"path": "output/agentic_batch/sewing-machine-20261012-135039"},
+        {"path": "output/agentic_batch/sewing-machine-20261012-135039"},
+        {"path": "output/agentic_batch/sewing-machine-20261012-135039"},
+        {"path": "output/agentic_batch/sewing-machine-20261012-135039"}
+      ]
+    }
+  ]
+}

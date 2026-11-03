@@ -1,0 +1,885 @@
+{
+ "name": "agentic_gallery",
+ "p": 0.2,
+ "params": {
+  "arc_back": 5.0,
+  "eye_h": 32.0,
+  "span_deg": 120.0,
+  "stagger": 0.0,
+  "row_gap": 0.1,
+  "page_h": 110.0,
+  "rows_n": 4,
+  "pack": 0.0,
+  "balance_rows": true,
+  "close": 1,
+  "row_overlap": 0.3
+ },
+ "widen": {
+  "a TV remote control": 1.15,
+  "a human femur": 1.3225,
+  "an electric toothbrush": 1.15
+ },
+ "D_range": [
+  1.0,
+  7.247796532700631
+ ],
+ "ratio_drawn": 7.247796532700631,
+ "ratio_real": 19999.998564028116,
+ "rows": [
+  [
+   "a yo-yo",
+   "a knee implant",
+   "a coffee mug",
+   "a computer mouse",
+   "a wooden toy train engine",
+   "a layered birthday cake",
+   "a slice of watermelon",
+   "a loaf of bread",
+   "a claw hammer",
+   "a teddy bear",
+   "a car brake disc",
+   "an adjustable wrench",
+   "an electric toothbrush",
+   "a TV remote control",
+   "a jelly dessert",
+   "a hamburger",
+   "a lumbar vertebra",
+   "a USB stick",
+   "a dental crown"
+  ],
+  [
+   "a car suspension control arm with rubber bushings",
+   "a car wheel with its rubber tyre",
+   "a school chair with a steel frame and a plastic seat",
+   "a jackhammer",
+   "a pogo stick",
+   "a truck leaf spring",
+   "a glass-top dining table",
+   "a sofa",
+   "a park bench",
+   "an industrial robot arm",
+   "a wooden rocking horse",
+   "a walking cane with a rubber tip",
+   "a bar stool",
+   "a crankshaft",
+   "a human femur"
+  ],
+  [
+   "an igloo",
+   "a crocodile",
+   "an elephant",
+   "a log cabin",
+   "a thatched stone cottage",
+   "a road roller with a steel drum and rubber tyres",
+   "a giraffe",
+   "a rhinoceros",
+   "a horse"
+  ],
+  [
+   "a skyscraper",
+   "the Leaning Tower of Pisa",
+   "the Taj Mahal",
+   "a lighthouse",
+   "the Pantheon",
+   "Himeji Castle",
+   "a natural stone arch"
+  ]
+ ],
+ "row_counts": [
+  19,
+  15,
+  9,
+  7
+ ],
+ "tiers": [
+  0.0,
+  2.5376119460013093,
+  5.339808576568132,
+  9.248302222124032
+ ],
+ "fov_h_deg": 31.9535871486775,
+ "page_mm": [
+  180.0,
+  110.0
+ ],
+ "seat_swaps": {
+  "requested": [
+   [
+    "a skyscraper",
+    "a lighthouse"
+   ]
+  ],
+  "applied": [
+   [
+    "a skyscraper",
+    "a lighthouse",
+    [
+     3,
+     3
+    ],
+    [
+     3,
+     0
+    ]
+   ]
+  ],
+  "why": "the user's choice, 2026-10-17"
+ },
+ "overrides": {
+  "why": "user-allowed per-object arrangement, user request 2026-10-19: keep revision 8's layout with these adjustments",
+  "params": {
+   "arc_back": 5.0,
+   "eye_h": 32.0,
+   "span_deg": 120.0,
+   "stagger": 0.0,
+   "row_gap": 0.1,
+   "page_h": 110.0,
+   "rows_n": 4,
+   "pack": 0.0,
+   "balance_rows": true,
+   "close": 1,
+   "row_overlap": 0.3
+  },
+  "widen": {
+   "a TV remote control": 1.15,
+   "a human femur": 1.3225,
+   "an electric toothbrush": 1.15
+  },
+  "row_spacing": {
+   "0": {
+    "factor": 1.12,
+    "reason": "front row spacing a bit wider (user request 2026-10-19)"
+   },
+   "3": {
+    "factor": 1.09,
+    "reason": "back row spacing a little wider (user request 2026-10-19)"
+   }
+  },
+  "seat_nudge": {
+   "a USB stick": {
+    "radial": 0.5,
+    "z": 0.0,
+    "reason": "a bit up, away from the viewer (user request 2026-10-19)"
+   },
+   "an electric toothbrush": {
+    "radial": -0.5,
+    "z": 0.0,
+    "reason": "a bit lower, toward the viewer (user request 2026-10-19)"
+   },
+   "a skyscraper": {
+    "radial": -2.0,
+    "z": -1.5,
+    "reason": "lower on the page (user request 2026-10-19)"
+   },
+   "the Leaning Tower of Pisa": {
+    "radial": -2.0,
+    "z": -1.5,
+    "reason": "lower on the page (user request 2026-10-19)"
+   },
+   "a lighthouse": {
+    "radial": -2.0,
+    "z": -1.5,
+    "reason": "lower on the page (user request 2026-10-19)"
+   },
+   "a natural stone arch": {
+    "radial": -2.0,
+    "z": -1.5,
+    "reason": "lower on the page (user request 2026-10-19)"
+   }
+  }
+ },
+ "gates": {
+  "renderer": {
+   "ok": true,
+   "value": "NVIDIA RTX A6000/PCIe/SSE2"
+  },
+  "every label placed (hard rules: free floor, owned, inside)": {
+   "ok": true,
+   "value": "all 50"
+  },
+  "all objects drawn": {
+   "ok": true,
+   "value": "50 of 50"
+  },
+  "projection: id pixels inside the Warp silhouette": {
+   "ok": true,
+   "value": 0.9995
+  },
+  "projection: Warp silhouettes inside the id pass within 1 px (>= 99 %, unoccluded objects)": {
+   "ok": true,
+   "value": "min 0.9999 (the Leaning Tower of Pisa) over 43 objects"
+  },
+  "every object >= 25% visible": {
+   "ok": true,
+   "value": "0.989 (a pogo stick)"
+  },
+  "every label >= 70% visible (nearer bodies may cover the rest)": {
+   "ok": true,
+   "value": "1.000 (a dental crown)"
+  },
+  "no two labels overlap": {
+   "ok": true,
+   "value": []
+  },
+  "ownership: centroid margin >= 1.0 mm, nearest glyph <= 3.0 mm": {
+   "ok": true,
+   "value": "min margin 1.57 mm, max distance 2.91 mm"
+  },
+  "labels inside the page (>= 1 mm)": {
+   "ok": true,
+   "value": 2.5
+  },
+  "label cap height in (1.2, 1.35) mm": {
+   "ok": true,
+   "value": 1.263
+  },
+  "size order (the user's seat swap exempted by name)": {
+   "ok": true,
+   "value": {
+    "D_strictly_increasing": true,
+    "rows_in_size_order_except_swaps": true
+   }
+  },
+  "x N equal to the category records": {
+   "ok": true,
+   "value": "50 of 50"
+  }
+ },
+ "coverage": 0.5508305647840531,
+ "coverage_thirds": [
+  0.5445736434108527,
+  0.5753286147623863,
+  0.5328614762386249
+ ],
+ "largest_empty_mm2": 1516.1035391236396,
+ "largest_empty_share": 0.07657088581432524,
+ "visible": {
+  "a TV remote control": 0.9957522123893805,
+  "a USB stick": 1.0039408866995074,
+  "an electric toothbrush": 1.0,
+  "a coffee mug": 0.9988068407795306,
+  "a computer mouse": 1.0029060381013883,
+  "a school chair with a steel frame and a plastic seat": 1.003668602873739,
+  "a glass-top dining table": 1.002745905658527,
+  "a park bench": 1.0029605577308758,
+  "a bar stool": 1.000649667045639,
+  "a sofa": 1.000507067249794,
+  "a teddy bear": 1.0021272823967382,
+  "a wooden rocking horse": 0.9995265151515151,
+  "a pogo stick": 0.9891891891891892,
+  "a wooden toy train engine": 1.0016237531895151,
+  "a yo-yo": 0.9996958637469586,
+  "a jelly dessert": 0.9995360346427467,
+  "a loaf of bread": 1.0011080332409972,
+  "a hamburger": 0.9992642731018246,
+  "a layered birthday cake": 1.0002684203462622,
+  "a slice of watermelon": 1.000456933973041,
+  "a giraffe": 0.9991654496140204,
+  "an elephant": 1.0015819030293442,
+  "a rhinoceros": 0.9986642005754213,
+  "a horse": 1.0001311647429172,
+  "a crocodile": 1.0008565310492505,
+  "a car suspension control arm with rubber bushings": 1.0044097013429545,
+  "a truck leaf spring": 0.9988151658767772,
+  "a car wheel with its rubber tyre": 0.9995010335733124,
+  "a car brake disc": 0.9998497370398197,
+  "a crankshaft": 0.9977443609022556,
+  "a road roller with a steel drum and rubber tyres": 1.0,
+  "a jackhammer": 1.0027218290691344,
+  "an industrial robot arm": 1.0021695335502867,
+  "an adjustable wrench": 1.0069767441860464,
+  "a claw hammer": 0.9993674889310563,
+  "a dental crown": 1.0011547344110854,
+  "a knee implant": 1.0,
+  "a walking cane with a rubber tip": 0.9967159277504105,
+  "a human femur": 1.003796867584243,
+  "a lumbar vertebra": 1.0019815059445178,
+  "a skyscraper": 1.0010004880429477,
+  "a thatched stone cottage": 1.0003316382931682,
+  "a lighthouse": 1.000361663652803,
+  "an igloo": 1.0003636930430717,
+  "a log cabin": 0.9995399390419231,
+  "the Leaning Tower of Pisa": 1.0002492788718351,
+  "the Pantheon": 1.0000185991146822,
+  "Himeji Castle": 1.0001958261064174,
+  "a natural stone arch": 0.999971069000434,
+  "the Taj Mahal": 0.9994497669601243
+ },
+ "labels": {
+  "pt": 5.0,
+  "cap_mm": 1.26255859375,
+  "kinds": {
+   "below": 43,
+   "above": 7
+  },
+  "per_object": {
+   "a dental crown": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 5.0614836629791355,
+    "own_near_mm": 0.5926622765757291,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a yo-yo": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 6.014880794740234,
+    "own_near_mm": 0.9313264346190029,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a knee implant": {
+    "kind": "below",
+    "nudge": [
+     2.13462890625,
+     4.5
+    ],
+    "own_margin_mm": 1.915742656520087,
+    "own_near_mm": 2.9096060676755644,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a lumbar vertebra": {
+    "kind": "below",
+    "nudge": [
+     1.8047265625,
+     0.0
+    ],
+    "own_margin_mm": 2.130893815686145,
+    "own_near_mm": 2.7303977322553883,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "an electric toothbrush": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 2.99090419821487,
+    "own_near_mm": 0.7805823152929068,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a coffee mug": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 4.299261291645339,
+    "own_near_mm": 0.4233301975540922,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a hamburger": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 5.8321051733680145,
+    "own_near_mm": 0.6773283160865475,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a USB stick": {
+    "kind": "above",
+    "nudge": [
+     0.0,
+     2.0
+    ],
+    "own_margin_mm": 2.6486229243529777,
+    "own_near_mm": 0.3490870238058226,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a computer mouse": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     1.0
+    ],
+    "own_margin_mm": 4.499214607013913,
+    "own_near_mm": 0.9118811526662377,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a jelly dessert": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 5.592492842997014,
+    "own_near_mm": 0.7233869586816347,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a wooden toy train engine": {
+    "kind": "below",
+    "nudge": [
+     1.0,
+     3.0
+    ],
+    "own_margin_mm": 2.1185839162610534,
+    "own_near_mm": 1.9765485939672394,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a TV remote control": {
+    "kind": "above",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 3.4720772476115,
+    "own_near_mm": 0.6773283160865475,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a human femur": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 3.3711499375894878,
+    "own_near_mm": 1.2586511639310118,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a layered birthday cake": {
+    "kind": "above",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 4.741298212605833,
+    "own_near_mm": 0.9351669722924304,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a car suspension control arm with rubber bushings": {
+    "kind": "below",
+    "nudge": [
+     0.5,
+     0.0
+    ],
+    "own_margin_mm": 5.627321653763299,
+    "own_near_mm": 0.6163780715289244,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "an adjustable wrench": {
+    "kind": "below",
+    "nudge": [
+     2.0,
+     0.0
+    ],
+    "own_margin_mm": 4.14170719841915,
+    "own_near_mm": 2.8649166291852812,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a slice of watermelon": {
+    "kind": "below",
+    "nudge": [
+     2.0,
+     0.0
+    ],
+    "own_margin_mm": 2.6013487258996166,
+    "own_near_mm": 2.7565265355578052,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a car brake disc": {
+    "kind": "below",
+    "nudge": [
+     1.8047265625,
+     -4.5
+    ],
+    "own_margin_mm": 2.325652676091363,
+    "own_near_mm": 2.541391894228273,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a loaf of bread": {
+    "kind": "below",
+    "nudge": [
+     1.8047265625,
+     4.5
+    ],
+    "own_margin_mm": 1.675326799793189,
+    "own_near_mm": 2.539981185324553,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a teddy bear": {
+    "kind": "below",
+    "nudge": [
+     0.5,
+     0.0
+    ],
+    "own_margin_mm": 3.189832487567803,
+    "own_near_mm": 1.314370388206399,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a claw hammer": {
+    "kind": "above",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 2.937502415831766,
+    "own_near_mm": 0.6773283160865475,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a crankshaft": {
+    "kind": "below",
+    "nudge": [
+     0.5,
+     1.0
+    ],
+    "own_margin_mm": 4.271047844174701,
+    "own_near_mm": 0.5421271696791687,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a car wheel with its rubber tyre": {
+    "kind": "below",
+    "nudge": [
+     1.8047265625,
+     0.0
+    ],
+    "own_margin_mm": 2.2729420708132184,
+    "own_near_mm": 2.6464063306263417,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a bar stool": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 4.538115704426803,
+    "own_near_mm": 0.515003412725155,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a walking cane with a rubber tip": {
+    "kind": "above",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 2.7393084495134294,
+    "own_near_mm": 0.5926622765757291,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a school chair with a steel frame and a plastic seat": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 6.763651546426244,
+    "own_near_mm": 0.8338637837833014,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a wooden rocking horse": {
+    "kind": "below",
+    "nudge": [
+     0.5,
+     0.0
+    ],
+    "own_margin_mm": 3.5391403516145012,
+    "own_near_mm": 1.4467739173632694,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a jackhammer": {
+    "kind": "below",
+    "nudge": [
+     0.5,
+     1.0
+    ],
+    "own_margin_mm": 1.5742184212186043,
+    "own_near_mm": 1.2812296665455694,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a pogo stick": {
+    "kind": "above",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 1.8315234060474634,
+    "own_near_mm": 0.9118811526662377,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "an industrial robot arm": {
+    "kind": "below",
+    "nudge": [
+     1.0,
+     -2.0
+    ],
+    "own_margin_mm": 1.6625830823459258,
+    "own_near_mm": 1.6086547507055504,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a truck leaf spring": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 5.909766701909976,
+    "own_near_mm": 0.8466603951081844,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a park bench": {
+    "kind": "below",
+    "nudge": [
+     2.0,
+     1.0
+    ],
+    "own_margin_mm": 1.6799277093097151,
+    "own_near_mm": 2.490102926221537,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a glass-top dining table": {
+    "kind": "above",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 2.799188169444424,
+    "own_near_mm": 1.2699905926622765,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a sofa": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 1.9854161334171236,
+    "own_near_mm": 0.6773283160865475,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a horse": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 7.846325635527709,
+    "own_near_mm": 0.6447973466865021,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "an igloo": {
+    "kind": "below",
+    "nudge": [
+     1.0,
+     -1.0
+    ],
+    "own_margin_mm": 1.5953987914652976,
+    "own_near_mm": 0.8032125759599835,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a rhinoceros": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 3.340815096094156,
+    "own_near_mm": 0.8508831664166323,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a crocodile": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 2.0084757975369802,
+    "own_near_mm": 1.2122332038521841,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a giraffe": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 3.09021420916324,
+    "own_near_mm": 1.1973586134861578,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "an elephant": {
+    "kind": "below",
+    "nudge": [
+     1.0,
+     -1.0
+    ],
+    "own_margin_mm": 1.7905299323701596,
+    "own_near_mm": 0.45594057633311885,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a road roller with a steel drum and rubber tyres": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 1.7260382790864839,
+    "own_near_mm": 0.9118811526662377,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a log cabin": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 2.6990853052093744,
+    "own_near_mm": 0.9653413759070782,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a thatched stone cottage": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 3.5632151327194443,
+    "own_near_mm": 0.8634275752085618,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a natural stone arch": {
+    "kind": "below",
+    "nudge": [
+     1.0,
+     3.0
+    ],
+    "own_margin_mm": 5.603294878682507,
+    "own_near_mm": 0.4317137876042809,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a skyscraper": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 4.248445828019413,
+    "own_near_mm": 0.8338637837833014,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "the Leaning Tower of Pisa": {
+    "kind": "below",
+    "nudge": [
+     0.5,
+     3.0
+    ],
+    "own_margin_mm": 1.5874866317874008,
+    "own_near_mm": 1.4393226716839136,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "a lighthouse": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 1.589781644026056,
+    "own_near_mm": 0.6773283160865475,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "Himeji Castle": {
+    "kind": "below",
+    "nudge": [
+     0.0,
+     0.0
+    ],
+    "own_margin_mm": 4.248445828019413,
+    "own_near_mm": 0.5079962370649107,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "the Taj Mahal": {
+    "kind": "below",
+    "nudge": [
+     0.5,
+     0.0
+    ],
+    "own_margin_mm": 3.0487136759994655,
+    "own_near_mm": 0.8338637837833014,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   },
+   "the Pantheon": {
+    "kind": "below",
+    "nudge": [
+     1.8047265625,
+     3.0
+    ],
+    "own_margin_mm": 2.0658404132638135,
+    "own_near_mm": 1.7017663328332646,
+    "visible": 1.0,
+    "kind_covered_at_placement": 0.0
+   }
+  },
+  "failed": []
+ },
+ "hot_pixels_smallest_five_quarter_res": {
+  "a dental crown": 653,
+  "a yo-yo": 3897,
+  "a USB stick": 121,
+  "a knee implant": 4608,
+  "a lumbar vertebra": 515
+ },
+ "ambiguous_labels": {},
+ "render": {
+  "renderer": "NVIDIA RTX A6000/PCIe/SSE2",
+  "size": [
+   8504,
+   5197
+  ]
+ },
+ "search": []
+}

@@ -1,0 +1,19 @@
+[11-03-2025,10:43:03] Added flexible Dirichlet BC: 13 nodes, components=all
+[11-03-2025,10:43:03] Added flexible Dirichlet BC: 7 nodes, components=[1]
+[11-03-2025,10:43:03] Initialized Neo-Hookean solver (2D)
+[11-03-2025,10:43:03] Mesh: 32x12 elements
+[11-03-2025,10:43:03] Nodes: 429, DOFs: 858
+[11-03-2025,10:43:03] Material: E=25.0, nu=0.3
+[11-03-2025,10:43:03] Output: examples_output/two_d_right_boundary_down_disp-2025-11-03-10-43-03
+[11-03-2025,10:43:03] Starting Newton-Raphson solver...
+[11-03-2025,10:43:03]   Step 1/1 Iter 0: ||R|| = 4.716e-01, rel = 1.000e+00
+[11-03-2025,10:43:04]     accepted step (alpha=1.000e+00): ||R|| = 1.041e-01, rel = 2.208e-01
+[11-03-2025,10:43:04]   Step 1/1 Iter 1: ||R|| = 1.041e-01, rel = 2.208e-01
+[11-03-2025,10:43:04]     accepted step (alpha=1.000e+00): ||R|| = 3.467e-03, rel = 7.352e-03
+[11-03-2025,10:43:04]   Step 1/1 Iter 2: ||R|| = 3.467e-03, rel = 7.352e-03
+[11-03-2025,10:43:04]     accepted step (alpha=1.000e+00): ||R|| = 7.072e-06, rel = 1.499e-05
+[11-03-2025,10:43:04]   Step 1/1 Iter 3: ||R|| = 7.072e-06, rel = 1.499e-05
+[11-03-2025,10:43:04]     accepted step (alpha=1.000e+00): ||R|| = 3.789e-06, rel = 8.034e-06
+[11-03-2025,10:43:04]   Step 1/1 Iter 4: ||R|| = 3.789e-06, rel = 8.034e-06
+[11-03-2025,10:43:04] Saved numpy: displacement_t0.0.npy
+[11-03-2025,10:43:04] Simulation finalized. Open examples_output/two_d_right_boundary_down_disp-2025-11-03-10-43-03/solution.pvd in ParaView to view results.

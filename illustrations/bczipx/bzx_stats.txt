@@ -1,0 +1,12 @@
+grid_n 73
+h 0.027778
+radius 0.055556
+a_loops_removed 2
+a_inner 1
+a_cap_tris 112
+a_loops_after 1
+b_loops_before 3
+b_loops_after 1
+b_bridge_tris 8
+b_cap_tris 32
+b_patch_loops 1

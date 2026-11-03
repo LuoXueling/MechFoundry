@@ -1,0 +1,77 @@
+{
+  "git_commit": "921064f35f940094331c9f46971f7400ab37cd83",
+  "git_branch": "bf-vs-nitsche-sched",
+  "git_dirty_experiment": false,
+  "driver_options": {
+    "objects": [],
+    "batch": "/home/xl2254/implicit_optimize/output/agentic_batch50_opus",
+    "output": "/home/xl2254/implicit_optimize/output/bodyfitted_vs_nitsche",
+    "gpus": [
+      0,
+      1
+    ],
+    "python": "/home/xl2254/anaconda3/envs/implicit-warp117/bin/python",
+    "timeout": 21600,
+    "max_wait": 21600,
+    "sample": 10,
+    "phases": [
+      "solve",
+      "evaluate",
+      "summary"
+    ],
+    "largest_first": true,
+    "exclude": [],
+    "repair_rounds": 3,
+    "cpu_workers": 2,
+    "cpu_threads": 24,
+    "cpu_timeout": 21600,
+    "cpu_python": "/home/xl2254/implicit_optimize/output/bodyfitted_vs_nitsche/_cpu_env/bin/python",
+    "extra": [
+      "--validation-root",
+      "/home/xl2254/implicit_optimize/output/bodyfitted_vs_nitsche"
+    ]
+  },
+  "started": "2026-10-16T18:07:39",
+  "gpu_busy_rule": "foreign processes block a GPU only above 2048 MiB together or 10 % utilization over 30 s (scheduling only)",
+  "gpus": [
+    "0, NVIDIA RTX A6000, 580.178.04",
+    "1, NVIDIA RTX A6000, 580.178.04"
+  ],
+  "scheduling_change": {
+    "time": "2026-10-16T18:07",
+    "after_sessions": 19,
+    "first_run_started": "2026-10-16T15:27:18",
+    "first_run_commit": "1c03c6a (dev)",
+    "new_commit": "921064f (bf-vs-nitsche-sched, from dev aa7e477; experiments/ and src/ identical to 1c03c6a)",
+    "rule": "foreign processes block a GPU only above 2048 MiB together or 10 % utilization over 30 s (scheduling only)",
+    "effect": "scheduling only: light idle foreign processes (the UI's tool_server, pvbatch) no longer block a GPU; results and solver timings unaffected; finished sessions not restarted"
+  },
+  "manual_interventions": [
+    {
+      "time": "2026-10-16T20:44:21",
+      "object": "natural-stone-arch",
+      "what": "orchestrator hung after 'malloc(): unaligned tcache chunk detected' (heap corruption, logged 19:35) at p1:d7_surface; idle ~65 min; killed by hand (pid 1123163)",
+      "effect": "driver retried once from the rung records (jobs.jsonl: rc -15 'no solve_done marker; retried', then rc 0 solve_done 21:00:27; CPU d8_surface rc 0 21:01:25); no other run.log has malloc()/double free/corrupted"
+    },
+    {
+      "time": "2026-10-16T20:50",
+      "what": "hang watchdog written (bf-vs-nitsche-hang ac60b0e) but NOT active in this run: the restart needed killing running jobs and was not approved; the run finished on 921064f"
+    }
+  ],
+  "notes": [
+    {
+      "object": "jackhammer",
+      "entry": "Nitsche d8",
+      "note": "Nitsche d8 converged on the pyamgx rung (unscaled rel 3.0e-7, 22 Newton iterations). The same rung hit a NaN residual at Newton iteration 18 in the previous run (output/bodyfitted_vs_nitsche_old), so convergence on this near-singular system (support rigid-mode ratio 9.8e-5) is not reproducible; the solution matches the earlier (chance-landing) result to about 2e-5 in every d8 P1 metric. Solved and compared: not a flag, not excluded."
+    }
+  ],
+  "renamed": {
+    "time": "2026-10-16",
+    "from": "output/bodyfitted_vs_nitsche_fresh",
+    "to": "output/bodyfitted_vs_nitsche",
+    "previous_main": "output/bodyfitted_vs_nitsche_old (slimmed)",
+    "cpu_env": "moved from the previous main to output/bodyfitted_vs_nitsche/_cpu_env (its original path)",
+    "paths": "absolute paths in *.json/*.jsonl records rewritten to the new name; *.log/*.txt logs keep the run-time name",
+    "accepted": "user chose to accept the fresh run (jackhammer d8 solved and in the medians); compare_vs_previous.md has the entry-by-entry comparison"
+  }
+}

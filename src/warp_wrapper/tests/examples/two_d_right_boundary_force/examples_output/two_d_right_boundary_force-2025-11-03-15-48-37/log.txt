@@ -1,0 +1,13 @@
+[11-03-2025,15:48:37] Added flexible Dirichlet BC: 13 nodes, components=all
+[11-03-2025,15:48:37] Added flexible Neumann BC: 7 nodes, traction shape=(7, 2)
+[11-03-2025,15:48:37]   Step 1/1 Iter 0: ||R|| = 9.772e-02, rel = 1.000e+00
+[11-03-2025,15:48:37]   Step 1/1 Iter 1: ||R|| = 7.745e+00, rel = 7.926e+01
+[11-03-2025,15:48:37]   Step 1/1 Iter 2: ||R|| = 9.128e+00, rel = 9.341e+01
+[11-03-2025,15:48:38]   Step 1/1 Iter 3: ||R|| = 1.942e+00, rel = 1.987e+01
+[11-03-2025,15:48:38]   Step 1/1 Iter 4: ||R|| = 2.590e-01, rel = 2.650e+00
+[11-03-2025,15:48:38]   Step 1/1 Iter 5: ||R|| = 1.234e-01, rel = 1.262e+00
+[11-03-2025,15:48:38]   Step 1/1 Iter 6: ||R|| = 6.539e-03, rel = 6.692e-02
+[11-03-2025,15:48:38]   Step 1/1 Iter 7: ||R|| = 9.277e-04, rel = 9.494e-03
+[11-03-2025,15:48:38]   Step 1/1 Iter 8: ||R|| = 4.183e-05, rel = 4.281e-04
+[11-03-2025,15:48:38] Saved numpy: displacement_t0.0.npy
+[11-03-2025,15:48:38] Simulation finalized. Open examples_output/two_d_right_boundary_force-2025-11-03-15-48-37/solution.pvd in ParaView to view results.

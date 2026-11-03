@@ -1,0 +1,15 @@
+run ../overview/assets/seg (ov_assets.py segments, see assets/MANIFEST.json)
+surface_faces 161568
+feature_channels 448
+num_clusters 8
+num_segments 23
+explained_variance 0.249294 0.130787 0.077336
+explained_variance_total 0.457417
+clip_percentile 1.0
+lab_lightness_range 52.0 70.0
+lab_chroma 42.0
+part_areas_top_down 0.05779 0.06370 0.13297 0.23450 0.16322 0.08204 0.05516 0.21061
+part_heights_top_down 0.36000 0.32626 0.15622 -0.07518 -0.11428 -0.25664 -0.36794 -0.44548
+part_tints_top_down #c9c3e8 #bfe0d8 #ead9ad #c8dca8 #b7d6ea #dcc9b8 #cfd8e8 #e8c3dc
+touching_pairs 12
+min_touching_dE 16.9
