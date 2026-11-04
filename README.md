@@ -2,6 +2,10 @@
 
 <img src=".assets/agentic_gallery.png" width="800" />
 
+MechFoundry is an agentic loop coupled with bespoke software that automates structural analyses of real-world objects without a human in the loop. From an object's lexical description, it generates a shape, poses a loading case relevant to how the object is used, assigns a material to each part, solves the nonlinear structural response, and improves the design against the loads it carries. A differentiable GPU solver built on an adaptive octree that need not conform to the surface enables the transition from shape generation to simulation and optimization. 
+
+This repository is released for the paper *MechFoundry: An agentic loop that poses and performs engineering analyses and optimization of real-world objects* [LINK TO BE UPDATED], authored by Xue-Ling Luo, Marco Conte, Peter Yichen Chen, and Nikolaos Bouklas. 
+
 ## Installation
 
 The solver and geometry generation run in one compute environment
