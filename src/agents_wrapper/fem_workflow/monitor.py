@@ -16,6 +16,9 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .models import ToolReceipt
+from .runtime_files import (  # noqa: F401
+    SolveAlreadyRunning, solve_claim, solve_running, solve_stop_requested,
+)
 from src.cad_wrapper.cadcoder_wrapper.availability import cadcoder_status, settings as cadcoder_settings
 from src.cad_wrapper.text2cad_wrapper.availability import text2cad_status, settings as text2cad_settings
 from src.hunyuan3d_wrapper.availability import (
@@ -610,6 +613,14 @@ class ToolMonitor:
         })
 
     def execute(self, name: str, arguments: dict[str, Any]) -> ToolReceipt:
+        if name != "run_forward":
+            return self._execute(name, arguments)
+        # Every front end reaches a solve through here, so this is where a second
+        # one is refused, and before _execute unloads any model to make room for it.
+        with solve_claim(self.session_dir):
+            return self._execute(name, arguments)
+
+    def _execute(self, name: str, arguments: dict[str, Any]) -> ToolReceipt:
         if name not in self.registry:
             raise ToolRejected(f"tool is not registered: {name}")
         spec = self.registry[name]
@@ -804,6 +815,10 @@ class ToolMonitor:
             result = self._run_tool_worker(command_tail, spec.timeout)
         elif name == "run_forward":
             result = self._run_solver_worker(command_tail, spec.timeout)
+            # A worker gone mid-request reads as "run it here": not one stopped on purpose.
+            if result is None and solve_stop_requested(self.session_dir):
+                result = subprocess.CompletedProcess(
+                    command, -int(signal.SIGTERM), "", "the solve was stopped on request")
         if result is None:
             result = subprocess.run(command, cwd=self.session_dir, capture_output=True, text=True,
                                     timeout=spec.timeout, check=False, env=environment)

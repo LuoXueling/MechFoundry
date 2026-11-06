@@ -9,6 +9,8 @@ only, no imports from the package.
 
 from __future__ import annotations
 
+import contextlib
+import fcntl
 import hashlib
 import json
 import os
@@ -16,6 +18,7 @@ import signal
 import socket
 import sys
 import tempfile
+import time
 from pathlib import Path
 from typing import Any
 
@@ -228,6 +231,212 @@ def stop_worker_at(socket_path: Path, pid_path: Path, kind: str) -> None:
 
 
 # ----------------------------------------------------------------- solves --
+
+# One solve per session.  On 2026-11-06 the sidebar re-ran a session's pending solve each time
+# the conversation was opened, and nothing said one was running: eight solves of one case began
+# in four minutes on GPU 0, and the out-of-memory errors they caused one another came back as
+# that case's failure, while three copies went on for an hour behind the failure card.
+#
+# Two kernel locks (flock), because no one process is there for a whole solve.  The monitor holds
+# the claim from before it touches anything until the solve returns, so a refused duplicate has
+# unloaded no model and written no receipt.  The solve holds the run lock itself, in whichever
+# process it lands: a one-shot launch, the warm solver worker, or the operator's backend run.
+# That one is what outlives its parent, as a solve does when Streamlit is restarted beneath it.
+# The kernel drops a lock with its holder, so a killed process leaves nothing stale to clear, and
+# each open has its own file description, so threads of one process conflict as processes do.
+SOLVE_CLAIM_LOCK = ".solve_claim.lock"
+SOLVE_RUN_LOCK = ".solve_run.lock"
+# Written before a requested stop signals anything, and left until the next solve is claimed:
+# it is what tells "stopped on request" from a kill nobody asked for, for the graph, and for
+# the solver panel, whose log of a stopped run never says it finished.
+SOLVE_STOP_REQUEST = ".solve_stop_requested"
+# How long a stopped solve is given to go on SIGTERM before SIGKILL.
+SOLVE_STOP_GRACE = 5.0
+# How long a stop waits for a claimed solve to reach its run lock: Stop FEA is on offer from the
+# click on Run FEA, and a solve imports torch and warp before there is a process to signal.
+SOLVE_START_WAIT = 30.0
+SOLVE_RUNNING_MESSAGE = (
+    "A solve is already running for this session, and it was left undisturbed. "
+    "Wait for it to finish before running again."
+)
+# ``solve_running`` takes a lock for an instant to read it, which a claim must not mistake for a
+# solve: a few short tries see past a probe, and a real holder is there for minutes.
+LOCK_ATTEMPTS = 4
+LOCK_RETRY_SECONDS = 0.05
+
+
+class SolveAlreadyRunning(RuntimeError):
+    """This session has a solve running.  A refusal, not a failed solve: nothing was attempted,
+    so the failure path (dropping the viewer's assets, the failure card) must not run on it."""
+
+    def __init__(self, message: str = SOLVE_RUNNING_MESSAGE):
+        super().__init__(message)
+
+
+def _hold_lock(path: Path) -> int | None:
+    """The descriptor holding ``path``'s lock, or None while someone else holds it."""
+    descriptor = os.open(path, os.O_CREAT | os.O_RDWR, 0o644)
+    for attempt in range(LOCK_ATTEMPTS):
+        try:
+            fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return descriptor
+        except BlockingIOError:
+            if attempt + 1 < LOCK_ATTEMPTS:
+                time.sleep(LOCK_RETRY_SECONDS)
+    os.close(descriptor)
+    return None
+
+
+def _lock_held(path: Path) -> bool:
+    try:
+        descriptor = os.open(path, os.O_RDONLY)
+    except OSError:           # never locked: reading must not leave a file in an old session
+        return False
+    try:
+        fcntl.flock(descriptor, fcntl.LOCK_SH | fcntl.LOCK_NB)
+        return False
+    except BlockingIOError:
+        return True
+    finally:
+        os.close(descriptor)
+
+
+def solve_running(session_dir: Path | str) -> bool:
+    """Whether a solve of this session is claimed or running, in any process."""
+    root = Path(session_dir)
+    return _lock_held(root / SOLVE_CLAIM_LOCK) or _lock_held(root / SOLVE_RUN_LOCK)
+
+
+@contextlib.contextmanager
+def solve_claim(session_dir: Path | str):
+    """Hold the session's one solve for this block, or raise ``SolveAlreadyRunning``."""
+    root = Path(session_dir)
+    descriptor = _hold_lock(root / SOLVE_CLAIM_LOCK)
+    if descriptor is None:
+        raise SolveAlreadyRunning()
+    try:
+        if _lock_held(root / SOLVE_RUN_LOCK):    # a solve whose monitor has gone
+            raise SolveAlreadyRunning()
+        clear_solve_stop(root)      # that of a run nobody was left to report, or a lost race
+        yield
+    finally:
+        os.close(descriptor)
+
+
+@contextlib.contextmanager
+def solve_process(session_dir: Path | str):
+    """Mark the solve itself as running, for as long as it runs."""
+    root = Path(session_dir)
+    root.mkdir(parents=True, exist_ok=True)
+    descriptor = _hold_lock(root / SOLVE_RUN_LOCK)
+    if descriptor is None:
+        raise SolveAlreadyRunning()
+    try:
+        # Who holds it, for stop_solve.  The lock says someone does; this says who.
+        os.pwrite(descriptor, json.dumps(_process_identity(os.getpid())).encode(), 0)
+        yield
+    finally:
+        os.ftruncate(descriptor, 0)
+        os.close(descriptor)
+
+
+def _process_identity(pid: int) -> dict[str, Any] | None:
+    """What makes this pid this process: a pid is reused, its command and start time are not.
+
+    The start time is what separates a solve from a later solve of the same session, whose
+    command line is identical.
+    """
+    try:
+        command = Path(f"/proc/{pid}/cmdline").read_bytes()
+        line = Path(f"/proc/{pid}/stat").read_text(encoding="utf-8")
+        started = line[line.rindex(")") + 1:].split()[19]
+    except (OSError, ValueError, IndexError):
+        return None
+    return {"pid": pid, "command": command.hex(), "started": started}
+
+
+def _descendants(pid: int) -> list[int]:
+    """Every process below this one.  By the parent links and never by process group: a one-shot
+    solve shares its group with whoever launched it, Streamlit included."""
+    children: dict[int, list[int]] = {}
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            line = (entry / "stat").read_text(encoding="utf-8")
+            children.setdefault(int(line[line.rindex(")") + 1:].split()[1]), []).append(
+                int(entry.name))
+        except (OSError, ValueError, IndexError):
+            continue
+    found: list[int] = []
+    waiting = [pid]
+    while waiting:
+        below = children.get(waiting.pop(), [])
+        found += below
+        waiting += below
+    return found
+
+
+def _still_running(identity: dict[str, Any]) -> bool:
+    return (_process_identity(identity["pid"]) == identity
+            and process_state(identity["pid"]) not in (None, "Z", "X"))
+
+
+def _signal_all(family: list[dict[str, Any]], number: int) -> None:
+    for member in family:
+        if _still_running(member):       # read again at the signal: the pid may be another's now
+            with contextlib.suppress(OSError):
+                os.kill(member["pid"], number)
+
+
+def stop_solve(session_dir: Path | str, grace: float = SOLVE_STOP_GRACE,
+               start_wait: float = 0.0) -> bool:
+    """End the session's running solve on request; False if there was none to reach.
+
+    SIGTERM, then SIGKILL after ``grace``, to the process holding the run lock and those below
+    it, whichever route launched it, and only while each is still the process recorded.  A solve
+    between its claim and its first line has no process with the lock yet: ``start_wait`` is how
+    long to wait for one.  False also for a solve started before the holder recorded itself,
+    which has no record to verify.
+    """
+    root = Path(session_dir)
+    deadline = time.monotonic() + start_wait
+    while (time.monotonic() < deadline and _lock_held(root / SOLVE_CLAIM_LOCK)
+           and not _lock_held(root / SOLVE_RUN_LOCK)):
+        time.sleep(0.05)
+    if not _lock_held(root / SOLVE_RUN_LOCK):
+        return False
+    try:
+        holder = json.loads((root / SOLVE_RUN_LOCK).read_text(encoding="utf-8"))
+        family = [holder]
+        running = _still_running(holder)
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+    if not running:
+        return False
+    (root / SOLVE_STOP_REQUEST).write_text(str(time.time()), encoding="utf-8")
+    for pid in _descendants(holder["pid"]):
+        identity = _process_identity(pid)
+        if identity is not None:
+            family.append(identity)
+    _signal_all(family, signal.SIGTERM)
+    deadline = time.monotonic() + grace
+    while any(_still_running(member) for member in family) and time.monotonic() < deadline:
+        time.sleep(0.05)
+    _signal_all(family, signal.SIGKILL)
+    deadline = time.monotonic() + SOLVE_STOP_GRACE
+    while _lock_held(root / SOLVE_RUN_LOCK) and time.monotonic() < deadline:
+        time.sleep(0.05)
+    return not _lock_held(root / SOLVE_RUN_LOCK)
+
+
+def solve_stop_requested(session_dir: Path | str) -> bool:
+    return (Path(session_dir) / SOLVE_STOP_REQUEST).exists()
+
+
+def clear_solve_stop(session_dir: Path | str) -> None:
+    (Path(session_dir) / SOLVE_STOP_REQUEST).unlink(missing_ok=True)
+
 
 # What a failed solve leaves in ``solve/``: when it was asked for (``started``), why it stopped
 # (``error``) and its own log if it got far enough to write one.  A solve that succeeds removes it.

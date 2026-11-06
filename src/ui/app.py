@@ -78,6 +78,7 @@ from src.ui.browse import (
 from src.ui.telemetry import (
     DEFORMATION_REACH,
     awaiting_solve,
+    solver_state,
     last_solve_failure,
     solver_failure_notes,
     DEFORMATION_STEPS,
@@ -100,6 +101,7 @@ from src.ui.telemetry import (
 from src.agents_wrapper.fem_workflow.runtime_files import RENAMED_ENVIRONMENTS
 from src.ui.controller import (
     DEFAULT_COMPUTE_ENV,
+    SOLVE_RUNNING_MESSAGE,
     WorkflowController,
     WorkflowEvent,
     day_heading,
@@ -200,6 +202,13 @@ st.markdown(
     cursor: wait !important;
     opacity: 0.5 !important;
     filter: saturate(0.55);
+  }
+  /* The one button a running step leaves live: it is what ends that step. */
+  html.fem-workflow-busy [class*="st-key-workflow_panel"] [class*="st-key-stop_fea"] button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
   [data-testid="stSidebarUserContent"] {
     position: relative;
@@ -1401,6 +1410,11 @@ def _start_job(
 ) -> None:
     """Hand a workflow step to the worker and return to drawing the page."""
     session_id = st.session_state.session_id
+    # Here as well as in the controller: the pool runs one step at a time, so a
+    # Run FEA sent from a second tab would wait out the solve and then repeat it.
+    if controller.solve_running(session_id):
+        st.session_state.job_error = SOLVE_RUNNING_MESSAGE
+        st.rerun()
     event = st.session_state.event
     answered = checkpoint_id or event.checkpoint_id
     # Generation holds the GPU for anything from ten seconds to minutes, and
@@ -1557,6 +1571,26 @@ def watch_pending_job() -> None:
     # has no viewer to push the rest into.  One redraw hands it both.
     if not pending.get("shown_first_surface") and first_surface_landed(pending):
         pending["shown_first_surface"] = True
+        st.rerun(scope="app")
+
+
+def solve_active(session_id: str) -> bool:
+    """Whether this session has a solve under way, or just asked for from this tab.
+
+    The pending job covers the moment between Run FEA and the claim on the solve,
+    so the button has already turned into Stop FEA when the page redraws.
+    """
+    job = st.session_state.get("pending_job")
+    answer = job["answer"] if job and job["session_id"] == session_id else None
+    return (isinstance(answer, dict) and answer.get("action") == "run"
+            or controller.solve_running(session_id))
+
+
+@st.fragment(run_every=5.0)
+def watch_running_solve(session_id: str) -> None:
+    """Bring back the session's card once a solve this tab did not start ends."""
+    if not controller.solve_running(session_id):
+        set_event(controller.open(session_id))
         st.rerun(scope="app")
 
 
@@ -1916,6 +1950,10 @@ def render_resource_tab() -> None:
 
 @st.fragment(run_every=2.0)
 def render_solver_tab(session_dir: Path | None, session_id: str | None = None) -> None:
+    # A stop's record stays until the next solve is claimed, so a solve just asked
+    # for (still a pending job, no claim yet) must not read as that stopped one.
+    running = bool(session_id) and solve_active(session_id)
+    stopped = bool(session_id) and not running and controller.solve_stopped(session_id)
     log_path = newest_solve_log(session_dir) if session_dir else None
     requested = st.session_state.get("solve_requested", {}).get(session_id)
     # A failed solve is reported as one, until another is asked for.  Its log
@@ -1936,6 +1974,10 @@ def render_solver_tab(session_dir: Path | None, session_id: str | None = None) -
     # show the last one's progress: the run takes a moment to reach its first
     # iteration, and until it does the panel was still reporting a finished
     # solve, complete with its residuals.
+    elif stopped and awaiting_solve(log_path, requested):
+        # Nothing is coming, and the log there is an earlier run's.
+        st.caption("Stopped before the solver wrote its first iteration.")
+        return
     elif awaiting_solve(log_path, requested):
         st.progress(0.0, text="Starting the solve…")
         st.caption("Waiting for the solver to write its first iteration…")
@@ -1950,7 +1992,9 @@ def render_solver_tab(session_dir: Path | None, session_id: str | None = None) -
     except OSError as exc:
         st.caption(f"Could not read the solve log: {exc}")
         return
-    state = "failed" if failed else "complete" if progress.finished else "running"
+    state = solver_state(
+        failed=failed, finished=progress.finished, running=running, stopped=stopped,
+    )
     if progress.optimizing:
         # The outer loop is what a shape optimization is waiting on; its load
         # step is always one of one and says nothing.  Iterations are logged
@@ -3802,6 +3846,32 @@ def confirm_delete(session_id: str) -> None:
         st.rerun()
 
 
+@st.dialog("Stop FEA")
+def confirm_stop(session_id: str) -> None:
+    """Ask before ending a solve: what it has yet to run cannot be got back."""
+    st.write("Stop the running solve?")
+    st.caption(
+        "The iterations it has written stay in the viewer. The rest of the run "
+        "is lost, and the settings card comes back to run it again."
+    )
+    keep, stop = st.columns(2)
+    if keep.button("Keep running", key="dialog_keep_solve", width="stretch"):
+        st.session_state.pop("pending_stop", None)
+        st.rerun()
+    if stop.button("Stop FEA", key="dialog_stop_solve", type="primary",
+                   width="stretch"):
+        st.session_state.pop("pending_stop", None)
+        # A solve just launched is still importing: this waits for it.
+        with st.spinner("Stopping the solve…"):
+            stopped_it = controller.stop_solve(session_id)
+        # A stop that worked shows on the card and in the Solver panel.
+        if not stopped_it:
+            st.session_state.stop_outcome = (
+                "Nothing was stopped: the solve has already ended or has not started."
+            )
+        st.rerun()
+
+
 with st.sidebar:
     with st.container(key="sidebar_controls"):
         st.header("Conversations")
@@ -3839,7 +3909,9 @@ with st.sidebar:
             ):
                 try:
                     st.session_state.last_interrupt = None
-                    set_event(controller.resume(session_id))
+                    job = st.session_state.get("pending_job")
+                    set_event(controller.open(session_id, step_running=bool(
+                        job and job["session_id"] == session_id)))
                     st.rerun()
                 except Exception as exc:
                     st.error(f"Could not resume: {type(exc).__name__}: {exc}")
@@ -3859,6 +3931,17 @@ with st.sidebar:
     problem = st.session_state.pop("delete_error", None)
     if problem:
         st.error(problem)
+
+pending_stop = st.session_state.get("pending_stop")
+if pending_stop and solve_active(pending_stop):
+    confirm_stop(pending_stop)
+else:
+    # Asked of a solve that has ended, or a dialog dismissed by its X, which
+    # would otherwise come back at the next redraw.
+    st.session_state.pop("pending_stop", None)
+stop_outcome = st.session_state.pop("stop_outcome", None)
+if stop_outcome:
+    st.toast(stop_outcome)
 
 # Take delivery of any finished step here, on the thread that owns session
 # state, before the page is drawn from it.
@@ -5402,7 +5485,21 @@ with conversation_panel:
                                 min_value=1,
                                 value=int(defaults["reinit_every"]),
                             )
-                        sent = st.form_submit_button("Run FEA", type="primary")
+                        # One button in one place.  A form can hold only submit
+                        # buttons, so stopping is a submit too, and its widgets'
+                        # values are simply not read.
+                        stopping = solve_active(event.session_id)
+                        if stopping:
+                            sent = False
+                            if st.form_submit_button(
+                                "Stop FEA", type="primary", key="stop_fea",
+                                icon=":material/stop_circle:",
+                                help="End the solve running for this conversation",
+                            ):
+                                st.session_state.pending_stop = event.session_id
+                                st.rerun()
+                        else:
+                            sent = st.form_submit_button("Run FEA", type="primary")
                     # Outside the form and independent of its widgets, so it renders
                     # with the card and stays put whatever the user selects.  A form
                     # batches its widgets until submit, so anything conditioned on one
@@ -5489,6 +5586,9 @@ with conversation_panel:
                         st.success(
                             "Simulation complete. Results are available in the viewer."
                         )
+                    if interrupt.get("solve_stopped"):
+                        st.info("Solve stopped. What it wrote stays in the viewer; "
+                                "edit the settings and run again.")
                 elif kind in ("clarification",):
                     with st.form(f"clarification_{card.key}"):
                         value = st.text_input("Response")
@@ -5512,6 +5612,15 @@ with conversation_panel:
             # The work is on a worker thread, so this only has to notice when it
             # finishes; the page stays live in the meantime.
             watch_pending_job()
+        elif event and controller.solve_running(event.session_id):
+            # Started in another tab or front end, or before a restart of this
+            # server: nothing here is waiting on it, so say why no card can run.
+            with st.chat_message("assistant"):
+                st.markdown(
+                    "_A solve is already running for this session. Its card "
+                    "comes back here when it finishes._"
+                )
+            watch_running_solve(event.session_id)
 
     scroll_target = st.session_state.pop("scroll_conversation", None)
     if scroll_target == "card":

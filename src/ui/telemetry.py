@@ -468,6 +468,20 @@ def solver_failure_notes(failure: dict[str, Any] | None) -> list[str]:
     return notes
 
 
+def solver_state(*, failed: bool, finished: bool, running: bool, stopped: bool) -> str:
+    """The word the Solver panel gives a run.
+
+    A stop outranks the log's "finished": the solver writes that before the
+    process has saved its surfaces, so a stop in those seconds reads as a
+    complete run although the workflow ended it and never took its results.
+    """
+    if failed:
+        return "failed"
+    if stopped and not running:
+        return "stopped"
+    return "complete" if finished else "running"
+
+
 def awaiting_solve(log_path: Path | None, requested: float | None) -> bool:
     """Whether a solve that was asked for has yet to write anything.
 

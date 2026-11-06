@@ -324,6 +324,12 @@ Gotchas:
   and `sdf_bc_fix_method` `"mask"`. The workflow offers only `"mask"` and `"zip"` for
   BC preservation; the core's `"graft"` is retired there, and a stored one loads as
   `"mask"`.
+- A session runs one solve at a time, in every front end: the solve holds flocks in the
+  session folder (`.solve_claim.lock`, `.solve_run.lock`; `runtime_files.py`), and a
+  duplicate gets `SolveAlreadyRunning`, which is not a failed solve. Opening a session in
+  the UI (`controller.open`) runs no step; `resume` runs the pending one. *Run FEA* turns into
+  *Stop FEA* while one runs, which ends it (`runtime_files.stop_solve`), which is not a failure either: the
+  written iterations stay and the settings card returns.
 - `gd_lr_auto` (off by default) sizes the SDF step at every update to
   `gd_lr_auto_fraction · ε / max|dJ/ds|` (fraction 0.5), so `gd_lr` is then unused;
   such a run ends at `max_optimize_iters`, not at a relative tolerance.

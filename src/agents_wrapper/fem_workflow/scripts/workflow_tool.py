@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import hashlib
 import json
 import os
@@ -1405,6 +1406,23 @@ def _require_fresh_amgx(backend: str) -> None:
         )
 
 
+def _holding_solve_lock(run):
+    """Mark the session's solve as running from inside the process doing it.
+
+    The monitor's claim ends with the monitor; this lock lasts as long as the
+    solve, on every route into it (runtime_files, "One solve per session").
+    """
+    @functools.wraps(run)
+    def locked(args):
+        from src.agents_wrapper.fem_workflow.runtime_files import solve_process
+
+        output = json.loads(args.case.read_text(encoding="utf-8")).get("output")
+        with solve_process(Path(output).parent if output else args.case.parent):
+            return run(args)
+    return locked
+
+
+@_holding_solve_lock
 def run_forward(args) -> list[str]:
     import torch
 

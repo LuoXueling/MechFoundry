@@ -24,6 +24,10 @@ from src.agents_wrapper.fem_workflow.graph import (
 )
 from src.agents_wrapper.fem_workflow.models import write_text_atomically
 from src.agents_wrapper.fem_workflow.monitor import CAD_GENERATORS, worker_paths
+from src.agents_wrapper.fem_workflow.runtime_files import (
+    SOLVE_RUNNING_MESSAGE, SOLVE_START_WAIT, SolveAlreadyRunning, solve_running,
+    solve_stop_requested, stop_solve,
+)
 from src.agents_wrapper.fem_workflow.workers import (
     DEFAULT_COMPUTE_ENV,
     WORKER_RELAUNCH_BACKOFF,
@@ -41,7 +45,7 @@ from src.agents_wrapper.fem_workflow.workers import (
 )
 
 __all__ = [
-    "DEFAULT_COMPUTE_ENV", "WORKER_RELAUNCH_BACKOFF", "WorkflowController",
+    "DEFAULT_COMPUTE_ENV", "SOLVE_RUNNING_MESSAGE", "WORKER_RELAUNCH_BACKOFF", "WorkflowController",
     "WorkflowEvent", "day_heading", "interrupt_marker", "request_warm",
     "restored_interrupt", "worker_is_serving",
 ]
@@ -332,9 +336,57 @@ class WorkflowController:
         session_dir = self.session_dir(session_id)
         if not session_dir.is_dir():
             raise FileNotFoundError(f"unknown session: {session_id}")
+        # Before the rewind an answer may ask for, which puts back the very files
+        # a running solve's results belong to.
+        if answer is not None and solve_running(session_dir):
+            raise SolveAlreadyRunning()
         # Wrapped once the graph is open, so the answer can name the step it is for.
         payload = None if answer is None else _Answer(answer)
         return self._invoke(session_id, payload, checkpoint_id)
+
+    def solve_running(self, session_id: str) -> bool:
+        """Whether a solve of this session is running, from any tab or front end."""
+        return solve_running(self.session_dir(session_id))
+
+    def stop_solve(self, session_id: str) -> bool:
+        """End the session's running solve; False if there was none this could reach."""
+        return stop_solve(self.session_dir(session_id), start_wait=SOLVE_START_WAIT)
+
+    def solve_stopped(self, session_id: str) -> bool:
+        """Whether the session's last solve was stopped on request."""
+        return solve_stop_requested(self.session_dir(session_id))
+
+    def open(self, session_id: str, *, step_running: bool = False) -> WorkflowEvent:
+        """Show a session as it stands, running none of its steps.
+
+        Opening used to resume the graph, and a session stopped ahead of a step
+        ran that step: on 2026-11-06 each opening of a session waiting at
+        ``solve`` started the solve again (eight in four minutes, on the page's
+        own thread, past the one-at-a-time pool).  A session with no card waiting
+        gets its newest card back instead, and running anything is left to an
+        answer.  While a step is running, in this tab (``step_running``) or as a
+        solve anywhere, the thread is not the opener's to fork, so the session is
+        only read.
+        """
+        session_dir = self.session_dir(session_id)
+        if not session_dir.is_dir():
+            raise FileNotFoundError(f"unknown session: {session_id}")
+        with open_session_graph(session_dir, build_graph) as graph:
+            thread = session_thread(session_id, session_dir)
+            snapshot = graph.get_state(thread)
+            # A rejected answer stands against its card and would be replayed.
+            parked = snapshot.interrupts and not failed_step(graph, thread)
+            if (snapshot.next and not parked and not step_running
+                    and not self.solve_running(session_id)):
+                reopen_card(graph, thread)
+                snapshot = graph.get_state(thread)
+        interrupts = snapshot.interrupts
+        current = moved_here(interrupts[0].value if interrupts else None, session_dir)
+        workflow = moved_here(
+            snapshot.values.get("workflow") or self.read_workflow(session_id), session_dir)
+        self._preload_for_interrupt(session_id, current, workflow)
+        return WorkflowEvent(session_id, current, workflow,
+                             snapshot.config.get("configurable", {}).get("checkpoint_id"))
 
     def _invoke(self, session_id: str, payload: Any,
                 checkpoint_id: str | None = None) -> WorkflowEvent:

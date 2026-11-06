@@ -31,8 +31,11 @@ from src.hunyuan3d_wrapper.availability import hunyuan3d_status, sdxl_status, te
 from src.hunyuan3d_wrapper.surface import has_colour, plain_colour
 from src.partfield_wrapper.availability import partfield_status
 from .assets import SOLVE_FAILURE
-from .runtime_files import OPTIMIZATION_STATUS
-from .monitor import ToolFailed, ToolMonitor, _digest, stopped
+from .runtime_files import OPTIMIZATION_STATUS, clear_solve_stop
+from .monitor import (
+    SolveAlreadyRunning, ToolFailed, ToolMonitor, _digest, solve_running,
+    solve_stop_requested, stopped,
+)
 from .specialists import SpecialistCalls
 
 
@@ -2247,6 +2250,8 @@ def build_graph():
             "message": (
                 "The FEA solve failed. Review the log and edit settings before running again."
                 if pending.get("solve_failed") else
+                "Solve stopped. Review what it wrote or edit settings and run again."
+                if pending.get("solve_stopped") else
                 "Simulation complete. Review the results or edit settings and run again."
                 if pending.get("solve_complete") else
                 "Review ShapeOptTrimmed solver and optimization settings."
@@ -2264,6 +2269,7 @@ def build_graph():
             "solve_log": pending.get("solve_log"),
             "solve_log_path": pending.get("solve_log_path"),
             "solve_complete": bool(pending.get("solve_complete")),
+            "solve_stopped": bool(pending.get("solve_stopped")),
             # The card stays open after a solve so it can be run again; this is
             # the answer that ends the session instead.  Anything else runs.
             "finish_answer": {"action": "finish"},
@@ -2273,6 +2279,10 @@ def build_graph():
         if answer.get("action") == "finish":
             state.stage = Stage.COMPLETE
             return {**_dump(state), "pending": {"next": "complete"}}
+        # Here and not only at the solve: everything from this line on rewrites
+        # the settings and the case that the running solve's results belong to.
+        if solve_running(state.root):
+            raise SolveAlreadyRunning()
         # Settings the answer leaves out keep the card's, not the class defaults.
         state.shape_opt = ShapeOptSettings.model_validate(
             {**state.shape_opt.model_dump(mode="json"), **answer})
@@ -2305,7 +2315,19 @@ def build_graph():
             receipt = ToolMonitor(state.root, state.compute_env).execute(
                 "run_forward", {"case": state.case_path}
             )
+        except SolveAlreadyRunning:
+            # Nothing was attempted, and the assets below are the running solve's.
+            raise
         except Exception as exc:
+            if solve_stop_requested(state.root):
+                # Nothing went wrong, so nothing of the failure path applies: no
+                # error, no advice about the case, and the viewer keeps what the
+                # run wrote, which is why it was stopped rather than deleted.
+                (solve_root / SOLVE_FAILURE).unlink(missing_ok=True)
+                state.stage = Stage.FORWARD_PENDING
+                return {**_dump(state), "pending": {
+                    "solve_failed": False, "solve_stopped": True,
+                }}
             message = f"{type(exc).__name__}: {exc}"[:4000]
             # This run's log only: a solve that failed before writing one would
             # otherwise be reported with the last good run's log.
@@ -2370,6 +2392,7 @@ def build_graph():
                 "solve_log_path": str(log_path) if log_path else None,
             }}
         (solve_root / SOLVE_FAILURE).unlink(missing_ok=True)
+        clear_solve_stop(state.root)     # the solve finished before the stop reached it
         state.tool_receipts.append(receipt)
         state.stage = Stage.COMPLETE
         return {**_dump(state), "pending": {

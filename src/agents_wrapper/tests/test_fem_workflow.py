@@ -10307,3 +10307,543 @@ def test_pre_rename_environment_names_resolve_to_mechfoundry(monkeypatch, tmp_pa
     assert set(rf.RENAMED_ENVIRONMENTS.values()) == {
         f"mechfoundry-{suffix}" for suffix in
         ("warp117", "agents", "text2cad", "cadcoder", "hunyuan3d", "vomp", "partfield")}
+
+
+def _solve_case(session):
+    """A session folder with a case to solve, as the monitor is handed one."""
+    session.mkdir()
+    case = session / "case.json"
+    case.write_text(json.dumps({"output": str(session / "solve")}), encoding="utf-8")
+    return case
+
+
+def test_a_second_solve_is_refused_before_it_touches_anything(monkeypatch, tmp_path):
+    """Eight solves of one case began in four minutes on 2026-11-06 and ran each other out of
+    memory.  The refusal comes first, ahead of the model unload that makes room for a solve."""
+    import subprocess
+
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SolveAlreadyRunning, solve_claim, solve_process, solve_running,
+    )
+
+    case = _solve_case(tmp_path / "session")
+    session = case.parent
+    launches = []
+
+    def fake_run(command, **kwargs):
+        # Held for the whole subprocess, as it is across the worker's request.
+        assert solve_running(session)
+        launches.append(command)
+        (session / "solve").mkdir(exist_ok=True)
+        return subprocess.CompletedProcess(command, 0, "ok", "")
+
+    monkeypatch.setattr("src.agents_wrapper.fem_workflow.monitor.subprocess.run", fake_run)
+    monitor = ToolMonitor(session)
+    monkeypatch.setattr(monitor, "release_models_for_solve", lambda: launches.append("unload"))
+    # Once a solve has returned the session is free again, and the next one runs.
+    monitor.execute("run_forward", {"case": str(case)})
+    assert len(launches) == 2 and not solve_running(session)
+    launches.clear()
+    receipts = sorted(path.name for path in monitor.receipt_dir.iterdir())
+
+    # Another front end's solve, between threads of one process as much as between processes.
+    with solve_claim(session):
+        with pytest.raises(SolveAlreadyRunning, match="already running"):
+            monitor.execute("run_forward", {"case": str(case)})
+    # A solve that outlived the monitor that started it, Streamlit restarted beneath it.
+    with solve_process(session):
+        with pytest.raises(SolveAlreadyRunning, match="already running"):
+            monitor.execute("run_forward", {"case": str(case)})
+    assert launches == []
+    assert sorted(path.name for path in monitor.receipt_dir.iterdir()) == receipts
+
+
+def test_the_solve_holds_the_lock_on_the_worker_route_too(monkeypatch, tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import solve_running
+
+    case = _solve_case(tmp_path / "session")
+    session = case.parent
+    seen = []
+    monitor = ToolMonitor(session)
+
+    def served(command_tail, timeout):
+        seen.append(solve_running(session))
+        (session / "solve").mkdir(exist_ok=True)
+        return SimpleNamespace(returncode=0, stdout="ok", stderr="")
+
+    monkeypatch.setattr(monitor, "release_models_for_solve", lambda: None)
+    monkeypatch.setattr(monitor, "_run_solver_worker", served)
+    monitor.execute("run_forward", {"case": str(case)})
+    assert seen == [True] and not solve_running(session)
+
+
+def test_the_solve_marks_itself_running_wherever_it_lands(tmp_path):
+    """The lock that outlives the monitor is taken in the solving process, keyed on the session
+    that holds the case's output, so the warm worker and the backend run are both covered."""
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SolveAlreadyRunning, solve_process, solve_running,
+    )
+
+    case = _solve_case(tmp_path / "session")
+    session = case.parent
+    seen = []
+
+    @workflow_tool._holding_solve_lock
+    def solve(args):
+        seen.append(solve_running(session))
+        return ["done"]
+
+    assert solve(SimpleNamespace(case=case)) == ["done"]
+    assert seen == [True] and not solve_running(session)
+    assert hasattr(workflow_tool.run_forward, "__wrapped__")
+    # The last line of defence: a second solve that got past every claim still does not run.
+    with solve_process(session):
+        with pytest.raises(SolveAlreadyRunning):
+            solve(SimpleNamespace(case=case))
+    assert len(seen) == 1
+
+
+@pytest.mark.parametrize("sig", ["SIGKILL", "SIGTERM"])
+def test_a_killed_solve_leaves_no_lock_behind(tmp_path, sig):
+    import subprocess
+
+    from src.agents_wrapper.fem_workflow import runtime_files
+    from src.agents_wrapper.fem_workflow.runtime_files import solve_claim, solve_running
+
+    session = tmp_path / "session"
+    session.mkdir()
+    holder = subprocess.Popen(
+        [sys.executable, "-c",
+         "import sys, time\n"
+         f"sys.path.insert(0, {str(Path(runtime_files.__file__).parent)!r})\n"
+         "import runtime_files\n"
+         f"with runtime_files.solve_process({str(session)!r}):\n"
+         "    print('held', flush=True)\n"
+         "    time.sleep(60)\n"],
+        stdout=subprocess.PIPE, text=True)
+    try:
+        assert holder.stdout.readline().strip() == "held"
+        assert solve_running(session)
+    finally:
+        holder.send_signal(getattr(signal, sig))
+        holder.wait(10)
+        holder.stdout.close()
+    assert not solve_running(session)
+    with solve_claim(session):
+        assert solve_running(session)
+    assert not solve_running(session)
+
+
+def test_a_session_that_never_solved_reads_as_idle_and_gains_no_files(tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import solve_running
+
+    assert not solve_running(tmp_path)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_a_refused_solve_leaves_the_session_and_its_results_alone(monkeypatch, tmp_path):
+    """Refused at the solve itself: the failure path would drop the running solve's assets."""
+    pytest.importorskip("langgraph")
+    from langgraph.checkpoint.memory import MemorySaver
+
+    from src.agents_wrapper.fem_workflow import graph as graph_module
+    from src.agents_wrapper.fem_workflow.assets import SOLVE_FAILURE
+    from src.agents_wrapper.fem_workflow.models import WorkflowState
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SolveAlreadyRunning, solve_claim,
+    )
+
+    case = _solve_case(tmp_path / "session")
+    session = case.parent
+    asset = session / "solve" / "displacement_magnitude.glb"
+    asset.parent.mkdir()
+    asset.write_bytes(b"the running solve's")
+    state = WorkflowState(session_id="s", session_dir=str(session), model="fake",
+                          case_path=str(case)).model_dump(mode="json")
+    graph = graph_module.build_graph().compile(checkpointer=MemorySaver())
+    config = {"configurable": {"thread_id": "s"}}
+    graph.update_state(config, {"workflow": state}, as_node="build_case")
+    assert graph.get_state(config).next == ("solve",)
+
+    with solve_claim(session):
+        with pytest.raises(SolveAlreadyRunning):
+            graph.invoke(None, config=config)
+    assert asset.read_bytes() == b"the running solve's"
+    assert not (session / "solve" / SOLVE_FAILURE).exists()
+    assert graph.get_state(config).values["workflow"] == state
+
+
+def test_a_settings_answer_during_a_solve_rewrites_nothing(tmp_path):
+    """The other front ends' guard, for the CLI and the operator: the answer stops at the card."""
+    pytest.importorskip("langgraph")
+    from langgraph.checkpoint.memory import MemorySaver
+
+    from src.agents_wrapper.fem_workflow import graph as graph_module
+    from src.agents_wrapper.fem_workflow.models import WorkflowState
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SolveAlreadyRunning, solve_claim,
+    )
+
+    session = tmp_path / "session"
+    session.mkdir()
+    state = WorkflowState(session_id="s", session_dir=str(session), model="fake")
+    graph = graph_module.build_graph().compile(checkpointer=MemorySaver())
+    config = {"configurable": {"thread_id": "s"}}
+    graph.update_state(config, {"workflow": state.model_dump(mode="json"),
+                                "pending": {}}, as_node="solve")
+    assert graph.get_state(config).next == ("shape_opt_input",)
+    graph.invoke(None, config=config)
+    with solve_claim(session):
+        with pytest.raises(SolveAlreadyRunning):
+            graph.invoke(graph_module.resume_command(graph, config, {"load_steps": 3}),
+                         config=config)
+    assert not (session / "case" / "shape_opt.json").exists()
+
+
+def _solve_graph(launches):
+    """A card, then a solve that counts its launches, then the card after it."""
+    from typing import TypedDict
+
+    from langgraph.graph import END, StateGraph
+    from langgraph.types import interrupt
+
+    class State(TypedDict, total=False):
+        workflow: dict
+
+    def settings(state):
+        answer = interrupt({"kind": "settings"})
+        return {"workflow": {**state.get("workflow", {}), "settings": answer}}
+
+    def solve(state):
+        launches.append(state["workflow"].get("settings"))
+        return {"workflow": {**state["workflow"], "stage": "complete"}}
+
+    def build():
+        graph = StateGraph(State)
+        graph.add_node("settings", settings)
+        graph.add_node("solve", solve)
+        graph.set_entry_point("settings")
+        graph.add_edge("settings", "solve")
+        graph.add_edge("solve", END)
+        return graph
+
+    return build
+
+
+def _stopped_ahead_of_the_solve(controller, session_id, build):
+    """Stop the session where a server dying mid-solve leaves it."""
+    from src.agents_wrapper.fem_workflow.graph import open_session_graph, session_thread
+
+    session_dir = controller.session_dir(session_id)
+    with open_session_graph(session_dir, build) as graph:
+        thread = session_thread(session_id, session_dir)
+        graph.update_state(thread, {"workflow": {"settings": "first"}}, as_node="settings")
+        assert graph.get_state(thread).next == ("solve",)
+
+
+def test_opening_a_session_never_runs_its_pending_solve(monkeypatch, tmp_path):
+    """Each opening of a session waiting at ``solve`` used to start the solve."""
+    pytest.importorskip("langgraph")
+    launches = []
+    build = _solve_graph(launches)
+    monkeypatch.setattr("src.ui.controller.build_graph", build)
+    controller = WorkflowController(tmp_path)
+    (tmp_path / "s1").mkdir()
+
+    parked = controller._invoke("s1", {"workflow": {}})
+    # A card waiting is simply shown, as many times as it is opened.
+    for _ in range(2):
+        opened = controller.open("s1")
+        assert opened.interrupt == {"kind": "settings"}
+        assert opened.checkpoint_id == parked.checkpoint_id
+
+    # No card waiting: the newest one comes back, and it is what runs the solve.
+    _stopped_ahead_of_the_solve(controller, "s1", build)
+    for _ in range(3):
+        assert controller.open("s1").interrupt == {"kind": "settings"}
+    assert launches == []
+    assert controller.resume("s1", "second").complete
+    assert launches == ["second"]
+
+    # Finished: the session is shown as it ended, with nothing run again.
+    finished = controller.open("s1")
+    assert finished.complete and finished.interrupt is None and launches == ["second"]
+
+    with pytest.raises(FileNotFoundError):
+        controller.open("absent")
+
+
+def test_opening_a_session_mid_solve_only_reads_it(monkeypatch, tmp_path):
+    pytest.importorskip("langgraph")
+    from src.agents_wrapper.fem_workflow.graph import open_session_graph, session_thread
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SolveAlreadyRunning, solve_claim,
+    )
+
+    launches = []
+    build = _solve_graph(launches)
+    monkeypatch.setattr("src.ui.controller.build_graph", build)
+    controller = WorkflowController(tmp_path)
+    session = tmp_path / "s1"
+    session.mkdir()
+    controller._invoke("s1", {"workflow": {}})
+    _stopped_ahead_of_the_solve(controller, "s1", build)
+
+    def head():
+        with open_session_graph(session, build) as graph:
+            return graph.get_state(session_thread("s1", session)).config[
+                "configurable"]["checkpoint_id"]
+
+    before = head()
+    # A step of this tab's own, one the lock does not cover.
+    assert controller.open("s1", step_running=True).interrupt is None
+    with solve_claim(session):
+        assert controller.solve_running("s1")
+        opened = controller.open("s1")
+        assert opened.interrupt is None and opened.workflow == {"settings": "first"}
+        # Stopped ahead of the rewind an answer can ask for, as well as the run.
+        with pytest.raises(SolveAlreadyRunning, match="already running"):
+            controller.resume("s1", "second", opened.checkpoint_id)
+    assert head() == before and launches == []
+    assert not controller.solve_running("s1")
+
+
+def _running_solve(session, *, ignore_term=False, child=False):
+    """A real process holding the session's run lock, on its way through a long solve."""
+    import subprocess
+
+    from src.agents_wrapper.fem_workflow import runtime_files
+
+    session.mkdir(exist_ok=True)
+    body = (
+        "import signal, subprocess, sys, time\n"
+        f"sys.path.insert(0, {str(Path(runtime_files.__file__).parent)!r})\n"
+        "import runtime_files\n"
+        + ("signal.signal(signal.SIGTERM, signal.SIG_IGN)\n" if ignore_term else "")
+        + f"with runtime_files.solve_process({str(session)!r}):\n"
+        + ("    below = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+           "    print(below.pid, flush=True)\n" if child else "")
+        + "    print('held', flush=True)\n"
+        "    time.sleep(60)\n"
+    )
+    process = subprocess.Popen([sys.executable, "-c", body], stdout=subprocess.PIPE, text=True,
+                               start_new_session=True)
+    first = process.stdout.readline().strip()
+    if child:
+        assert process.stdout.readline().strip() == "held"
+        return process, int(first)
+    assert first == "held"
+    return process, None
+
+
+def test_stop_ends_the_solve_and_frees_the_session(tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SOLVE_RUN_LOCK, solve_claim, solve_running, solve_stop_requested, stop_solve,
+    )
+
+    session = tmp_path / "session"
+    process, below = _running_solve(session, child=True)
+    try:
+        assert solve_running(session)
+        assert stop_solve(session)
+        assert process.wait(10) == -signal.SIGTERM
+        assert not solve_running(session)
+        assert solve_stop_requested(session)
+        # What is below it goes too, and it reads as a zombie or as nothing.
+        from src.agents_wrapper.fem_workflow.runtime_files import process_state
+        deadline = time.monotonic() + 5
+        while process_state(below) not in (None, "Z", "X") and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert process_state(below) in (None, "Z", "X")
+    finally:
+        process.kill()
+        process.stdout.close()
+    # Free at once, and the next solve starts clean of the request.
+    with solve_claim(session):
+        assert not solve_stop_requested(session)
+    assert (session / SOLVE_RUN_LOCK).read_text() != ""       # a killed holder cannot clear it
+
+
+def test_a_solve_that_ignores_the_stop_is_killed(tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import solve_running, stop_solve
+
+    session = tmp_path / "session"
+    process, _ = _running_solve(session, ignore_term=True)
+    try:
+        assert stop_solve(session, grace=0.2)
+        assert process.wait(10) == -signal.SIGKILL
+        assert not solve_running(session)
+    finally:
+        process.kill()
+        process.stdout.close()
+
+
+def test_a_stop_never_signals_a_reused_pid(tmp_path):
+    """The record names a pid; the process there now is someone else's."""
+    import subprocess
+
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SOLVE_RUN_LOCK, _process_identity, solve_process, solve_stop_requested, stop_solve,
+    )
+
+    session = tmp_path / "session"
+    session.mkdir()
+    bystander = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"])
+    try:
+        # Stale and unlocked: a holder long dead, nothing to do.
+        identity = _process_identity(bystander.pid)
+        (session / SOLVE_RUN_LOCK).write_text(json.dumps(identity))
+        assert not stop_solve(session)
+
+        with solve_process(session):
+            # Locked, with a record of the same pid under another command, then another start.
+            for changed in ({"command": b"something else".hex()}, {"started": "1"}):
+                (session / SOLVE_RUN_LOCK).write_text(json.dumps({**identity, **changed}))
+                assert not stop_solve(session)
+            # A holder from before records existed: nothing to verify, so nothing is signalled.
+            (session / SOLVE_RUN_LOCK).write_text("")
+            assert not stop_solve(session)
+        assert bystander.poll() is None
+        assert not solve_stop_requested(session)
+    finally:
+        bystander.kill()
+        bystander.wait()
+
+
+def test_the_stop_button_is_live_only_during_a_solve(monkeypatch, tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import solve_claim, solve_process
+
+    controller = WorkflowController(tmp_path)
+    session = tmp_path / "s1"
+    session.mkdir()
+    assert not controller.solve_running("s1")
+    with solve_claim(session):
+        assert controller.solve_running("s1")
+    assert not controller.solve_running("s1")
+    with solve_process(session):
+        assert controller.solve_running("s1")
+    assert not controller.solve_running("s1")
+    assert not controller.stop_solve("s1")
+    process, _ = _running_solve(session)
+    try:
+        assert controller.solve_running("s1") and not controller.solve_stopped("s1")
+        assert controller.stop_solve("s1")
+        process.wait(10)
+        assert not controller.solve_running("s1") and controller.solve_stopped("s1")
+    finally:
+        process.kill()
+        process.stdout.close()
+
+
+@pytest.mark.parametrize("returncode", [-signal.SIGTERM, -signal.SIGKILL])
+def test_a_requested_stop_keeps_the_results_and_returns_the_card(
+        monkeypatch, tmp_path, returncode):
+    pytest.importorskip("langgraph")
+    import subprocess
+
+    from langgraph.checkpoint.memory import MemorySaver
+
+    from src.agents_wrapper.fem_workflow import graph as graph_module
+    from src.agents_wrapper.fem_workflow.assets import SOLVE_FAILURE
+    from src.agents_wrapper.fem_workflow.models import WorkflowState
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SOLVE_STOP_REQUEST, solve_running,
+    )
+
+    case = _solve_case(tmp_path / "session")
+    session = case.parent
+    solve_root = session / "solve"
+    solve_root.mkdir()
+    asset = solve_root / "displacement_magnitude.glb"
+    asset.write_bytes(b"iteration 40")
+    (solve_root / SOLVE_FAILURE).write_text("{}")   # an earlier failure no longer stands
+
+    def fake_run(command, **kwargs):
+        (session / SOLVE_STOP_REQUEST).write_text("0")
+        return subprocess.CompletedProcess(command, returncode, "", "RuntimeError: progress bar")
+
+    monkeypatch.setattr("src.agents_wrapper.fem_workflow.monitor.subprocess.run", fake_run)
+    monkeypatch.setattr(ToolMonitor, "release_models_for_solve", lambda self: None)
+    monkeypatch.setattr(ToolMonitor, "_run_solver_worker", lambda self, tail, timeout: None)
+    state = WorkflowState(session_id="s", session_dir=str(session), model="fake",
+                          case_path=str(case))
+    graph = graph_module.build_graph().compile(checkpointer=MemorySaver())
+    config = {"configurable": {"thread_id": "s"}}
+    graph.update_state(config, {"workflow": state.model_dump(mode="json")}, as_node="build_case")
+
+    card = graph.invoke(None, config=config)["__interrupt__"][0].value
+    assert card["kind"] == "shape_opt_settings"
+    assert card["message"].startswith("Solve stopped")
+    assert card["solve_stopped"] and not card["solve_error"] and not card["solve_complete"]
+    assert asset.read_bytes() == b"iteration 40"
+    assert not (solve_root / SOLVE_FAILURE).exists()
+    assert graph.get_state(config).values["workflow"]["errors"] == []
+    assert not solve_running(session)
+
+
+def test_a_stopped_worker_is_not_run_again_here(monkeypatch, tmp_path):
+    """The monitor runs a request itself when a worker dies under it, which would undo a stop."""
+    import subprocess
+
+    from src.agents_wrapper.fem_workflow.monitor import ToolFailed
+    from src.agents_wrapper.fem_workflow.runtime_files import SOLVE_STOP_REQUEST
+
+    case = _solve_case(tmp_path / "session")
+    session = case.parent
+    launches = []
+    monitor = ToolMonitor(session)
+    monkeypatch.setattr(monitor, "release_models_for_solve", lambda: None)
+
+    def stopped_under_it(tail, timeout):
+        (session / SOLVE_STOP_REQUEST).write_text("0")
+        return None
+
+    def fake_run(command, **kwargs):
+        launches.append(command)
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(monitor, "_run_solver_worker", stopped_under_it)
+    monkeypatch.setattr("src.agents_wrapper.fem_workflow.monitor.subprocess.run", fake_run)
+    with pytest.raises(ToolFailed):
+        monitor.execute("run_forward", {"case": str(case)})
+    assert launches == []
+
+
+def test_a_stop_waits_for_a_claimed_solve_to_start(tmp_path):
+    # Stop FEA is on offer from the click on Run FEA, seconds before the solve
+    # reaches its lock, and a click then must not come back "nothing to stop".
+    import subprocess
+
+    from src.agents_wrapper.fem_workflow.runtime_files import solve_claim, solve_running, stop_solve
+
+    session = tmp_path / "s1"
+    session.mkdir()
+    script = (
+        "import sys, time\n"
+        "from src.agents_wrapper.fem_workflow.runtime_files import solve_process\n"
+        "time.sleep(0.5)\n"
+        "with solve_process(sys.argv[1]):\n"
+        "    time.sleep(60)\n"
+    )
+    with solve_claim(session):
+        process = subprocess.Popen([sys.executable, "-c", script, str(session)], cwd=Path(__file__).resolve().parents[3])
+        try:
+            assert not stop_solve(session)                  # no wait: nothing to reach yet
+            assert stop_solve(session, start_wait=20.0)
+            assert process.wait(timeout=10) < 0
+        finally:
+            process.kill()
+    assert not solve_running(session)
+
+
+def test_the_solver_panel_reports_a_stop_after_the_log_says_finished():
+    # 2026-11-06: stopped while saving its surfaces, six seconds after the log's
+    # "Simulation finalized", a forward solve went on reading "complete".
+    from src.ui.telemetry import solver_state
+
+    assert solver_state(failed=False, finished=True, running=False, stopped=True) == "stopped"
+    assert solver_state(failed=False, finished=False, running=False, stopped=True) == "stopped"
+    # The request is written before the signal: not stopped until it has ended.
+    assert solver_state(failed=False, finished=False, running=True, stopped=True) == "running"
+    assert solver_state(failed=False, finished=True, running=False, stopped=False) == "complete"
+    assert solver_state(failed=True, finished=False, running=False, stopped=False) == "failed"
