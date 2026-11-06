@@ -591,6 +591,9 @@ Warp JIT compilation makes the first run slower.
 
 ## Quick start
 
+> **The first run is slow.** It downloads the model checkpoints (about 13 GB for TripoSG,
+> a long pause in the first session) and Warp JIT-compiles its kernels. Later runs reuse both.
+
 ### With a coding agent you operate
 
 [`AGENTS.md`](AGENTS.md) is the entry point for a coding agent you drive yourself
@@ -612,6 +615,7 @@ and logged in, `mechfoundry-warp117` and `mechfoundry-agents` installed (with
 checkout (a git worktree lacks `src/dependency/`).
 
 ```shell
+mkdir -p output
 # One object name per line; blank lines and lines starting with # are skipped.
 cat > output/my_objects.txt <<'EOF'
 a park bench
@@ -629,7 +633,7 @@ the batch's `summary.csv` is in `output/my_batch/_batches/<batch_id>/`. All opti
 in the script header; the paper's 50-object batches are under
 [Agentic batch runs](#agentic-batch-runs).
 
-## Paper results reproduction
+## Paper results reproducibility
 
 > **Not bit-for-bit reproducible.** The AI operator and its AI subagents (Claude Code
 > sessions and the workflow's own LLM calls) and the GPU runs (generation, segmentation,
@@ -699,6 +703,9 @@ run by `run_realizations.sh`, `run_material_sweep.sh` and `run_bc_sweep.sh`; see
 
 `experiments/` holds the studies behind the paper, each with a README; extract the
 archives they read first (above).
+
+> **Adapt the paths first.** Except for `agentic_batch/`, these scripts contain absolute
+> paths from the authors' machine.
 
 <details>
 <summary>

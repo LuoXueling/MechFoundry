@@ -234,7 +234,7 @@ dimensioned body built from boxes, cylinders, profiles or bars), `clone`,
 
 Operator sessions live in `output/fem_workflow_operator/<session_id>/`, and the
 operator writes only under that session's `operator/`. Batches of operator runs are
-`experiments/agentic_batch/run_batch.sh` (README "Paper results reproduction").
+`experiments/agentic_batch/run_batch.sh` (README "Paper results reproducibility").
 The skill is distinct from `fem_workflow/skill/`, the prompts of the workflow's own
 LLM specialists.
 
