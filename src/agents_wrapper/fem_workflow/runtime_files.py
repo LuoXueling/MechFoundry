@@ -18,6 +18,7 @@ import signal
 import socket
 import sys
 import tempfile
+import threading
 import time
 from pathlib import Path
 from typing import Any
@@ -250,10 +251,23 @@ SOLVE_RUN_LOCK = ".solve_run.lock"
 # it is what tells "stopped on request" from a kill nobody asked for, for the graph, and for
 # the solver panel, whose log of a stopped run never says it finished.
 SOLVE_STOP_REQUEST = ".solve_stop_requested"
+# A stop asked for before there is a process to signal.  Stop FEA is on offer from the click on
+# Run FEA, and until the solve holds its run lock (a job in the queue, the case being built,
+# models unloading, a spare warming, torch importing: a minute, in the worst case) no wait is
+# long enough, and on 2026-11-06 a click there said "Nothing was stopped" and the solve then ran.
+# So the request outlives the click: the monitor reads it after its claim and again just before
+# it launches, and ``solve_process`` reads it once it holds the lock.  The stop writes this and
+# then looks for the lock, the solve takes the lock and then reads this, so whichever is first,
+# one of them sees the other, on every route.  Read, it becomes SOLVE_STOP_REQUEST.
+#
+# It holds the identity of the process that asked, because it lives on disk and must never stop
+# a later run: left by a server that has since gone, it is void.  From one still up, a new Run
+# FEA clears it, as does the end of the solve it was for, and of the job that asked.
+SOLVE_STOP_PENDING = ".solve_stop_pending"
 # How long a stopped solve is given to go on SIGTERM before SIGKILL.
 SOLVE_STOP_GRACE = 5.0
-# How long a stop waits for a claimed solve to reach its run lock: Stop FEA is on offer from the
-# click on Run FEA, and a solve imports torch and warp before there is a process to signal.
+# How long a stop keeps the page waiting to see a claimed solve end or reach its run lock, for
+# the page's sake: the request stands however long the solve takes to get there.
 SOLVE_START_WAIT = 30.0
 SOLVE_RUNNING_MESSAGE = (
     "A solve is already running for this session, and it was left undisturbed. "
@@ -270,6 +284,14 @@ class SolveAlreadyRunning(RuntimeError):
     so the failure path (dropping the viewer's assets, the failure card) must not run on it."""
 
     def __init__(self, message: str = SOLVE_RUNNING_MESSAGE):
+        super().__init__(message)
+
+
+class SolveStopped(RuntimeError):
+    """A stop reached this solve before it began.  With the request on record, the graph takes
+    it down the stopped path, not the failure path, as it does a solve signalled while running."""
+
+    def __init__(self, message: str = "the solve was stopped before it began"):
         super().__init__(message)
 
 
@@ -334,6 +356,8 @@ def solve_process(session_dir: Path | str):
     try:
         # Who holds it, for stop_solve.  The lock says someone does; this says who.
         os.pwrite(descriptor, json.dumps(_process_identity(os.getpid())).encode(), 0)
+        if consume_pending_stop(root):
+            raise SolveStopped()
         yield
     finally:
         os.ftruncate(descriptor, 0)
@@ -390,30 +414,43 @@ def _signal_all(family: list[dict[str, Any]], number: int) -> None:
 
 
 def stop_solve(session_dir: Path | str, grace: float = SOLVE_STOP_GRACE,
-               start_wait: float = 0.0) -> bool:
-    """End the session's running solve on request; False if there was none to reach.
+               start_wait: float = 0.0, asked: bool = False) -> bool:
+    """End the session's solve on request; False if there was none to reach.
 
     SIGTERM, then SIGKILL after ``grace``, to the process holding the run lock and those below
-    it, whichever route launched it, and only while each is still the process recorded.  A solve
-    between its claim and its first line has no process with the lock yet: ``start_wait`` is how
-    long to wait for one.  False also for a solve started before the holder recorded itself,
-    which has no record to verify.
+    it, whichever route launched it, and only while each is still the process recorded.  With
+    no such process yet, for a solve claimed or, with ``asked``, one this caller has just asked
+    for and that has not reached its claim, the request is left for it to find
+    (SOLVE_STOP_PENDING) and True means it will not run; ``start_wait`` is how long to stay and
+    see that through.  A solve already stopped is not a failure to stop one, so a second click
+    is True too.  False for a solve that ended first, and for one started before the holder
+    recorded itself, which has no record to verify.
     """
     root = Path(session_dir)
-    deadline = time.monotonic() + start_wait
-    while (time.monotonic() < deadline and _lock_held(root / SOLVE_CLAIM_LOCK)
-           and not _lock_held(root / SOLVE_RUN_LOCK)):
-        time.sleep(0.05)
+    requested = False
     if not _lock_held(root / SOLVE_RUN_LOCK):
-        return False
+        claimed = _lock_held(root / SOLVE_CLAIM_LOCK)
+        if not claimed and not asked:
+            return False
+        if claimed and solve_stop_requested(root):
+            return True
+        request_solve_stop(root)
+        requested = True
+        deadline = time.monotonic() + start_wait
+        while (time.monotonic() < deadline and _lock_held(root / SOLVE_CLAIM_LOCK)
+               and pending_stop(root) and not _lock_held(root / SOLVE_RUN_LOCK)):
+            time.sleep(0.05)
+        if not _lock_held(root / SOLVE_RUN_LOCK):
+            # Gone with nothing stopped: the solve finished ahead of the request.
+            return pending_stop(root) or solve_stop_requested(root)
     try:
         holder = json.loads((root / SOLVE_RUN_LOCK).read_text(encoding="utf-8"))
         family = [holder]
         running = _still_running(holder)
     except (OSError, ValueError, KeyError, TypeError):
-        return False
+        return requested       # just taking the lock: it reads the request next
     if not running:
-        return False
+        return requested
     (root / SOLVE_STOP_REQUEST).write_text(str(time.time()), encoding="utf-8")
     for pid in _descendants(holder["pid"]):
         identity = _process_identity(pid)
@@ -436,6 +473,43 @@ def solve_stop_requested(session_dir: Path | str) -> bool:
 
 def clear_solve_stop(session_dir: Path | str) -> None:
     (Path(session_dir) / SOLVE_STOP_REQUEST).unlink(missing_ok=True)
+
+
+def request_solve_stop(session_dir: Path | str) -> None:
+    """Ask that the solve on its way not run; ``consume_pending_stop`` is the other half."""
+    root = Path(session_dir)
+    written = root / f"{SOLVE_STOP_PENDING}.{os.getpid()}.{threading.get_ident()}"
+    written.write_text(json.dumps(_process_identity(os.getpid())), encoding="utf-8")
+    os.replace(written, root / SOLVE_STOP_PENDING)   # whole, for a reader in another process
+
+
+def clear_pending_stop(session_dir: Path | str) -> None:
+    (Path(session_dir) / SOLVE_STOP_PENDING).unlink(missing_ok=True)
+
+
+def pending_stop(session_dir: Path | str) -> bool:
+    """Whether a stop is waiting for its solve, and whoever asked is still there to mean it."""
+    path = Path(session_dir) / SOLVE_STOP_PENDING
+    try:
+        return _still_running(json.loads(path.read_text(encoding="utf-8")))
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+
+
+def consume_pending_stop(session_dir: Path | str) -> bool:
+    """Turn a live pending stop into the record of a requested stop; True if there was one.
+
+    One atomic rename, so of two readers only one finds it.  A void one is removed, unread.
+    """
+    root = Path(session_dir)
+    if not pending_stop(root):
+        clear_pending_stop(root)
+        return False
+    try:
+        os.replace(root / SOLVE_STOP_PENDING, root / SOLVE_STOP_REQUEST)
+    except FileNotFoundError:
+        return False
+    return True
 
 
 # What a failed solve leaves in ``solve/``: when it was asked for (``started``), why it stopped

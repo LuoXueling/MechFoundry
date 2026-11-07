@@ -25,8 +25,8 @@ from src.agents_wrapper.fem_workflow.graph import (
 from src.agents_wrapper.fem_workflow.models import write_text_atomically
 from src.agents_wrapper.fem_workflow.monitor import CAD_GENERATORS, worker_paths
 from src.agents_wrapper.fem_workflow.runtime_files import (
-    SOLVE_RUNNING_MESSAGE, SOLVE_START_WAIT, SolveAlreadyRunning, solve_running,
-    solve_stop_requested, stop_solve,
+    SOLVE_RUNNING_MESSAGE, SOLVE_START_WAIT, SolveAlreadyRunning, clear_pending_stop,
+    clear_solve_stop, pending_stop, solve_running, solve_stop_requested, stop_solve,
 )
 from src.agents_wrapper.fem_workflow.workers import (
     DEFAULT_COMPUTE_ENV,
@@ -348,9 +348,29 @@ class WorkflowController:
         """Whether a solve of this session is running, from any tab or front end."""
         return solve_running(self.session_dir(session_id))
 
-    def stop_solve(self, session_id: str) -> bool:
-        """End the session's running solve; False if there was none this could reach."""
-        return stop_solve(self.session_dir(session_id), start_wait=SOLVE_START_WAIT)
+    def stop_solve(self, session_id: str, *, asked: bool = False) -> bool:
+        """End the session's solve; False if there was none this could reach.
+
+        ``asked``: the caller has a solve on its way that may not have claimed yet.
+        """
+        return stop_solve(self.session_dir(session_id), start_wait=SOLVE_START_WAIT,
+                          asked=asked)
+
+    def solve_asked_for(self, session_id: str) -> None:
+        """A new solve was asked for: no earlier stop, or record of one, is about it."""
+        session_dir = self.session_dir(session_id)
+        clear_pending_stop(session_dir)
+        clear_solve_stop(session_dir)
+
+    def drop_pending_stop(self, session_id: str) -> None:
+        """The job that asked for a solve has ended, so a stop for it has nothing to stop."""
+        clear_pending_stop(self.session_dir(session_id))
+
+    def stop_under_way(self, session_id: str) -> bool:
+        """Whether a stop has been asked for and the solve has not yet let go."""
+        session_dir = self.session_dir(session_id)
+        return pending_stop(session_dir) or (
+            solve_running(session_dir) and solve_stop_requested(session_dir))
 
     def solve_stopped(self, session_id: str) -> bool:
         """Whether the session's last solve was stopped on request."""

@@ -10500,7 +10500,7 @@ def test_a_settings_answer_during_a_solve_rewrites_nothing(tmp_path):
     assert not (session / "case" / "shape_opt.json").exists()
 
 
-def _solve_graph(launches):
+def _solve_graph(launches, card=None):
     """A card, then a solve that counts its launches, then the card after it."""
     from typing import TypedDict
 
@@ -10511,7 +10511,7 @@ def _solve_graph(launches):
         workflow: dict
 
     def settings(state):
-        answer = interrupt({"kind": "settings"})
+        answer = interrupt(card or {"kind": "settings"})
         return {"workflow": {**state.get("workflow", {}), "settings": answer}}
 
     def solve(state):
@@ -10809,30 +10809,260 @@ def test_a_stopped_worker_is_not_run_again_here(monkeypatch, tmp_path):
     assert launches == []
 
 
-def test_a_stop_waits_for_a_claimed_solve_to_start(tmp_path):
-    # Stop FEA is on offer from the click on Run FEA, seconds before the solve
-    # reaches its lock, and a click then must not come back "nothing to stop".
+def _slow_starting_solve(session, delay):
+    """A real process that reaches its run lock late, as an importing solve does."""
     import subprocess
 
-    from src.agents_wrapper.fem_workflow.runtime_files import solve_claim, solve_running, stop_solve
-
-    session = tmp_path / "s1"
-    session.mkdir()
     script = (
         "import sys, time\n"
         "from src.agents_wrapper.fem_workflow.runtime_files import solve_process\n"
-        "time.sleep(0.5)\n"
+        f"time.sleep({delay})\n"
         "with solve_process(sys.argv[1]):\n"
-        "    time.sleep(60)\n"
+        "    print('solved', flush=True)\n"
     )
+    return subprocess.Popen([sys.executable, "-c", script, str(session)], text=True,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            cwd=Path(__file__).parents[3])
+
+
+def test_a_stop_before_the_claim_prevents_the_solve(tmp_path):
+    """Stop FEA is on offer from the click on Run FEA.  A click ahead of the monitor's claim
+    used to report "Nothing was stopped", and the solve then ran."""
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SolveStopped, pending_stop, solve_stop_requested, stop_solve,
+    )
+
+    session = tmp_path / "s1"
+    session.mkdir()
+    monitor = ToolMonitor(session)
+    launches = []
+    monitor._execute = lambda name, arguments: launches.append(name)
+    assert not stop_solve(session)                  # nothing asked for, nothing to stop
+    assert not pending_stop(session)
+    assert stop_solve(session, asked=True)
+    with pytest.raises(SolveStopped):
+        monitor.execute("run_forward", {})
+    assert launches == [] and solve_stop_requested(session) and not pending_stop(session)
+
+
+def test_a_stop_of_a_claimed_solve_prevents_it_however_slowly_it_starts(tmp_path):
+    """The wait used to end first, at 30 s against a spare's 60, and the solve then ran."""
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        pending_stop, solve_claim, solve_running, solve_stop_requested, stop_solve,
+    )
+
+    session = tmp_path / "s1"
+    session.mkdir()
     with solve_claim(session):
-        process = subprocess.Popen([sys.executable, "-c", script, str(session)], cwd=Path(__file__).resolve().parents[3])
+        process = _slow_starting_solve(session, 1.0)
         try:
-            assert not stop_solve(session)                  # no wait: nothing to reach yet
-            assert stop_solve(session, start_wait=20.0)
-            assert process.wait(timeout=10) < 0
+            assert stop_solve(session, start_wait=0.1)      # the wait ends before it arrives
+            assert pending_stop(session)
+            stdout, stderr = process.communicate(timeout=30)
         finally:
             process.kill()
+    assert process.returncode != 0 and "solved" not in stdout and "SolveStopped" in stderr
+    assert solve_stop_requested(session) and not pending_stop(session)
+    assert not solve_running(session)
+
+
+def test_a_stop_waiting_on_a_solve_that_reaches_its_lock_stops_it(tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        solve_claim, solve_running, solve_stop_requested, stop_solve,
+    )
+
+    session = tmp_path / "s1"
+    session.mkdir()
+    with solve_claim(session):
+        process = _slow_starting_solve(session, 0.5)
+        try:
+            assert stop_solve(session, start_wait=20.0)
+            assert "solved" not in process.communicate(timeout=10)[0]
+            assert process.returncode != 0
+        finally:
+            process.kill()
+    assert solve_stop_requested(session) and not solve_running(session)
+
+
+def test_a_stop_reaches_a_solve_waiting_for_a_warming_spare(monkeypatch, tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import SolveStopped, request_solve_stop
+
+    session = tmp_path / "s1"
+    session.mkdir()
+    monitor = ToolMonitor(session)
+    socket_path, pid_path = tmp_path / "solver.sock", tmp_path / "solver.pid"
+    pid_path.write_text(str(os.getpid()))                 # alive, and never ready
+    monkeypatch.setattr(monitor, "_worker_paths", lambda kind: (socket_path, pid_path))
+    request_solve_stop(session)
+    began = time.monotonic()
+    with pytest.raises(SolveStopped):
+        monitor._run_solver_worker([], 10)
+    assert time.monotonic() - began < 5
+
+
+def test_a_stop_after_a_solve_ended_is_said_plainly_and_a_second_is_no_failure(tmp_path):
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        clear_solve_stop, pending_stop, request_solve_stop, solve_claim, solve_stop_requested,
+        stop_solve,
+    )
+
+    session = tmp_path / "s1"
+    session.mkdir()
+    monitor = ToolMonitor(session)
+    answers = []
+
+    def finishes_as_the_stop_arrives(name, arguments):
+        answers.append(stop_solve(session))             # claim held, solve already over
+        return "receipt"
+
+    monitor._execute = finishes_as_the_stop_arrives
+    assert monitor.execute("run_forward", {}) == "receipt"
+    # Too late, so it must not stay behind for the next run, or read as a stop.
+    assert answers == [True] and not pending_stop(session)
+    assert not solve_stop_requested(session)
+    assert not stop_solve(session)                      # ended: the page says it finished
+
+    # A stop that took, clicked again while the claim is still let go of.
+    with solve_claim(session):
+        request_solve_stop(session)
+        assert stop_solve(session)
+        session.joinpath(".solve_stop_pending").replace(session / ".solve_stop_requested")
+        assert stop_solve(session) and not pending_stop(session)
+    clear_solve_stop(session)
+
+
+def test_a_stale_stop_never_cancels_a_later_run(tmp_path):
+    """The request lives on disk, so it must not outlast the run it was for."""
+    import subprocess
+
+    from src.agents_wrapper.fem_workflow import runtime_files
+    from src.agents_wrapper.fem_workflow.runtime_files import (
+        SOLVE_STOP_PENDING, pending_stop, request_solve_stop, solve_process,
+        solve_stop_requested,
+    )
+
+    session = tmp_path / "s1"
+    session.mkdir()
+    controller = WorkflowController(tmp_path)
+    monitor = ToolMonitor(session)
+    monitor._execute = lambda name, arguments: "ran"
+
+    # Left by a server that has since gone: a restart loses the job that would clear it.
+    gone = subprocess.Popen([sys.executable, "-c", ""])
+    identity = runtime_files._process_identity(gone.pid)
+    if identity is None:      # already reaped: an identity no live process can match
+        identity = {"pid": gone.pid, "command": "00", "started": "0"}
+    gone.wait()
+    (session / SOLVE_STOP_PENDING).write_text(json.dumps(identity))
+    assert not pending_stop(session)
+    assert monitor.execute("run_forward", {}) == "ran"
+    assert not (session / SOLVE_STOP_PENDING).exists()
+    (session / SOLVE_STOP_PENDING).write_text(json.dumps(identity))
+    with solve_process(session):               # void at the lock as well
+        pass
+
+    # From a server still up: a new Run FEA clears it, and the record of an old stop.
+    request_solve_stop(session)
+    (session / ".solve_stop_requested").write_text("0")
+    controller.solve_asked_for("s1")
+    assert not pending_stop(session) and not solve_stop_requested(session)
+    assert monitor.execute("run_forward", {}) == "ran"
+
+    # And the end of the job that asked, when a step fails before the solve.
+    request_solve_stop(session)
+    controller.drop_pending_stop("s1")
+    assert monitor.execute("run_forward", {}) == "ran"
+    assert not solve_stop_requested(session)
+
+
+def test_run_fea_on_a_refreshed_page_is_not_cancelled_by_a_stale_stop(monkeypatch, tmp_path):
+    """Refreshed, the page has lost the job, and only the request on disk is left."""
+    pytest.importorskip("langgraph")
+    from streamlit.testing.v1 import AppTest
+
+    from src.agents_wrapper.fem_workflow.runtime_files import pending_stop, request_solve_stop
+
+    monkeypatch.setenv("FEM_WORKFLOW_OUTPUT_ROOT", str(tmp_path))
+    launches = []
+    monkeypatch.setattr("src.ui.controller.build_graph", _solve_graph(launches, _settings_card()))
+    controller = WorkflowController(tmp_path)
+    session = tmp_path / "s1"
+    session.mkdir()
+    controller._invoke("s1", {"workflow": {}})
+    request_solve_stop(session)
+    page = AppTest.from_file(str(Path(__file__).parents[2] / "ui" / "app.py"),
+                             default_timeout=60).run()
+    next(b for b in page.button if b.key == "history-s1").click()
+    page.run()
+    next(b for b in page.button if b.label == "Run FEA").click()
+    page.run()
+    assert not page.exception
+    assert not pending_stop(session)
+    deadline = time.monotonic() + 20
+    while not launches and time.monotonic() < deadline:
+        time.sleep(0.05)
+    assert len(launches) == 1
+
+
+def test_stop_is_not_offered_again_once_asked(monkeypatch, tmp_path):
+    pytest.importorskip("langgraph")
+    from streamlit.testing.v1 import AppTest
+
+    from src.agents_wrapper.fem_workflow.runtime_files import request_solve_stop, solve_claim
+
+    monkeypatch.setenv("FEM_WORKFLOW_OUTPUT_ROOT", str(tmp_path))
+    build = _solve_graph([])
+    monkeypatch.setattr("src.ui.controller.build_graph", build)
+    controller = WorkflowController(tmp_path)
+    session = tmp_path / "s1"
+    session.mkdir()
+    controller._invoke("s1", {"workflow": {}})
+    _stopped_ahead_of_the_solve(controller, "s1", build)
+    with solve_claim(session):
+        request_solve_stop(session)
+        page = AppTest.from_file(str(Path(__file__).parents[2] / "ui" / "app.py"),
+                                 default_timeout=60).run()
+        next(b for b in page.button if b.key == "history-s1").click()
+        page.run()
+        assert not page.exception
+        stop = next(b for b in page.button if b.key == "stop_running_solve")
+        assert stop.label == "Stopping…" and stop.disabled
+
+
+def test_a_stop_ahead_of_the_solve_returns_the_card_and_keeps_the_results(monkeypatch, tmp_path):
+    pytest.importorskip("langgraph")
+    from langgraph.checkpoint.memory import MemorySaver
+
+    from src.agents_wrapper.fem_workflow import graph as graph_module
+    from src.agents_wrapper.fem_workflow.assets import SOLVE_FAILURE
+    from src.agents_wrapper.fem_workflow.models import WorkflowState
+    from src.agents_wrapper.fem_workflow.runtime_files import request_solve_stop, solve_running
+
+    case = _solve_case(tmp_path / "session")
+    session = case.parent
+    solve_root = session / "solve"
+    solve_root.mkdir()
+    asset = solve_root / "displacement_magnitude.glb"
+    asset.write_bytes(b"the last result")
+    launches = []
+    monkeypatch.setattr("src.agents_wrapper.fem_workflow.monitor.subprocess.run",
+                        lambda *args, **kwargs: launches.append(args))
+    monkeypatch.setattr(ToolMonitor, "release_models_for_solve", lambda self: None)
+    monkeypatch.setattr(ToolMonitor, "_run_solver_worker", lambda self, tail, timeout: None)
+    state = WorkflowState(session_id="s", session_dir=str(session), model="fake",
+                          case_path=str(case))
+    graph = graph_module.build_graph().compile(checkpointer=MemorySaver())
+    config = {"configurable": {"thread_id": "s"}}
+    graph.update_state(config, {"workflow": state.model_dump(mode="json")}, as_node="build_case")
+    request_solve_stop(session)
+
+    card = graph.invoke(None, config=config)["__interrupt__"][0].value
+    assert launches == []
+    assert card["kind"] == "shape_opt_settings" and card["solve_stopped"]
+    assert not card["solve_error"] and not card["solve_complete"]
+    assert asset.read_bytes() == b"the last result"
+    assert not (solve_root / SOLVE_FAILURE).exists()
+    assert graph.get_state(config).values["workflow"]["errors"] == []
     assert not solve_running(session)
 
 
@@ -10847,3 +11077,107 @@ def test_the_solver_panel_reports_a_stop_after_the_log_says_finished():
     assert solver_state(failed=False, finished=False, running=True, stopped=True) == "running"
     assert solver_state(failed=False, finished=True, running=False, stopped=False) == "complete"
     assert solver_state(failed=True, finished=False, running=False, stopped=False) == "failed"
+
+
+def _settings_card():
+    return {"kind": "shape_opt_settings", "message": "Review the settings.",
+            "defaults": ShapeOptSettings().model_dump(mode="json"), "strain_estimate": None}
+
+
+@pytest.mark.parametrize("card_in_history", [False, True])
+def test_a_refreshed_page_can_stop_the_solve_it_finds_running(monkeypatch, tmp_path, card_in_history):
+    """Stop FEA used to live only in the settings card, which a running solve has no longer.
+
+    A refresh loses the tab's state, and the session reopens with no card waiting, so the
+    page showed only a note saying a solve was running, with no way to end it.  The page is
+    driven for real here, down to clicking the conversation in the sidebar, since the bug
+    was in what it drew: every call below it worked.
+    """
+    pytest.importorskip("langgraph")
+    from streamlit.testing.v1 import AppTest
+
+    monkeypatch.setenv("FEM_WORKFLOW_OUTPUT_ROOT", str(tmp_path))
+    build = _solve_graph([])
+    monkeypatch.setattr("src.ui.controller.build_graph", build)
+    controller = WorkflowController(tmp_path)
+    session = tmp_path / "s1"
+    session.mkdir()
+    controller._invoke("s1", {"workflow": {}})
+    _stopped_ahead_of_the_solve(controller, "s1", build)
+    if card_in_history:
+        controller.append_history("s1", "assistant", "Review the settings.", "cp",
+                                  interrupt=_settings_card())
+    process, _ = _running_solve(session)
+    try:
+        # A new AppTest has a new session state, as a refreshed page or a second tab does.
+        page = AppTest.from_file(str(Path(__file__).parents[2] / "ui" / "app.py"), default_timeout=60).run()
+        assert not page.exception
+        next(b for b in page.button if b.key == "history-s1").click()
+        page.run()
+        assert not page.exception
+        assert any("already running" in m.value for m in page.markdown)
+        stop = [b for b in page.button if b.label == "Stop FEA"]
+        # One, whichever drew it: the card when the transcript has one, else the fallback.
+        assert len(stop) == 1, f"Stop FEA on the page: {[b.label for b in page.button]}"
+        stop[0].click()
+        page.run()
+        assert not page.exception
+        confirm = next(b for b in page.button if b.key == "dialog_stop_solve")
+        confirm.click()
+        page.run()
+        process.wait(10)
+        assert not controller.solve_running("s1") and controller.solve_stopped("s1")
+    finally:
+        process.kill()
+        process.stdout.close()
+
+
+def test_the_settings_card_fixes_reinitialization_on(monkeypatch, tmp_path):
+    """Off, the solver stops rebuilding its surface, so saved iterations show the start.
+
+    The card offers neither option and sends the fixed values whatever its defaults
+    hold, so a session stored with them off runs correctly from the UI.  The page is
+    driven for real, down to Run FEA, and what the graph received is what is checked.
+    """
+    pytest.importorskip("langgraph")
+    from streamlit.testing.v1 import AppTest
+
+    monkeypatch.setenv("FEM_WORKFLOW_OUTPUT_ROOT", str(tmp_path))
+    card = _settings_card()
+    card["defaults"].update(run_mode="shape_optimization", reinit_sdf=False, reinit_every=3)
+    launches = []
+    monkeypatch.setattr("src.ui.controller.build_graph", _solve_graph(launches, card))
+    controller = WorkflowController(tmp_path)
+    (tmp_path / "s1").mkdir()
+    controller._invoke("s1", {"workflow": {}})
+    page = AppTest.from_file(str(Path(__file__).parents[2] / "ui" / "app.py"),
+                             default_timeout=60).run()
+    next(b for b in page.button if b.key == "history-s1").click()
+    page.run()
+    assert not page.exception
+    labels = [widget.label for widget in [*page.checkbox, *page.number_input]]
+    # The options sat in the optimization block, so it has to be on the page.
+    assert "BC preservation" in [widget.label for widget in page.selectbox]
+    assert not [label for label in labels if "einitialize" in label]
+
+    next(b for b in page.button if b.label == "Run FEA").click()
+    page.run()
+    assert not page.exception
+    deadline = time.monotonic() + 20
+    while not launches and time.monotonic() < deadline:
+        time.sleep(0.05)
+    assert len(launches) == 1
+    assert launches[0]["reinit_sdf"] is True and launches[0]["reinit_every"] == 1
+
+
+def test_reinitialization_stays_a_setting_outside_the_card():
+    """Only the card stopped offering it: the command line and operator plans still can."""
+    import inspect
+
+    settings = ShapeOptSettings.model_validate(
+        {"preset_version": 2, "reinit_sdf": False, "reinit_every": 3})
+    assert settings.reinit_sdf is False and settings.reinit_every == 3
+    dumped = settings.model_dump(mode="json")
+    assert dumped["reinit_sdf"] is False and dumped["reinit_every"] == 3
+    source = inspect.getsource(workflow_tool.run_forward)
+    assert '"reinit_sdf": settings.reinit_sdf, "reinit_every": settings.reinit_every,' in source

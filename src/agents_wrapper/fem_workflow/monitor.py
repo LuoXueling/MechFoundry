@@ -17,7 +17,8 @@ from typing import Any, Callable
 
 from .models import ToolReceipt
 from .runtime_files import (  # noqa: F401
-    SolveAlreadyRunning, solve_claim, solve_running, solve_stop_requested,
+    SolveAlreadyRunning, SolveStopped, clear_pending_stop, consume_pending_stop, solve_claim,
+    solve_running, solve_stop_requested,
 )
 from src.cad_wrapper.cadcoder_wrapper.availability import cadcoder_status, settings as cadcoder_settings
 from src.cad_wrapper.text2cad_wrapper.availability import text2cad_status, settings as text2cad_settings
@@ -618,7 +619,17 @@ class ToolMonitor:
         # Every front end reaches a solve through here, so this is where a second
         # one is refused, and before _execute unloads any model to make room for it.
         with solve_claim(self.session_dir):
-            return self._execute(name, arguments)
+            try:
+                self._stop_if_asked()
+                return self._execute(name, arguments)
+            finally:
+                # Asked too late for this solve, which must not make it the next one's.
+                clear_pending_stop(self.session_dir)
+
+    def _stop_if_asked(self) -> None:
+        """End a solve that a stop reached before it began (runtime_files, SOLVE_STOP_PENDING)."""
+        if consume_pending_stop(self.session_dir):
+            raise SolveStopped()
 
     def _execute(self, name: str, arguments: dict[str, Any]) -> ToolReceipt:
         if name not in self.registry:
@@ -814,6 +825,7 @@ class ToolMonitor:
         elif name in WORKER_TOOLS:
             result = self._run_tool_worker(command_tail, spec.timeout)
         elif name == "run_forward":
+            self._stop_if_asked()          # the models above took time to unload
             result = self._run_solver_worker(command_tail, spec.timeout)
             # A worker gone mid-request reads as "run it here": not one stopped on purpose.
             if result is None and solve_stop_requested(self.session_dir):
@@ -892,6 +904,7 @@ class ToolMonitor:
         socket_path, pid_path = self._worker_paths("solver")
         deadline = time.monotonic() + SOLVER_WARM_WAIT
         while not socket_path.exists():
+            self._stop_if_asked()
             try:
                 os.kill(int(pid_path.read_text(encoding="utf-8")), 0)
             except (OSError, ValueError):

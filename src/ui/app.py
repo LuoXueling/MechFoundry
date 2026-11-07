@@ -1428,6 +1428,9 @@ def _start_job(
     st.session_state.job_error = None
     # The status line of the work just started is at the end of the conversation.
     st.session_state.scroll_conversation = "bottom"
+    asks_for_solve = isinstance(answer, dict) and answer.get("action") == "run"
+    if asks_for_solve:
+        controller.solve_asked_for(session_id)
     st.session_state.pending_job = {
         "mode": mode,
         "status": status,
@@ -1439,6 +1442,11 @@ def _start_job(
             controller.resume, session_id, answer, answered
         ),
     }
+    if asks_for_solve:
+        # On the future and not at collect_finished_job, which a refreshed page never
+        # reaches: a step that fails before the solve must not leave a stop behind it.
+        st.session_state.pending_job["future"].add_done_callback(
+            lambda _: controller.drop_pending_stop(session_id))
     st.rerun()
 
 
@@ -1580,10 +1588,20 @@ def solve_active(session_id: str) -> bool:
     The pending job covers the moment between Run FEA and the claim on the solve,
     so the button has already turned into Stop FEA when the page redraws.
     """
+    return solve_asked(session_id) or controller.solve_running(session_id)
+
+
+def solve_asked(session_id: str) -> bool:
+    """Whether this tab has a job on its way to a solve of this session.
+
+    Not one that has finished: until the page collects it the job is still recorded,
+    and it would keep offering a stop with nothing left to stop.
+    """
     job = st.session_state.get("pending_job")
-    answer = job["answer"] if job and job["session_id"] == session_id else None
-    return (isinstance(answer, dict) and answer.get("action") == "run"
-            or controller.solve_running(session_id))
+    if not job or job["session_id"] != session_id or job["future"].done():
+        return False
+    answer = job["answer"]
+    return isinstance(answer, dict) and answer.get("action") == "run"
 
 
 @st.fragment(run_every=5.0)
@@ -3863,11 +3881,13 @@ def confirm_stop(session_id: str) -> None:
         st.session_state.pop("pending_stop", None)
         # A solve just launched is still importing: this waits for it.
         with st.spinner("Stopping the solve…"):
-            stopped_it = controller.stop_solve(session_id)
+            stopped_it = controller.stop_solve(session_id, asked=solve_asked(session_id))
         # A stop that worked shows on the card and in the Solver panel.
         if not stopped_it:
             st.session_state.stop_outcome = (
-                "Nothing was stopped: the solve has already ended or has not started."
+                "The solve was already stopped."
+                if controller.solve_stopped(session_id)
+                else "The solve had already finished, so there was nothing to stop."
             )
         st.rerun()
 
@@ -3971,6 +3991,7 @@ with left:
 
 conversation_panel = left.container(height=700, border=False, key="workflow_panel")
 active_card_key = None  # the card waiting on an answer, once drawn
+stop_drawn = False  # a settings card has offered Stop FEA on this page
 with conversation_panel:
     if not event:
         with st.chat_message("assistant"):
@@ -5403,8 +5424,6 @@ with conversation_panel:
                         volume_as_is = defaults.get("volume_as_is", False)
                         volume_weight = defaults["shape_opt_w_vol"]
                         bc_fix_method = defaults["sdf_bc_fix_method"]
-                        reinit = defaults["reinit_sdf"]
-                        reinit_every = defaults["reinit_every"]
                         if run_mode == "shape_optimization":
                             st.markdown("**Shape optimization · example preset**")
                             opt_cols = st.columns(2)
@@ -5477,22 +5496,20 @@ with conversation_panel:
                                     else "mask"
                                 ),
                             )
-                            reinit = st.checkbox(
-                                "Reinitialize SDF", bool(defaults["reinit_sdf"])
-                            )
-                            reinit_every = opt_cols[0].number_input(
-                                "Reinitialize every N iterations",
-                                min_value=1,
-                                value=int(defaults["reinit_every"]),
-                            )
                         # One button in one place.  A form can hold only submit
                         # buttons, so stopping is a submit too, and its widgets'
                         # values are simply not read.
                         stopping = solve_active(event.session_id)
                         if stopping:
+                            stop_drawn = True
                             sent = False
+                            # Disabled once asked: the solve is on its way down, and
+                            # a second click has nothing to add.
+                            asked_to_stop = controller.stop_under_way(event.session_id)
                             if st.form_submit_button(
-                                "Stop FEA", type="primary", key="stop_fea",
+                                "Stopping…" if asked_to_stop else "Stop FEA",
+                                type="primary", key="stop_fea",
+                                disabled=asked_to_stop,
                                 icon=":material/stop_circle:",
                                 help="End the solve running for this conversation",
                             ):
@@ -5559,8 +5576,11 @@ with conversation_panel:
                             "volume_as_is": volume_as_is,
                             "shape_opt_w_vol": volume_weight,
                             "sdf_bc_fix_method": bc_fix_method,
-                            "reinit_sdf": reinit,
-                            "reinit_every": reinit_every,
+                            # Sent, not offered, and not read from the defaults: with
+                            # either changed the solver stops rebuilding its surface,
+                            # so saved iterations show the starting shape.
+                            "reinit_sdf": True,
+                            "reinit_every": 1,
                         }
                         card.submit(answer)
                     if interrupt.get("solve_error"):
@@ -5621,6 +5641,19 @@ with conversation_panel:
                     "comes back here when it finishes._"
                 )
             watch_running_solve(event.session_id)
+        # Stop FEA lives on the settings card, and a session whose transcript has no
+        # such card has nowhere to show it: the command line and the AI operator
+        # record no transcript, so a solve they started could not be stopped from
+        # here.  Asked of the lock rather than of this tab, so it covers a refreshed
+        # page and a second tab, and only when no card drew it: one button.
+        if event and not stop_drawn and controller.solve_running(event.session_id):
+            asked_to_stop = controller.stop_under_way(event.session_id)
+            if st.button("Stopping…" if asked_to_stop else "Stop FEA", type="primary",
+                         key="stop_running_solve", disabled=asked_to_stop,
+                         icon=":material/stop_circle:",
+                         help="End the solve running for this conversation"):
+                st.session_state.pending_stop = event.session_id
+                st.rerun()
 
     scroll_target = st.session_state.pop("scroll_conversation", None)
     if scroll_target == "card":
