@@ -51,6 +51,9 @@ hp_bc_masks.npz
 nc_panel_*.png
 nc_*.vtk
 nc_ref_*.npz
+# The 64^3 reference is kept: src/warp_wrapper/tests/test_nitsche_single_precision.py
+# measures its accuracy against it, so the suite cannot pass without it on a fresh clone.
+!nitscheconv/nc_ref_64.npz
 nc_prep.log
 
 # Regenerable intermediates for the whole-pipeline overview (build.sh overview).

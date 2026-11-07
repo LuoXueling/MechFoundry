@@ -78,9 +78,10 @@ import time
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 HERE = os.environ.get("NC_WORKDIR", SCRIPT_DIR)
 HERE = os.path.abspath(HERE)
-os.chdir("/home/xl2254/implicit_optimize/src/warp_wrapper")
+REPO_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+os.chdir(os.path.join(REPO_ROOT, "src", "warp_wrapper"))
 sys.path.insert(0, ".")
-sys.path.insert(0, "/home/xl2254/implicit_optimize")
+sys.path.insert(0, REPO_ROOT)
 
 import numpy as np
 import torch
@@ -97,7 +98,7 @@ REF_N = int(os.environ.get("NC_REF_N", "96"))
 # 96^3 the shared 20-step schedule dies in the line search at load step 19, and
 # 40 steps walks it in.  Every test run keeps SOLVER_CONFIG exactly as it is.
 REF_LOAD_STEPS = int(os.environ.get("NC_REF_LOAD_STEPS", "40"))
-OUT = "/home/xl2254/implicit_optimize/output/nc_convergence"
+OUT = os.path.join(REPO_ROOT, "output", "nc_convergence")
 SHOW_DEPTH = max(DEPTHS)
 # The established figure uses a depth-3 far field and refines only near the
 # interface.  NC_UNIFORM=1 is the companion experiment: every run starts at its

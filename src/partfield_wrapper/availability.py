@@ -32,7 +32,10 @@ def _current_environment(name: str) -> str:
     """
     try:  # imported here: the package builds the graph on import and needs LangGraph
         from src.agents_wrapper.fem_workflow.runtime_files import current_environment
-    except ImportError:  # an interpreter without the workflow's dependencies: the name as given
+    except (ImportError, TypeError):
+        # An interpreter that cannot load the workflow takes the name as given: one without its
+        # dependencies (ImportError), or mechfoundry-text2cad, which upstream pins to Python 3.9,
+        # where the package's runtime `X | Y` unions (wrapper.py's aliases) raise TypeError.
         return name
     return current_environment(name)
 
