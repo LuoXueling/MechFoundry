@@ -408,6 +408,25 @@ class WorkflowController:
         return WorkflowEvent(session_id, current, workflow,
                              snapshot.config.get("configurable", {}).get("checkpoint_id"))
 
+    def peek(self, session_id: str) -> WorkflowEvent:
+        """Show a session another process is driving, writing nothing.
+
+        For an agent session (``agent_session.py``): ``drive.py`` owns its graph, so the page
+        must not do what ``open`` may -- re-offer a card (a fork of the thread under a running
+        step) or start workers for the card it sees.  Only the checkpoint is read.
+        """
+        session_dir = self.session_dir(session_id)
+        if not session_dir.is_dir():
+            raise FileNotFoundError(f"unknown session: {session_id}")
+        with open_session_graph(session_dir, build_graph) as graph:
+            snapshot = graph.get_state(session_thread(session_id, session_dir))
+        interrupts = snapshot.interrupts
+        current = moved_here(interrupts[0].value if interrupts else None, session_dir)
+        workflow = moved_here(
+            snapshot.values.get("workflow") or self.read_workflow(session_id), session_dir)
+        return WorkflowEvent(session_id, current, workflow,
+                             snapshot.config.get("configurable", {}).get("checkpoint_id"))
+
     def _invoke(self, session_id: str, payload: Any,
                 checkpoint_id: str | None = None) -> WorkflowEvent:
         session_dir = self.session_dir(session_id)

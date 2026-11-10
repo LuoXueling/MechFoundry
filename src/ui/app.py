@@ -99,6 +99,13 @@ from src.ui.telemetry import (
     gd_lr_auto_note,
 )
 from src.agents_wrapper.fem_workflow.runtime_files import RENAMED_ENVIRONMENTS
+from src.ui.agent_session import (
+    CLAUDE_MODELS,
+    EFFORTS,
+    AgentHub,
+    agent_status,
+    session_signature,
+)
 from src.ui.controller import (
     DEFAULT_COMPUTE_ENV,
     SOLVE_RUNNING_MESSAGE,
@@ -122,6 +129,14 @@ OUTPUT_ROOT = Path(os.environ.get(
     "FEM_WORKFLOW_OUTPUT_ROOT", DEFAULT_OUTPUT_ROOT
 )).expanduser().resolve()
 controller = WorkflowController(OUTPUT_ROOT)
+
+
+@st.cache_resource
+def agent_hub() -> AgentHub:
+    """One loop thread per server process for every agent conversation (agent_session.py)."""
+    return AgentHub(OUTPUT_ROOT)
+
+
 # Standard gravity in each unit system's own length units, so a total force can be
 # shown as the mass it corresponds to without leaving the selected system.
 STANDARD_GRAVITY = {
@@ -942,6 +957,17 @@ st.markdown(
     text-overflow: ellipsis;
     max-width: 100%;
   }
+  /* The agent's "working" line: a ring turned by CSS. A Material icon is a still glyph,
+     and the line is redrawn every 0.7 s with identical markup, so the element (and its
+     animation) survives each redraw. */
+  .agent-working { display: flex; align-items: center; gap: 0.5rem;
+                   color: rgba(49, 51, 63, 0.6); font-size: 0.875rem; }
+  .agent-working .agent-spinner {
+    width: 0.9rem; height: 0.9rem; border-radius: 50%; flex: none;
+    border: 2px solid rgba(49, 51, 63, 0.18); border-top-color: #ff4b4b;
+    animation: agent-spin 0.8s linear infinite;
+  }
+  @keyframes agent-spin { to { transform: rotate(360deg); } }
 </style>
 """,
     unsafe_allow_html=True,
@@ -1747,13 +1773,9 @@ def resume_in_place(
     )
 
 
-def render_start_conversation(
-    provider: str, model: str, compute_env: str, vision_model: str,
-    vision_provider: str, text_label: str, vision_label: str,
-) -> None:
-    # Each model and the environment must have passed its own check, against the
-    # selection now on screen rather than an earlier one.  Every field shows its
-    # own Ready/Unavailable status, so the button carries no explanation.
+def setup_ready(provider: str, model: str, compute_env: str, vision_model: str) -> bool:
+    """Each model and the environment have passed their own checks, against the
+    selection now on screen rather than an earlier one."""
     ready = all(
         st.session_state.get(f"{role}_probe_selection") == (provider, chosen)
         and st.session_state.get(f"{role}_probe_ready") is True
@@ -1764,12 +1786,19 @@ def render_start_conversation(
         if st.session_state.get("environment_probe_name") == compute_env
         else None
     )
+    return ready and environment_status is not None and environment_status.ready
+
+
+def render_start_conversation(
+    provider: str, model: str, compute_env: str, vision_model: str,
+    vision_provider: str, text_label: str, vision_label: str,
+) -> None:
+    # Every field shows its own Ready/Unavailable status, so the button carries no
+    # explanation.
     started = st.button(
         "Start conversation",
         type="primary",
-        disabled=not (
-            ready and environment_status is not None and environment_status.ready
-        ),
+        disabled=not setup_ready(provider, model, compute_env, vision_model),
     )
     if not started:
         return
@@ -1876,6 +1905,259 @@ def render_setup_widget() -> None:
         provider, model, compute_env, vision_model, vision_provider,
         text_label, vision_label,
     )
+    render_start_agent(provider, model, compute_env, vision_model, vision_provider)
+
+
+def render_start_agent(
+    provider: str, model: str, compute_env: str, vision_model: str, vision_provider: str,
+) -> None:
+    """The other way to begin: Claude Code drives the workflow with these same choices.
+
+    Offered only where it can work: the Claude Agent SDK in this environment and a
+    ``claude`` command to run (``agent_status``); otherwise the button stays disabled and
+    says why.
+    """
+    status = agent_status()
+    st.markdown("**Or let an agent drive it.** Claude Code follows the operator skill: it "
+                "decides the case, runs every step and checks every picture, while the "
+                "visualization updates here. You can send it further prompts or stop it.")
+    columns = st.columns(2)
+    claude_model = columns[0].selectbox(
+        "Agent model", CLAUDE_MODELS, key="agent_claude_model", disabled=not status.ready)
+    effort = columns[1].selectbox(
+        "Agent effort", EFFORTS, index=EFFORTS.index("high"), key="agent_effort",
+        disabled=not status.ready)
+    started = st.button(
+        "Start agent session",
+        icon=":material/smart_toy:",
+        disabled=not (status.ready and setup_ready(provider, model, compute_env, vision_model)),
+        help=None if status.ready else f"Unavailable: {status.summary}",
+    )
+    if not status.ready:
+        st.caption(f":material/block: Agent sessions are unavailable: {status.summary}.")
+    if not started:
+        return
+    conversation = agent_hub().create(
+        provider=provider, model=model, vision_provider=vision_provider or provider,
+        vision_model=vision_model, compute_env=compute_env, claude_model=claude_model,
+        effort=effort,
+    )
+    enter_agent(conversation.id)
+    st.rerun(scope="app")
+
+
+def enter_agent(conversation_id: str) -> None:
+    """Show an agent conversation: its chat on the left, the session it works on on the right."""
+    st.session_state.pop("event", None)
+    st.session_state.pop("session_id", None)
+    st.session_state.last_interrupt = None
+    st.session_state.agent_id = conversation_id
+
+
+def current_agent():
+    """The agent conversation this tab shows, or None."""
+    cid = st.session_state.get("agent_id")
+    if not cid:
+        return None
+    try:
+        return agent_hub().get(cid)
+    except KeyError:
+        st.session_state.pop("agent_id", None)
+        return None
+
+
+def agent_view_session(agent) -> str | None:
+    """The workflow session on the right: always the one the agent is working on."""
+    return agent.meta.get("current_session")
+
+
+def _short_command(command: str) -> str:
+    return re.sub(r"python3 -u \S*operator_skill/scripts/(drive|inspect_session)\.py", r"\1",
+                  command).replace("python3 experiments/agentic_batch/ab_helper.py", "ab_helper")
+
+
+def _tool_summary(name: str, tool_input: dict) -> str:
+    tool_input = tool_input or {}
+    if name == "Bash":
+        return _short_command(str(tool_input.get("command", "")))
+    if name in ("Read", "Write", "Edit"):
+        return "/".join(str(tool_input.get("file_path", "")).split("/")[-3:])
+    if name in ("Glob", "Grep"):
+        return str(tool_input.get("pattern", ""))
+    return json.dumps(tool_input)[:120]
+
+
+AGENT_SCROLL = """<script>
+  // Keep the agent's chat at its newest line, unless the user has scrolled up to read.
+  const doc = window.parent.document;
+  const panel = doc.querySelector('[class*="st-key-workflow_panel"]');
+  if (panel) {
+    const box = [panel, ...panel.querySelectorAll('*')]
+      .filter(n => n.scrollHeight > n.clientHeight + 2)
+      .sort((a, b) => (b.scrollHeight - b.clientHeight) - (a.scrollHeight - a.clientHeight))[0];
+    if (box && (box.dataset.agentStick !== 'no')) box.scrollTop = box.scrollHeight;
+    if (box && !box.dataset.agentWatch) {
+      box.dataset.agentWatch = '1';
+      box.addEventListener('scroll', () => {
+        box.dataset.agentStick =
+          box.scrollHeight - box.scrollTop - box.clientHeight < 80 ? 'yes' : 'no';
+      }, {passive: true});
+    }
+  }
+</script>"""
+
+
+@st.fragment(run_every=0.7)
+def render_agent_chat(conversation_id: str) -> None:
+    """The agent's conversation, redrawn as it streams."""
+    agent = agent_hub().get(conversation_id)
+    snap = agent.snapshot()
+    events = snap["events"]
+    results = {e["tool_use_id"]: e for e in events if e["type"] == "tool_result"}
+    decided = {e["id"]: e for e in events if e["type"] == "permission_done"}
+    if not events and not snap["busy"]:
+        with st.chat_message("assistant"):
+            st.markdown(
+                "Agent session ready. Describe what to simulate (an object, its use, a load) or "
+                "attach an image or a mesh; you can also ask for a shape optimization, variations "
+                "or a clean-up of a solved session. The visualization follows my work."
+            )
+    for i, ev in enumerate(events):
+        kind = ev["type"]
+        if ev.get("sub"):
+            continue
+        if kind == "user":
+            with st.chat_message("user"):
+                st.markdown(ev.get("text") or "")
+                for att in ev.get("attachments", []):
+                    if str(att.get("mime", "")).startswith("image/") and Path(att["path"]).exists():
+                        st.image(att["path"], width=220)
+                    else:
+                        st.caption(f":material/attach_file: {att.get('name')}")
+        elif kind == "assistant_text":
+            with st.chat_message("assistant"):
+                st.markdown(ev["text"])
+        elif kind == "thinking":
+            with st.expander("Thinking", icon=":material/psychology:"):
+                st.markdown(ev["text"])
+        elif kind == "tool_use":
+            result = results.get(ev["id"])
+            mark = ":material/hourglass_top:" if result is None else (
+                ":material/error:" if result.get("is_error") else ":material/check:")
+            with st.expander(f"{ev['name']} · {_tool_summary(ev['name'], ev.get('input'))}", icon=mark):
+                st.code(ev["input"].get("command") if ev["name"] == "Bash" else
+                        json.dumps(ev.get("input"), indent=1), language=None, wrap_lines=True)
+                if result is not None:
+                    st.code((result.get("text") or "(no text output)")[:6000], language=None, wrap_lines=True)
+            if result is not None and result.get("image") and Path(result["image"]).exists():
+                st.image(result["image"], width=380, caption=Path(result["image"]).name)
+        elif kind == "permission":
+            with st.container(border=True):
+                st.markdown(f"Claude wants to use **{ev['tool']}**: "
+                            f"`{_tool_summary(ev['tool'], ev.get('input'))}`")
+                done = decided.get(ev["id"])
+                if done is not None:
+                    st.caption("Allowed" if done.get("allowed") else "Denied")
+                elif any(p["id"] == ev["id"] for p in snap["pending"]):
+                    cols = st.columns(2)
+                    if cols[0].button("Allow once", key=f"allow_{ev['id']}", type="primary"):
+                        agent.answer_permission(ev["id"], True)
+                    if cols[1].button("Deny", key=f"deny_{ev['id']}"):
+                        agent.answer_permission(ev["id"], False)
+        elif kind == "result":
+            ended = "stopped" if str(ev.get("reason") or "").startswith("aborted") else (
+                "ended with an error" if ev.get("is_error") else "done")
+            cost = f" · ${ev['cost_usd']:.2f}" if ev.get("cost_usd") is not None else ""
+            st.caption(f"{ended} · {(ev.get('duration_ms') or 0) / 1000:.0f} s{cost}")
+        elif kind == "error":
+            st.error(ev["message"])
+    if snap["busy"]:
+        if snap["draft"]["text"]:
+            with st.chat_message("assistant"):
+                st.markdown(snap["draft"]["text"] + " ▌")
+        else:
+            st.markdown('<div class="agent-working"><span class="agent-spinner"></span>'
+                        "working…</div>", unsafe_allow_html=True)
+    st.iframe(BRIDGE_STYLE + AGENT_SCROLL.replace("<script>", f"<script>// {snap['version']}"), height=1)
+
+
+def render_agent_input(agent) -> None:
+    """Below the chat: a prompt with attachments, and Stop while a reply streams."""
+    view = agent_view_session(agent)
+    if view and controller.solve_running(view):
+        asked = controller.stop_under_way(view)
+        if st.button("Stopping…" if asked else "Stop FEA", key="agent_stop_fea", disabled=asked,
+                     icon=":material/stop_circle:", help="End the solve this session is running"):
+            st.session_state.pending_stop = view
+            st.rerun()
+    render_agent_composer(agent.id)
+
+
+@st.fragment(run_every=1.0)
+def render_agent_composer(conversation_id: str) -> None:
+    """Its own fragment, so Send turns into Stop (and back) without a page rerun."""
+    agent = agent_hub().get(conversation_id)
+    busy = agent.snapshot()["busy"]
+    if busy:
+        if st.button("Stop", type="primary", icon=":material/stop:", key="agent_interrupt",
+                     help="Stop Claude's reply (a running solve keeps running: use Stop FEA)"):
+            agent.interrupt()
+        st.caption("Claude is working. Stop it to send a new prompt.")
+        return
+    prompt = st.chat_input(
+        "Tell the agent what to do…", accept_file="multiple",
+        file_type=["png", "jpg", "jpeg", "webp", "stl", "obj", "ply", "glb", "step", "stp"],
+        key=f"agent_prompt_{conversation_id}",
+    )
+    if prompt:
+        text = (prompt.text or "").strip()
+        files = [agent.save_upload(f.name, f.getvalue()) for f in (prompt.files or [])]
+        if text or files:
+            meta = agent.meta
+            if meta.get("title") in (None, "", "Agent session") and text:
+                agent.update_meta(title=text[:60])
+            agent.send(text, files)
+            # A fragment-scoped rerun only: it turns Send into Stop, and the chat fragment
+            # shows the reply as it streams (see watch_agent_view on app-wide reruns).
+            st.rerun(scope="fragment")
+
+
+@st.fragment(run_every=1.5)
+def watch_agent_view(conversation_id: str, shown: str | None, signature: tuple) -> None:
+    """Redraw the page when the agent moves to another session or its session changes, so
+    the visualization and the tool window follow without a click. A running solve's new
+    shapes reach the viewer through the live bridge instead, without a redraw."""
+    try:
+        agent = agent_hub().get(conversation_id)
+    except KeyError:
+        return
+    view = agent_view_session(agent)
+    now = session_signature(controller.session_dir(view)) if view else ()
+    if view == shown and view and controller.solve_running(view):
+        # The solve's field file is rewritten at every saved iteration; the live bridge
+        # carries those shapes, and a redraw would put the camera back each time.
+        now, signature = now[:-1], signature[:-1]
+    if view != shown or now != signature:
+        # The browser asks for the redraw, by clicking a hidden page button, rather than
+        # st.rerun here. A server-side rerun reuses the cached-message list the browser sent
+        # at the start of the previous run; the browser may have expired the viewer's frames
+        # since, and a reference to one it no longer holds fails in the page with "Cached
+        # ForwardMsg MISS". A click sends the browser's current list. Once per change: the
+        # key is remembered in the page, so the next tick does not click again.
+        key = json.dumps([view, list(now)])
+        st.iframe(
+            BRIDGE_STYLE
+            + f"""<script>
+              const doc = window.parent.document;
+              const key = {json.dumps(key)};
+              if (window.parent.__agentRedrawFor !== key) {{
+                window.parent.__agentRedrawFor = key;
+                const button = doc.querySelector('[class*="st-key-agent_redraw"] button');
+                if (button) button.click();
+              }}
+            </script>""",
+            height=1,
+        )
 
 
 @st.cache_resource
@@ -3898,6 +4180,7 @@ with st.sidebar:
         if st.button("New conversation", type="primary", width="stretch"):
             st.session_state.pop("event", None)
             st.session_state.pop("session_id", None)
+            st.session_state.pop("agent_id", None)
             st.session_state.last_interrupt = None
             st.rerun()
     with st.container(height=500, border=False, key="conversation_list"):
@@ -3908,6 +4191,9 @@ with st.sidebar:
         # Dividers are drawn from the sessions that are left, so a day whose
         # last conversation is deleted takes its heading with it.
         drawn_day = None
+        # A session an agent drives is shown through its agent conversation: opening it here
+        # could re-offer a card under the agent's running step.
+        agent_owned = agent_hub().owned_sessions()
         for session_id, touched in controller.dated_sessions():
             day = day_heading(touched)
             if day != drawn_day:
@@ -3921,12 +4207,25 @@ with st.sidebar:
             # room.  Both live in the row and the trash is lifted out of the
             # flow onto its right end, so the item keeps the width it had and
             # the space it needs is taken from its own padding.
-            if row.button(
+            owner = agent_owned.get(session_id)
+            # Listed like any other conversation; only the click differs (the agent view).
+            shown_here = (st.session_state.get("agent_id") == owner
+                          and agent_view_session(agent_hub().get(owner)) == session_id) if owner else False
+            if owner and row.button(
+                f"{'● ' if shown_here else ''}{title}",
+                key=f"history-{session_id}",
+                width="stretch",
+                help=f"{title}\n{session_id} · driven by an agent",
+            ):
+                enter_agent(owner)
+                st.rerun()
+            if not owner and row.button(
                 f"{'● ' if active else ''}{title}",
                 key=f"history-{session_id}",
                 width="stretch",
                 help=f"{title}\n{session_id} · {workflow.get('stage', 'new')}",
             ):
+                st.session_state.pop("agent_id", None)
                 try:
                     st.session_state.last_interrupt = None
                     job = st.session_state.get("pending_job")
@@ -3970,8 +4269,21 @@ collect_finished_job()
 # running.  A run that collects a job clears it here, so the controls cannot be
 # left disabled by a handover that never arrives.
 set_workflow_controls_busy(bool(st.session_state.get("pending_job")))
-event: WorkflowEvent | None = st.session_state.get("event")
-keep_tools_warm(event)
+agent = current_agent()
+agent_view: str | None = None
+if agent is not None:
+    # The agent's drive.py owns the session: read it, never open it, and start no workers
+    # for it (the runner keeps its own on an idle GPU).
+    agent_view = agent_view_session(agent)
+    event: WorkflowEvent | None = None
+    if agent_view:
+        try:
+            event = controller.peek(agent_view)
+        except Exception:
+            event = None      # mid-write or not yet created: the watcher redraws shortly
+else:
+    event = st.session_state.get("event")
+    keep_tools_warm(event)
 workspace = st.container(key="workspace")
 left, right = workspace.columns((1.15, 0.85), gap="medium")
 
@@ -3993,7 +4305,9 @@ conversation_panel = left.container(height=700, border=False, key="workflow_pane
 active_card_key = None  # the card waiting on an answer, once drawn
 stop_drawn = False  # a settings card has offered Stop FEA on this page
 with conversation_panel:
-    if not event:
+    if agent is not None:
+        render_agent_chat(agent.id)
+    elif not event:
         with st.chat_message("assistant"):
             st.markdown(SETUP_MESSAGE)
         with st.container(border=False, key="manager_widget"):
@@ -5662,6 +5976,18 @@ with conversation_panel:
     if scroll_target:
         scroll_conversation(scroll_target, 60)
 
+if agent is not None:
+    with left:
+        render_agent_input(agent)
+    with st.container(key="ui_bridge_agent_redraw"):
+        # Clicked from the page by watch_agent_view; the click itself is the redraw.
+        st.button("Redraw", key="agent_redraw")
+    with st.container(key="ui_bridge_agent_watch"):
+        watch_agent_view(
+            agent.id, agent_view,
+            session_signature(controller.session_dir(agent_view)) if agent_view else (),
+        )
+
 # How often the live bridge looks for a shape the viewer has not been given.
 # A shape optimization saves one every few seconds; the picture would otherwise
 # be whatever the page happened to be showing when the run was started.
@@ -6135,7 +6461,11 @@ def live_frame_bridge() -> None:
     discarding.
     """
     plan = st.session_state.get("live_view")
-    if not plan or not solve_in_flight():
+    viewing_agent_solve = (
+        st.session_state.get("agent_id") and plan
+        and controller.solve_running(Path(plan["root"]).name)
+    )
+    if not plan or not (solve_in_flight() or viewing_agent_solve):
         return
     steps = load_step_surfaces(Path(plan["solve_root"]))
     carried = plan["carried"]

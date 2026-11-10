@@ -41,6 +41,9 @@ python render_prep.py && pvbatch render.py /home/xl2254/implicit_optimize/output
 
 `run.py` options exist for trials only (`--step`, `--threshold`, `--cap`, `--reinit`,
 `--extra`, `--tag`); a tagged run writes to `<object>/<tag>/` with its own case.
+`GEOMETRY_CLEANUP_SAVE_EVERY=1` (opt-in, off for the batch) keeps the solver's own output
+(VTU volume + surface with displacement and stress) at every iteration instead of the
+first and last; the demo video's optimisation card uses it (`illustrations/demo_video/dv_cleanup.py`).
 
 ## The settings
 

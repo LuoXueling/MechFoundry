@@ -17,6 +17,14 @@ camera is moved every frame (the spin) -- nothing is re-created per frame:
   arrows                   the 8 load arrows alone (the compose lays them on top)
   grid                     the UI floor grid (ar_prep.ui_grid, as render_ar.add_ground
                            draws it), at 2x with 2x-wide lines, downsampled in the compose
+  iterA / iterB            the clean-up's iterates in the uniform zero-|u| colour (point
+                           rgb under the |u| kit, uniform_view): ONE view whose reader's
+                           file is swapped per pass -- the two iterates a frame crossfades
+  oarrows                  the change arrows (dv_prep: one mesh per frame), arrows_view
+  opt / optclay            the optimised bench's |u| (per-part solve) on the session's |u|
+                           range, warped by s(t); its undeformed pass for the ghost
+  (camera)                 bench_camera: the orbit, eased into the beat's close-up of one
+                           end by dv_timeline.closeup and back out in the shrink
   tiles                    render_ar.solve_panel per object at 2x its body area, plus its
                            undeformed pass (factor 0) for the ghost
 
@@ -196,11 +204,92 @@ def arrows_view(path):
     return rv
 
 
+def uniform_view(path):
+    """A surface in its own point rgb under the |u| look's kit (AR_SOLVE_VIEW,
+    SOLVE_FINISH), so the uniform zero-|u| body crossfades with the |u| look with no
+    change of light, only of colour."""
+    rv = R.new_view(A.AR_SOLVE_VIEW)
+    nrm = GenerateSurfaceNormals(Input=LegacyVTKReader(FileNames=[path]))  # noqa: F405
+    R._try(lambda: setattr(nrm, "FeatureAngle", A.FEATURE_ANGLE))
+    # no splitting: the iterates are marching-cubes surfaces, and splitting at their small
+    # creases drew faint grey streaks along the slats (the user: "weird lines")
+    R._try(lambda: setattr(nrm, "Splitting", 0))
+    d = Show(nrm, rv)  # noqa: F405
+    d.Representation = "Surface"
+    for k, v in A.SOLVE_FINISH.items():
+        setattr(d, k, v)
+    ColorBy(d, ("POINTS", "rgb"))  # noqa: F405
+    d.MapScalars = 0
+    d.SetScalarBarVisibility(rv, False)
+    return rv
+
+
+def grab_z(rv, path):
+    """The view's depth buffer (as rendered at its ViewSize) -> float32 .npy, top row
+    first: the compose cuts the change arrows exactly where the body is in front."""
+    import numpy as np
+    from vtkmodules.vtkRenderingCore import vtkWindowToImageFilter
+    from vtkmodules.util.numpy_support import vtk_to_numpy
+    # FXAA and tone mapping (the |u| kit's) render through a post-processing buffer, and
+    # the window's depth then reads back empty (all 1): the first cut's masks were void.
+    # Depth does not depend on either, so they are off for this read only.
+    keep = {k: getattr(rv, k) for k in ("UseFXAA", "UseToneMapping") if hasattr(rv, k)}
+    for k in keep:
+        setattr(rv, k, 0)
+    Render(rv)  # noqa: F405
+    f = vtkWindowToImageFilter()
+    f.SetInput(rv.GetRenderWindow())
+    f.SetInputBufferTypeToZBuffer()
+    f.ReadFrontBufferOff()
+    f.Update()
+    img = f.GetOutput()
+    w, h, _ = img.GetDimensions()
+    z = vtk_to_numpy(img.GetPointData().GetScalars()).reshape(h, w)[::-1]
+    for k, v in keep.items():
+        setattr(rv, k, v)
+    assert (z < 1).any(), f"empty depth buffer for {path}"
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    np.save(path, z.astype(np.float32))
+
+
+def reader_of(path):
+    """The LegacyVTKReader built on ``path`` (its file is swapped per pass)."""
+    hits = [p for p in GetSources().values()  # noqa: F405
+            if hasattr(p, "FileNames") and path in list(p.FileNames)]
+    assert hits, f"no reader on {path}"
+    return hits[-1]
+
+
+def bench_camera(b, t):
+    """(focal, distance, heading, elev) of the bench at t: the orbit of scenes 2-7, eased
+    by dv_timeline.closeup into the beat's close-up of one end (the camera orbits that
+    end's focus point, its focal point slid along the camera's own right/up axes so the
+    focus sits at CLOSE_CENTRE at every heading) and back out during the shrink; the
+    heading is dv_timeline.bench_heading's, slowed in the beat (dv_prep.bench_cam is the
+    twin)."""
+    z = TL.closeup(t)
+    h = TL.bench_heading(t, b["heading0"])
+    c, D = list(b["centre"]), b["distance"]
+    if z > 0:
+        cl = b["cleanup"]["close"]
+        a, e = math.radians(h), math.radians(b["elev"])
+        f = [-math.cos(e) * math.sin(a), -math.sin(e), -math.cos(e) * math.cos(a)]
+        r = [-f[2], 0.0, f[0]]                           # f x (0, 1, 0)
+        n = math.sqrt(sum(x * x for x in r))
+        r = [x / n for x in r]
+        u = [r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0]]
+        cc = [cl["focus"][i] + r[i] * cl["ox"] + u[i] * cl["oy"] for i in range(3)]
+        c = [c[i] + z * (cc[i] - c[i]) for i in range(3)]
+        D = 1.0 / ((1 - z) / D + z / cl["distance"])
+    return c, D, h, b["elev"]
+
+
 def render_bench(st, times):
     b = st["bench"]
     f = lambda name: os.path.join(WORK, f"ar_0_{name}.vtk")  # noqa: E731
     size = sized(TL.W * S, TL.H * S)
     sup = f("support") if os.path.exists(f("support")) else None
+    umax = b["umax"]
     views = {"clay": R.surface_panel(f("clay"), "POINTS"),
              "paint": R.surface_panel(f("painted"), "POINTS", specular=A.PAINT_SPECULAR),
              "seg": R.surface_panel(f("seg"), "CELLS"),
@@ -208,38 +297,121 @@ def render_bench(st, times):
              # the load arrows alone: the compose lays them OVER the body (round 2)
              "arrows": arrows_view(f("bigarrows")),
              "E": R.surface_panel(f("materials"), "POINTS"),
-             "solve": R.solve_panel(f("solve"), 1.0, b["umax"])}
+             "solve": R.solve_panel(f("solve"), 1.0, umax)}
     warp = last_warp(f("solve"))
+    # the optimisation beat: the iterates in the uniform zero-|u| colour, ONE view whose
+    # reader steps through the files (two passes a frame, crossfaded by the compose); the
+    # change arrows, one mesh per frame (dv_prep), in their own pass over the body; the
+    # optimised bench's |u| on the SESSION's |u| range (its smaller deflection reads
+    # lighter) and its undeformed pass for the ghost
+    it0 = f("it00")
+    views["iter"] = uniform_view(it0)
+    it_reader = reader_of(it0)
+    # the change arrows live IN the iterate's view (the user: occlusion must be exact;
+    # two views reset their clipping ranges to their own bounds, so their depth buffers
+    # were not comparable and arrows showed through the slats).  Each arrow frame is shot
+    # twice from this one view: body only (the arrows' display kept but at opacity 0, so
+    # the bounds and clipping range do not change) and body + arrows; the compose keeps
+    # the pixels where the combined depth is nearer than the body-only depth.
+    oa0 = os.path.join(WORK, "oarrows", sorted(os.listdir(os.path.join(WORK, "oarrows")))[0])
+    oa_nrm = GenerateSurfaceNormals(Input=LegacyVTKReader(FileNames=[oa0]))  # noqa: F405
+    R._try(lambda: setattr(oa_nrm, "FeatureAngle", 60))
+    oa_disp = Show(oa_nrm, views["iter"])  # noqa: F405
+    oa_disp.Representation = "Surface"
+    for k_, v_ in A.ARROW_FINISH.items():
+        setattr(oa_disp, k_, v_)
+    ColorBy(oa_disp, ("CELLS", "rgb"))  # noqa: F405
+    oa_disp.MapScalars = 0
+    oa_disp.SetScalarBarVisibility(views["iter"], False)
+    oa_disp.Opacity = 0.0
+    oa_reader = reader_of(oa0)
+    # the same arrows in flat ID colours (ambient only, no FXAA / tone mapping: the red
+    # channel reads back exactly as the arrow's index + 1), arrows only, same camera
+    id0 = os.path.join(WORK, "oarrows_id", sorted(os.listdir(os.path.join(WORK, "oarrows_id")))[0])
+    views["oarrows_id"] = R.new_view(A.AR_SURF_VIEW)
+    for k_ in ("UseFXAA", "UseToneMapping"):
+        R._try(lambda k_=k_: setattr(views["oarrows_id"], k_, 0))
+    id_disp = Show(LegacyVTKReader(FileNames=[id0]), views["oarrows_id"])  # noqa: F405
+    ColorBy(id_disp, ("CELLS", "rgb"))  # noqa: F405
+    id_disp.MapScalars = 0
+    id_disp.Ambient, id_disp.Diffuse, id_disp.Specular = 1.0, 0.0, 0.0
+    id_disp.Interpolation = "Flat"
+    id_disp.SetScalarBarVisibility(views["oarrows_id"], False)
+    id_reader = reader_of(id0)
+    views["opt"] = R.solve_panel(f("optsolve"), 1.0, umax)
+    warp_opt = last_warp(f("optsolve"))
+    views["optclay"] = R.solve_panel(f("optsolve"), 0.0, umax)
     for rv in views.values():
         finish_view(rv)
-    views["octree"], _ = octree_view(f("octree"), f("octfaces"), f("solve"), b["umax"], b["centre"])
+    views["octree"], _ = octree_view(f("octree"), f("octfaces"), f("solve"), umax, b["centre"])
     gsize = sized(2 * TL.W * S, 2 * TL.H * S)
     grid = grid_view(f("grid"), gsize)
     n = 0
     for fi, t in times:
         if not TL.bench_visible(t):
             continue
-        h = TL.bench_heading(t, b["heading0"])
-        need = set(TL.look_weights(t))
-        if TL.ghost_opacity(t) > 0:
-            need.add("clay")          # the ghost is the undeformed clay pass's alpha
+        c, D, h, el = bench_camera(b, t)
+        ov = TL.oversize(t)
+        # the shrink's frames on a canvas ov x larger each way: same camera and pixel
+        # scale, the view angle widened so tan(fov/2) grows by ov (dv_timeline.oversize)
+        fov = math.degrees(2 * math.atan(ov * math.tan(math.radians(A.VIEW_ANGLE) / 2)))
+        osize = [int(round(ov * x)) for x in size]
+        ogsize = [int(round(ov * x)) for x in gsize]
+        weights = TL.look_weights(t)
+        need = set(weights) - {"iter"}
+        need |= set(TL.ghosts(t))     # each ghost is its undeformed pass's alpha
         if "bc" in need:
             need.add("arrows")
-        for look in sorted(need):
+        files = {}
+        arrows_on = TL.arrows_visible(t) and "iter" in weights
+        if arrows_on:
+            oa_reader.FileNames = [os.path.join(WORK, "oarrows", f"f{fi:04d}.vtk")]
+        if "iter" in weights:
+            i0, i1, w1 = TL.vm_iterate(t)
+            files["iterA"] = (it_reader, f(f"it{i0:02d}"), "iter")
+            if w1 > 1e-6:
+                files["iterB"] = (it_reader, f(f"it{i1:02d}"), "iter")
+            if arrows_on:              # body + arrows, on the iterate that dominates the blend
+                files["oarrows"] = (it_reader, f(f"it{(i1 if w1 >= 0.5 else i0):02d}"), "iter")
+                files["oarrows_id"] = (id_reader, os.path.join(WORK, "oarrows_id", f"f{fi:04d}.vtk"),
+                                       "oarrows_id")
+        for look in sorted(need) + sorted(files):
             out = os.path.join(FR, look, f"f{fi:04d}.png")
             if os.path.exists(out):
                 continue
-            rv = views[look]
-            set_camera(rv, b["centre"], b["distance"], h, b["elev"])
+            if look in files:
+                reader, path, vname = files[look]
+                reader.FileNames = [path]
+                rv = views[vname]
+            else:
+                rv = views[look]
+            set_camera(rv, c, D, h, el)
+            rv.CameraViewAngle = fov
             if look == "solve":
-                warp.ScaleFactor = TL.osc(t, b["k"])
-            shoot(rv, out, size)
+                warp.ScaleFactor = TL.bench_osc(t, b["k"])
+            if look == "opt":
+                warp_opt.ScaleFactor = TL.bench_osc(t, b["k"])
+            rv.ViewSize = osize
+            if look == "oarrows":
+                # the same view, the same camera, the same bounds: body only, then body +
+                # arrows (both depth buffers), then the combined colour
+                oa_disp.Opacity = 0.0
+                grab_z(rv, os.path.join(FR, "oarrows_body_z", f"f{fi:04d}.npy"))
+                oa_disp.Opacity = 1.0
+                grab_z(rv, os.path.join(FR, "oarrows_z", f"f{fi:04d}.npy"))
+                shoot(rv, out, osize)
+                oa_disp.Opacity = 0.0
+                n += 1
+                continue
+            shoot(rv, out, osize)
             n += 1
         if TL.grid_opacity(t) > 0:
             out = os.path.join(FR, "grid", f"f{fi:04d}.png")
             if not os.path.exists(out):
-                set_camera(grid, b["centre"], b["distance"], h, b["elev"])
-                shoot(grid, out, gsize)
+                set_camera(grid, c, D, h, el)
+                grid.CameraViewAngle = fov
+                grid.ViewSize = ogsize
+                shoot(grid, out, ogsize)
                 n += 1
     return n
 

@@ -117,7 +117,7 @@ intersecting surfaces composite wrong and transparency is fake. Use ParaView (§
   | `intro_overview/` | `introoverview` | `intro_overview.{pdf,png}` (`challenge_overview.pdf` above `method_overview.pdf`; reads both root PDFs, rebuilds neither) |
   | `overview/`  | `overview` (+ opt-in `ovassets`) | `method_overview.{pdf,png}` (reads `overview/assets/`, `nitsche/dn_prep.py` via runpy, and `render_ov_solve.py`, which `nitsche` shares) |
   | `gallery/`   | `gallery`   | `agentic_gallery.{pdf,png}` (the 50 Opus objects in one amphitheater, seen from the stage; imports `agentic_results/`'s prep and style; §5m) |
-  | `demo_video/` | `demovideo` | `demo_video.{mp4,png}` (23 s demo movie; imports `agentic_results/`'s prep, style and panel builders; §5n) |
+  | `demo_video/` | `demovideo` | `demo_video.{mp4,png}` (27 s demo movie; imports `agentic_results/`'s prep, style and panel builders; reads the park bench's geometry clean-up; §5n) |
 
   Shared, NOT figure-local: `_shared/bc_bunny_geom.npz` (the GPU/TripoSG cache read by both
   `bcregion` and `nitsche`; the 3 scripts that touch it use `../_shared/…`) and
@@ -3580,11 +3580,11 @@ The layout rules are the user-approved schematic's (job notes:
   on 16:9. The amphitheater fits p = 0.25 because perspective shrinks the back-row labels'
   world footprint relative to the objects, and overlap is allowed.
 
-### §5n The demo video (`demovideo`, 2026-10-25, revised the same day and 2026-10-26)
+### §5n The demo video (`demovideo`, 2026-10-25, revised the same day, 2026-10-26 and 2026-11-07)
 
-`./build.sh demovideo`: `dv_prep.py` → `render_dv.py` (pvbatch, two processes: bench and
-tiles) → `dv_compose.py` (PIL) → ffmpeg. 23.0 s, 1920×1080, 30 fps, H.264 CRF 20
-yuv420p faststart, ~9 MB, ~11 min on one A6000. The mp4 and its poster png are tracked
+`./build.sh demovideo`: `dv_cleanup.py` (cached) → `dv_prep.py` → `render_dv.py` (pvbatch,
+two processes: bench and tiles) → `dv_compose.py` (PIL) → ffmpeg. 28.8 s, 1920×1080, 30 fps, H.264 CRF 20
+yuv420p faststart, ~9.2 MB, ~15–19 min on one A6000 (+ ~11 min once for the cached clean-up re-run). The mp4 and its poster png are tracked
 (the user reversed an earlier "not tracked"). Times live in ONE module, `dv_timeline.py`,
 which both the renderer and the compose import, so a pass is rendered exactly on the
 frames the compose blends it; `dv_camera.py` is ParaView's projection in numpy, shared by
@@ -3593,8 +3593,10 @@ the camera fit and the compose.
 - **Timeline (s).** CLI 0–2.2 (opaque from frame 0, typing 0.15–1.75, faded 2.2–2.4 while
   it moves up to 2.5, drawn UNDER the rising bench, opaque by 2.35); rise 2.2–3.1; looks 4.2 / 5.7 / 7.2 / 8.7 (0.6 s fades); E→|u|
   10.3–10.8; octree 10.8–11.1 in, held to 13.6, out 13.9; ghost and "×1" 13.9–14.1;
-  s(t) from t0 = 14.0, T = 2 s, peaks 15.0 and 17.0; bench into its cell 17.0–17.55;
-  tiles 17.6–18.25; hold to 23.0 (3 s longer at the user's request). Title changes dip (out 0.18 s, in 0.22 s); a
+  s(t) from t0 = 14.0, T = 2 s, peak 15.0; the optimisation beat 16.0–22.8 (below); the
+  optimised bench into its cell 22.8–23.35; tiles 23.4–24.05; hold to 28.8 (3 s longer at
+  the user's request). Every scene-8 time is the 23 s cut's + `OPT_DT` = `SHRINK0` − 17.0
+  = 5.8 s (derived, not typed); the poster is frame 747 (24.9 s). Title changes dip (out 0.18 s, in 0.22 s); a
   two-line-over-one-line dissolve read as mush on a phone.
 - **Looks are agentic results', by import.** `dv_prep` calls `ar_prep.prep_run`
   (`AR_SEGMENTATION=1`) and `write_run_files`; `render_dv` builds each look with
@@ -3712,6 +3714,242 @@ the camera fit and the compose.
   - The control arm, glass-top table and rocking horse had already been swapped for
     shorter names when the labels were bare names.
   - Tiles pop as a diagonal wave from the bench's cell, 50 ms a step.
+- **The optimisation beat (2026-11-07, the user's third design; a dolly-in close-up and a
+  pop-up card came first and were dropped).** At 16.0 (s back to 1 after one cycle) the
+  deformation stops and the bench is optimised in the main view; the spin never changes.
+  - One eased move 16.0–16.7 into a CLOSE-UP of one end (the user: "closer view
+    focused on ONE side"): the end whose change sites sum largest (−x, 7.43 h vs 7.14 h;
+    the continuous heading also faces it), 0.85 m of height in the 780 px viewport
+    (2.05× the orbit), its sites' centroid at (470, 620). The camera orbits that point,
+    its focal point slid along the camera's own right/up axes (`dv_prep.close_params`,
+    `render_dv.bench_camera`). The rest of the bench runs off the frame's left/top/bottom
+    (intended); the body and its arrows fade to 0 across x 840–960 while the plot is up
+    (`body_clear_mask`; no vertex reaches it at these headings). Earlier cuts: 1.1× on
+    the whole bench, then fitted with 64 px margins after it touched the left edge.
+  - The spin eases from 11.4 to 3.5°/s over the move in, holds through the iterates and
+    the hold, and eases back during the shrink; the heading is the rate's closed-form
+    integral (`_slowdown`), so it never jumps (−132° at 16.0, −137° at 16.7, −152° at the
+    end of the shrink). |u| crossfades 16.0–16.6 into the iterates' surface-change
+    colouring: each iterate's signed change from it_0 in h (render_prep.py's `change_h`:
+    distance to it_0, + outside = added) under a NAVY-CYAN diverging map (the user,
+    2026-11-08: the clean-up figure's red end read like the |u| colour; PRGn purple–green
+    (−3 h #40004b … +3 h #00441b) came next and was rejected). Its mechanics are
+    `experiments/geometry_cleanup/render.py`'s `lut()`, read from that file's source by
+    `dv_change.py` (CHANGE_MAX = 3 h, white 0.97 within ±0.25 h, the ±1 h stops, RGB
+    interpolation); the ends are the video's own: −3 h #0c7c99 deep teal, −1 h #41b6c4
+    cyan, +1 h #253494 navy, +3 h #081d58, plus ONE extra knot on the cyan side, −0.5 h
+    #9cd7de (half-way to the −1 h cyan): cyan is light, and on the plain ramp it sat only
+    ΔE76 16.8 off white at the 0.5 h arrow threshold, below the old red end's 21.6; with
+    the knot it is 24.6 (navy +0.5 h: 28.5). The two ends are far apart (ΔE76 80 at
+    ±1 h, 51 at ±3 h). render.py's blue–red lut stays for the paper's shape_opt_merged.
+    it_0 is all white 0.97 (ΔE76 8.3 from the zero-|u| cream: close, and crossfaded);
+    navy grows where material is added.
+    The change is averaged over each vertex's neighbours, 6 passes (~1 h): raw, the
+    slats' sharp edges showed thin orange lines that flickered between iterates (each
+    iterate's marching-cubes edge sits a little off it_0's). The iterate view's normals
+    are not split at creases (split, faint grey streaks ran along the slats). A bar
+    sits bottom left over the close-up (≥ 56 px from the frame's edges, on a blurred white
+    backing, no panel edge), fading with the change colouring. (A first cut held a
+    uniform cream body; the bar first sat under the plot.) Ghost and ×N out 16.0–16.2. The title
+    dips to "Optionally, it can be optimized / for load-carrying ability" (72 px, two
+    lines: one is 1860 px); that title is the one that shrinks into the bench's cell.
+  - Data: the bench's geometry clean-up (`experiments/geometry_cleanup`, archived). Its run
+    kept the solver output only at iterations 0 and 40, so `dv_cleanup.py` RE-RUNS it
+    unchanged (its own `setup.py` + `run.py`, uniform stand-in E 57.2 GPa, step 0.5 h,
+    cap 40, reinit off) with `GEOMETRY_CLEANUP_SAVE_EVERY=1` into
+    `output/geometry_cleanup_demovideo/` (cached; `DV_CLEANUP_FORCE=1` redoes it). Gate
+    against the archived `traj.tsv`: p99 distance within 0.012 h, max within 0.22 h at
+    every iteration; SE +1.6 % at iteration 0 drifting to −2.25 % at 40 (SE/SE0 0.575 vs
+    0.598). The SE offset is commit 964ca7c (2026-10-15, the day after the archived run):
+    saved-segment BC selectors use the solver's BC tolerance (0.75 h, was h), so the
+    frozen BC band shrank (38 933 → 33 991 cells). Same shapes, current code's numbers.
+  - The 41 iterates play 16.8–21.8 at 8 a second (the user: 15 a second was too
+    quick, then 10 a second one second short; `ITER_RATE`, and every later time follows), neighbours crossfaded (their marching-cubes meshes do not correspond), in the
+    slowly turning close-up; then a 1.0 s pause on it_40 (21.8–22.8, frames 654–683;
+    the shrink starts at frame 684), the bench still turning at 3.5°/s, the arrows full
+    (bar the look-ahead occlusion fades) and the plot up: the moment the result is read
+    (a 1.2 s "−42 %" hold came first, then no pause, then 0.3 s).
+  - The plot (right half, x 1000–1880, no panel; the designer's review, 2026-11-07):
+    Iteration 0–40 vs "Strain energy (vs. initial)" (SE/SE0), y from 0 (an honest
+    baseline) with ticks 0 / 0.5 / 1.0; a dashed 2 px #5f6672 reference at 1.0; 4 px
+    #3d424b axes and 4 × 16 px outward ticks (the user: thinner ones vanished at 360 px),
+    40 px tick and 44 px axis labels, Arial; a 6 px ink curve drawn in step with the
+    iterate, a 22 px brick dot with a 3 px white ring (on (0, 1) as the plot fades in);
+    a LIVE reduction (the user): a 3 px bracket from the dashed 1.0 down to the current
+    dot, at its x, and "−NN %" (64 px bold, #1f1f24) over "Lower → Stiffer" (42 px
+    #3d424b, the axis colour, medium = Arial regular + a 0.5 px stroke since Arial has no
+    medium face; 32 px #5f6672 was too faint (the user); Arial has U+2192) counting from −0 % to −42 % with the iterate (the curve's
+    interpolated value, integer %; "0 %" without a minus), at a FIXED spot in the plot's
+    lower-right interior (right edge ~1810 px, baseline ~690 px, below the curve's end,
+    its dot and bracket at every iteration), right-aligned (Arial's digits are tabular:
+    no jitter), visible whenever the plot is. y label "Strain energy (vs. initial)". Plot in 16.3–16.8, out 22.75–23.05. (The
+    designer's version popped "−42 %" in at the end and held it 1.2 s.) No panel: a white one cut the floor grid in a hard seam, so the grid
+    itself fades to 0 under the plot over a 180 px feather. Every size is a constant at
+    the top of `dv_compose`'s plot section.
+  - Change arrows: `ar_prep.arrow_mesh`'s shape, their own pass over the body (like the
+    load arrows), coloured with the change map's own family: navy #253494 (the +1 h
+    stop; contrast 9.8 on white) for added material, deep teal #0c7c99 (the −3 h end;
+    4.5 on white, 2.0 on the 1 h cyan) for removed, each ringed by a 4 px WHITE halo (the
+    user, "not very visible", twice; at 2 px the navy arrows still sank into the navy
+    junction: PRGn mid tones #5aae61 / #9970ab with a dark #1f1f24
+    outline, then dark #238b45 / #7b3294, came before; a dark fill alone merges into the
+    same-coloured surface, contrast 1.0–1.5, and the white halo separates it from both
+    the coloured surface and the white body). The halo's occlusion is its own: a halo
+    pixel lies OFF the arrow, so it is hidden only where the body there is nearer than the
+    arrow's depth at its nearest arrow pixel (it took the arrow pixels' depth mask, 0 off
+    the arrow, so only a ~1 px fringe of the "2 px" halo ever showed). Shaft 7 px, head
+    20 px wide (4.7 / 12 px, then 7 / 17 px; `dv_prep`'s
+    own `oarrow_mesh` sizes them separately, `ar_prep.arrow_mesh` ties the shaft to the
+    head). Red #e34948 / blue #2a78d6 came first. Sites (the user, 2026-11-08: emphasis by DENSITY, not size; every
+    visibly coloured patch gets arrows): the threshold is tied to the colour map, 0.5 h
+    (5.7 mm), where it has clearly left white (ΔE76 28.5 navy / 24.6 cyan from the
+    white, the latter by the −0.5 h knot; the old red end was 21.6 there) (1.0 / 0.6 / 0.8 h came
+    first, and 0.8 h left red patches bare). On the focused end, |smoothed change| ≥ 0.5 h,
+    biggest first, spaced 4 cm · (0.5 h / c)² down to 0.8 cm, kept if seen (not end-on,
+    on the left half) in ≥ 20 % of the iterates' frames and NOT OVERLAPPING any kept arrow
+    on screen (tail–tip segments ≥ 18 px apart whenever both are on; 12 px for 12 px
+    heads, 17 for 17; with 20 px heads and the 4 px halo, base length / gap → arrows:
+    56/24 → 22, 45/24 → 25, 50/20 → 26, 45/20 → 28, 50/18 → 31, the user asking ≥ ~30; a 22 px mid-point
+    gap capped density, and 70 px arrows along the junction's converging normals crossed),
+    no cap, and not on a mesh piece < 3 % of the body at any iterate (that removed the
+    1.69 h floating fragment at (0.055, 0.663, 0.735)).
+    - Coverage check (prep, printed): on the last iterate's frame and the end pause, every
+      connected visible patch of it_40 with |change| ≥ 0.5 h (≥ 8 vertices, fragments
+      excepted; vertices visible by a BVH ray from the camera) must hold a visible arrow
+      within 1.5 cm. An uncovered patch adds all its vertices as candidates and keeps the
+      one whose arrow is seen best (a patch facing the camera squarely would get only
+      end-on arrows, i.e. dots, and would be reported exempt; none is). Result: PASS
+      after one round, 28 arrows of 364 candidates (junction 16, arm 6, legs/feet 6,
+      all growth), on at it_0 / 10 / 20 / 40: 0 / 10 / 22 / 25, checked over the 30
+      frames of the 1.0 s end pause; one 8-vertex patch at (0.08, 0.45, 0.32) faces the
+      camera there and is exempt (every arrow on it would be end-on). 31 with the
+      0.3 s pause (47: 29 / 11 / 7 with the
+      thinnest arrows and their 12 px gap; 36 with 17 px heads and a 17 px gap).
+    - Arrows nearly uniform: 50 px at the threshold (45, then +25 % asked; +11 % kept the
+      count), up to 1.5× (68 px) with the site's
+      change so far, a constant 20 px head; anchors are fixed sites tracked smoothly
+      through the iterates (never re-sampled), the direction their smoothed normal.
+    - Each anchor is tracked back from it_40 (nearest point on it_k of its point on
+      it_k+1). The chain slides sideways where a junction fills, so the direction is the
+      anchor's NORMAL, Gaussian-smoothed over iterations (σ = 6: σ = 3 left 25° jumps
+      per update; now ≤ 10°, median ~3°), signed by the site's change.
+    - Occlusion is EXACT, per pixel, from ONE renderer (the user: arrows still showed
+      over the slats in front of them; two views reset their clipping ranges to their
+      own bounds, so their depth buffers were not comparable). The arrows are a second
+      display in the iterate's view; each arrow frame is shot twice from it, body only
+      (the arrows at opacity 0, so bounds and clipping range stay the same) and body +
+      arrows, and the compose keeps the pixels where the combined depth is nearer than
+      the body-only depth, and only inside the arrows' own footprint (the ID shot, grown
+      2 px): along body silhouettes the two depth shots differ slightly, and those pixels
+      drew black outline polylines across the body (the user: "weird lines"). Kept
+      pieces under 30 px are dropped (an arrow partly behind a slat left scattered pixels,
+      each ringed by the outline: dotted specks; a 3×3 opening instead ate into the thin
+      shafts and drew the outline inside them as dashes). The |u| kit's FXAA and tone mapping render through a
+      post-processing buffer, and the window's depth then reads back EMPTY (all 1): the
+      first per-pixel cut was void because of it, so `grab_z` turns both off for the
+      depth read only (it asserts a non-empty buffer). Check over all 129 arrow frames:
+      the two depth buffers agree exactly (max |Δz| = 0.0 over 24.2 M body pixels with
+      no arrow), and 0 kept arrow pixels have the body nearer. A white knock-out behind
+      the live "−NN %" let the bracket pass behind the label; it read as a broken line, so
+      the label now sits in the plot's empty lower-left interior (left edge at iteration
+      1.6, baseline at 0.20), which neither the curve (≥ 0.575) nor the bracket reaches.
+    - Per-arrow fade (the user: partly occluded arrows left red specks): a flat ID shot
+      (arrows only, red channel = index + 1, ambient only, no FXAA) gives each arrow's
+      pixels; its visible share = kept pixels / its side-on area at its current length
+      (`arrow_nominal.json` from dv_prep; against its own footprint an end-on or tiny
+      arrow counted as fully seen), averaged over ±4 frames, off below 35 % and on again
+      at ≥ 45 %, the state averaged over ±4 frames (`arrow_fades.json`). Every arrow pixel
+      (AA fringe included) takes its nearest valid-ID pixel's fade, outline too.
+    - ONE visibility per arrow, owned by the compose (the user: "the arrows flash or
+      blink"). Measured first (per arrow, per frame, visible ID pixels × fade): 35 flips,
+      10 of them reversed within 0.5 s, some frame to frame. Causes: prep scaled each
+      arrow's geometry by its own end-on state and threshold gate (arrows grew from dots)
+      while the compose's share fade moved the other way, and the per-frame visible count
+      jumped as the crossfade's dominant iterate (the occluding body) changed. Now prep
+      writes every kept arrow at full size in every frame, and `arrow_fades` sets its
+      alpha: target = site past the threshold (`arrow_meta.json` t_cross) AND visible
+      share (ID pixels kept by depth / side-on area) Gaussian-smoothed σ = 4 frames, on
+      at ≥ 50 %, off below 35 %, ≥ 0.4 s between changes; alpha slew-limited, a full fade
+      ≥ 0.3 s (now: rises ≥ 0.3 s, falls ≥ 0.5 s with look-ahead, below). The 30 px piece drop (another per-frame switch) is gone; instead each
+      visible piece of an arrow, and its outline, weighs smoothstep((px − 15) / 45), so
+      slivers beside a slat fade continuously and leave no black outline squiggles.
+      After: 25 flips (each a single fade-in at the threshold or one occlusion fade, ≥ 1 s
+      apart), 0 reversals within 0.5 s, max alpha step per frame 0.111.
+    - No arrow disappears suddenly (the user). Rule: no arrow loses more than 1/15 of its
+      alpha a frame (a full fade-out ≥ 0.5 s). The frames are rendered offline, so
+      `arrow_fades` LOOKS AHEAD: a forward pass slew-limits rises (1/9 a frame), a
+      backward pass caps each frame at the next frames' alpha + 1/15 per frame between, so
+      an arrow that will go behind the body (smoothed visible share below 35 %) has
+      finished fading by the frame it does. The beat's global arrow opacity is folded in
+      as a MIN (a product of two falling ramps falls faster than either). The end fade
+      starts with the shrink: full through the last iterate and the whole end pause (the
+      user: that is where the result is read; a 20.55–21.3 smoothstep left them faint
+      there), then LINEAR 22.8–23.3 at exactly 1/15 a frame, ending with the iterate body
+      they sit on (OPT_FADE; the arrows render in its view). It was 0.15 s, 20.95–21.1,
+      0.32 a frame, at first. The arrows are rendered on the shrink's oversized frames too, and
+      the coverage check runs on every end-pause frame (30 with the 1.0 s pause, the spin
+      turning patches into and out of view) whatever the fade.
+      Two more pops went with it: the halo ring and the piece labels were cut from the
+      FADED alpha at 0.5, so every halo vanished the frame its arrow's fade passed 0.5 (they
+      are now cut from the coverage before the fade), and the ID lookup took AA-edge pixels
+      (alpha > 128) whose blended red value is another arrow's id, drawing 1 px dots of
+      hidden arrows (now alpha ≥ 250 only). Off is also triggered by the RAW share (an
+      iterate switch can bury an arrow's base in one frame). Audit (`DV_ARROW_LOG=DIR` on
+      the compose writes each arrow's visible weight per frame): before, largest alpha
+      drop 0.324 a frame (the 0.15 s end fade), 0.111 elsewhere; after (the late linear
+      end fade, 31 arrows), largest alpha drop 0.067 everywhere. Visible weight against
+      the arrow's own footprint that frame: before, largest drop 0.32 a frame, 23 arrows
+      above 1/15, one going from ≥ 30 % to ≤ 5 % within 3 frames; after, 0.14 (arrow 8
+      at the shrink's first frame, where the oversized canvas reveals its off-frame part:
+      a bookkeeping jump, not on screen), 12 above 1/15 (fade plus the camera pulling
+      back), none abrupt. No arrow rises once the end fade has begun (one fading in as
+      the camera pulled back came and went within it).
+    - The end pause shows every arrow FULLY on or FULLY off (the user: half-faded and
+      head-only arrows at the end read as noise). `dv_prep` marks an arrow `pause_on`
+      (`arrow_meta.json`) if, by ray casting 9 points along it against it_40's BVH, ≥ 60 %
+      of it is unoccluded and it is not end-on in ≥ half the pause's frames, AND it stays
+      ≥ 60 % unoccluded through the end fade's first frames (alpha > 0.3): an arrow full
+      at the pause's end, hidden by the body 8 frames into the shrink, would vanish at
+      alpha 0.5. The coverage check counts only those (an arrow on a patch it could only
+      show in part leaves it to an exemption). `arrow_fades` then holds pause_on arrows
+      at 1 from the pause's first frame (their fade-in starts 9 frames before it) until
+      the first pause frame the body hides > 40 % of one (exact: its ID pixels against
+      the depth test, not the nominal-area share, which reads ~0.75 for a fully visible
+      but foreshortened arrow), with the look-ahead fade-out ending there; the rest are
+      faded out before the pause. Audit over the pause's 30 frames (2026-11-09): 12 of
+      the 28 arrows on in every frame, 16 off in every frame, none with alpha in
+      (0.1, 0.9), none at full alpha with an unoccluded share in (5 %, 60 %); coverage
+      PASS on the shown 12 (one 8-vertex patch exempt). Of the 16 off, 8 are fully behind
+      the body at the pause's headings; the others were half-hidden, head-only or hidden
+      early in the shrink.
+    - `dv_prep` writes one arrow mesh per frame (`_work/oarrows/`); the renderer swaps
+      the file.
+  - The shrink (21.0–21.55) starts from the close-up: the camera pulls back out
+    (closeup 1 → 0) while the compose shrinks the layer into the cell by the tiles' rule
+    on `box_close_px` (the OPTIMISED bench, at rest and at ×200, under the ORBIT camera
+    over the remaining headings), so it lands as the whole bench, not a cropped close-up.
+    The layer holds only what the camera saw: in the close-up the bench runs up to 770 px
+    off the frame's left and below its bottom, so a frame-sized layer, once scaled down,
+    showed its own border as a straight cut through the legs and grid (f0636, y ≈ 963).
+    The move's frames (0 < move < 1, f0631–f0646) are therefore rendered on a 2× canvas
+    (same camera and pixel scale, the view angle widened so tan(fov/2) doubles;
+    `TL.oversize`), and the compose anchors the frame's origin at the canvas's (960, 540);
+    the grid alone fades out over 240 px at that canvas's border (it is fading with the
+    move anyway). Checked: the oversized centre equals the normal render (mean |Δ| 0.003
+    levels), and an automated test finds no alpha jump at any layer border inside the
+    frame over 16.0–16.7 s and 21.0–21.6 s (now 22.7–23.3 s). (A soft feather at the frame-sized layer's
+    border was rejected: the legs would fade away.)
+    Its colour crossfades back to |u| 22.8–23.3 and s(t) restarts from 1 (same k = 200);
+    its ghost (undeformed it_40) returns 22.9–23.2. Its |u| is a forward solve of it_40
+    with the session's per-part materials (`dv_cleanup.run_parts`, pyamgx as the
+    session's own solve), coloured on the SAME |u| range as the original bench (the
+    session's |u|max), so the stiffer bench reads lighter: |u|max 0.586 mm vs 0.857 mm
+    (−32 %). New material (7.2 % of it_40's volume, outside the original body) takes the
+    nearest occupied cell's part (`dense_grid_from_sparse`): 53 % steel, 47 % wood. The
+    other 20 tiles are unchanged.
+  - The batch records name the old checkout path `/home/xl2254/implicit_optimize`, which no
+    longer exists; `dv_prep.run_key` matches records to runs by their path below
+    `agentic_batch50_opus/`, and the batch is read from the checkout's own `output/`.
 - Check frames at 360 px wide (phone) before shipping, and a frame sequence around every
   transition.
 

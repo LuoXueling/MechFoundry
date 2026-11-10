@@ -254,6 +254,18 @@ ssh -N -L 8501:127.0.0.1:8501 USER@REMOTE_HOST
 
 Then open `http://127.0.0.1:8501`.
 
+**Agent sessions (optional).** After the setup card's models and compute environment pass
+their checks, *Start agent session* hands the conversation to Claude Code, which follows the
+operator skill and drives the workflow while the visualization updates live; you can send
+further prompts, attach images or meshes, stop a reply, and approve or deny any action outside
+its allow list. It needs Claude Code installed and logged in (`claude` on the PATH, or
+`CLAUDE_CLI=/path/to/claude`) and the Agent SDK in this environment; without either, the option
+stays disabled and says why:
+
+```shell
+python -m pip install "claude-agent-sdk>=0.2,<0.3"
+```
+
 See [`src/agents_wrapper/fem_workflow/README.md`](src/agents_wrapper/fem_workflow/README.md)
 for details.
 </details>

@@ -88,6 +88,7 @@ src/
     controller.py         WorkflowController: adapter between Streamlit and the checkpointed graph
     browse.py             session file browsing/preview/zip (Streamlit-free, testable)
     telemetry.py          machine-load sampler + solver-progress reader for the tool window
+    agent_session.py      optional agent sessions: Claude Code (Agent SDK) drives the operator skill (Streamlit-free)
   material_parts/         per-part materials → 64³ material field (same artifact format as VoMP)
   partfield_wrapper/      optional PartField segmentation (own env `mechfoundry-partfield`), with a server/worker
   cad_wrapper/            optional text→CAD: text2cad_wrapper/, cadcoder_wrapper/ (sandboxed), cad_common/
@@ -365,6 +366,17 @@ FEM_WORKFLOW_OUTPUT_ROOT=/abs/root CUDA_VISIBLE_DEVICES=1 streamlit run src/ui/a
   and zip-download the session folder).
 - The UI uses the same checkpointed graph as the CLI (`controller.py`). A session
   started in one can be resumed in the other.
+- **Agent sessions** (`agent_session.py`, optional): *Start agent session* on the setup
+  card runs Claude Code through the Claude Agent SDK (one loop thread per server, a client per
+  conversation) on the operator skill, with the agentic batch's allow/deny lists and an
+  Allow/Deny card for anything else. The setup card's choices reach `drive.py start` as
+  `FEM_OPERATOR_PROVIDER`/`_MODEL`/`_VISION_PROVIDER`/`_VISION_MODEL`/`_COMPUTE_ENV`, and its
+  sessions are written to the UI's own root (`FEM_OPERATOR_OUTPUT_ROOT`). The page shows them
+  through `controller.peek` (reads the checkpoint, writes nothing, starts no worker), never
+  `open`, which could re-offer a card under the agent's running step; sidebar clicks on an
+  agent-driven session go to its agent view. Conversations are stored in
+  `<root>_agent/<id>/` (`meta.json`, `chat.jsonl`, `uploads/`). Offered only when
+  `agent_status()` is ready (the SDK importable and a `claude` CLI found).
 
 The UI cannot be imported outside a Streamlit runtime. Put testable logic in
 `controller.py`, `browse.py` or `telemetry.py`, not in `app.py`. To see a UI change working,

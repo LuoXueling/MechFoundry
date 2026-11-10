@@ -30,7 +30,7 @@
 #         ./build.sh challenge # intro figure: the set-up's challenges for engineer / agent, and Figure 2's answers
 #         ./build.sh introoverview # challenge_overview stacked above method_overview, one vector page
 #         ./build.sh operator  # the AI agent operator's loop: steps, gates, stops, driver calls
-#         ./build.sh demovideo # 23 s demo movie: CLI -> park bench through every look -> 21-object grid
+#         ./build.sh demovideo # 28.8 s demo movie: CLI -> park bench through every look, optimised -> 21-object grid
 #
 # LAYOUT: each figure's scripts + regenerable intermediates live in its own
 # subfolder (octree/, workflow/, ...); every target runs there (so the scripts'
@@ -708,14 +708,20 @@ build_showcase() {
 }
 
 # --- The demo video: one park bench through every look, then 20 more (demo_video/) --
+# dv_cleanup (cached GPU stage, ~12 min once: the bench's geometry clean-up re-run with
+# the solver's output kept at every iteration, gated against the archived traj.tsv, and a
+# per-part forward solve of its final shape; DV_CLEANUP_FORCE=1 redoes both) ->
 # dv_prep (agentic_results' own prep, imported: surfaces, |u|, x N gated against the
 # figure records; one orbit camera per object) -> render_dv (pvbatch, one long-lived
 # view per look, camera turned per frame) -> dv_compose (PIL: crossfades, titles, CLI,
 # colour bar, grid) -> ffmpeg (H.264 CRF 20, yuv420p, faststart).  DV_GPU (1) for the
 # prep and pvbatch; DV_DRAFT=1 renders half size, every 2nd frame, at 15 fps;
 # DV_KEEP_WORK=1 keeps _work (renders + frames), so a 2-D change reruns only the compose.
-# demo_video.{mp4,png} are tracked deliverables (mp4 ~9 MB).  Reads
-# output/agentic_batch50_opus (extract its archive first, AGENTS.md "Archived inputs").
+# demo_video.{mp4,png} are tracked deliverables.  Reads output/agentic_batch50_opus and
+# output/geometry_cleanup/park-bench (extract both from output/archives first, AGENTS.md
+# "Archived inputs": the latter with  zstd -dc output/archives/geometry_cleanup.tar.zst |
+# tar -x -C output geometry_cleanup/park-bench); writes its cache to
+# output/geometry_cleanup_demovideo/ (kept across builds).
 build_demovideo() {
   ( cd demo_video
     set -e
@@ -723,6 +729,7 @@ build_demovideo() {
     if [ "${DV_DRAFT:-0}" = 1 ]; then scale=0.5; step=2; fps=15; outs=0.5; fi
     python3 ../agentic_results/ar_style.py               # gate: look == overview's source
     rm -rf _work
+    CUDA_VISIBLE_DEVICES="$gpu" $CONDA dv_cleanup.py      # cached: does only what is missing
     CUDA_VISIBLE_DEVICES="$gpu" $CONDA dv_prep.py --work _work
     # the bench and the tiles in two processes on the same GPU (~6 / ~2.5 min at full size)
     env "${PV_ENV[@]:1}" VTK_DEFAULT_EGL_DEVICE_INDEX="$gpu" \
@@ -737,8 +744,9 @@ build_demovideo() {
     for f in _work/out/f*.png; do ln -sf "../out/$(basename "$f")" "$(printf '_work/enc/e%04d.png' "$i")"; i=$((i + 1)); done
     "$ff" -y -loglevel error -framerate "$fps" -i _work/enc/e%04d.png -c:v libx264 -crf 20 \
       -preset slow -pix_fmt yuv420p -movflags +faststart "$ROOT/demo_video.mp4"
-    # the poster: the full grid at 19.1 s (frame 573; the draft has only even frames)
-    cp -f _work/out/f0573.png "$ROOT/demo_video.png" 2>/dev/null || cp -f _work/out/f0572.png "$ROOT/demo_video.png"
+    # the poster: the full grid at 24.9 s (frame 747 = the 23 s cut's 573 + the 5.8 s
+    # optimisation beat, dv_timeline.OPT_DT; the draft has only even frames)
+    cp -f _work/out/f0747.png "$ROOT/demo_video.png"
     cp -f _work/dv_stats.json dv_stats.json               # the record: runs, x N, cameras
     [ "${DV_KEEP_WORK:-0}" = 1 ] || rm -rf _work )
   echo "built: demo_video.{mp4,png}"

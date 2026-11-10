@@ -19807,11 +19807,15 @@ def parser() -> argparse.ArgumentParser:
     p.set_defaults(func=cmd_gpu)
 
     p = sub.add_parser("start")
-    p.add_argument("--provider", default="deepseek", choices=("deepseek", "groq", "gemini"))
-    p.add_argument("--model")
-    p.add_argument("--vision-provider", choices=("deepseek", "groq", "gemini"))
-    p.add_argument("--vision-model")
-    p.add_argument("--compute-env", default=lib.DEFAULT_COMPUTE_ENV)
+    # Defaults from FEM_OPERATOR_PROVIDER and its siblings when set: the UI's agent sessions
+    # (src/ui/agent_session.py) pass the models and environment the user picked on its setup card
+    # this way, so the agent's `start` uses them without retyping them. A flag still wins.
+    env_default = lambda name, fallback=None: os.environ.get(f"FEM_OPERATOR_{name}") or fallback  # noqa: E731
+    p.add_argument("--provider", default=env_default("PROVIDER", "deepseek"), choices=("deepseek", "groq", "gemini"))
+    p.add_argument("--model", default=env_default("MODEL"))
+    p.add_argument("--vision-provider", default=env_default("VISION_PROVIDER"), choices=("deepseek", "groq", "gemini"))
+    p.add_argument("--vision-model", default=env_default("VISION_MODEL"))
+    p.add_argument("--compute-env", default=env_default("COMPUTE_ENV", lib.DEFAULT_COMPUTE_ENV))
     p.add_argument("--octree-depth", type=int, default=7)
     p.add_argument("--session-id")
     p.add_argument("--instruction", required=True,

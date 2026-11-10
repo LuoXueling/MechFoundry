@@ -6211,3 +6211,22 @@ def test_one_hue_missing_from_a_whole_facing_is_warned(tmp_path, monkeypatch):
     # the hue all round is no finding; nor a paint asked in two colours
     assert drive.paint_findings(_painted(tmp_path, "all", lambda v: yellow), "yellow painted steel")[0] == []
     assert drive.paint_findings(back, "yellow and grey painted steel")[0] == []
+
+
+def test_start_takes_the_ui_choices_from_the_environment(monkeypatch):
+    """The UI's agent sessions pass the setup card's models and environment as
+    FEM_OPERATOR_* (src/ui/agent_session.py); a flag still wins."""
+    import importlib
+    drive = importlib.import_module("drive")
+    for name, value in (("PROVIDER", "groq"), ("MODEL", "m1"), ("VISION_PROVIDER", "gemini"),
+                        ("VISION_MODEL", "v1"), ("COMPUTE_ENV", "env-x")):
+        monkeypatch.setenv(f"FEM_OPERATOR_{name}", value)
+    args = drive.parser().parse_args(["start", "--instruction", "a hook"])
+    assert (args.provider, args.model, args.vision_provider, args.vision_model, args.compute_env) == \
+        ("groq", "m1", "gemini", "v1", "env-x")
+    args = drive.parser().parse_args(["start", "--instruction", "a hook", "--provider", "deepseek"])
+    assert args.provider == "deepseek"
+    for name in ("PROVIDER", "MODEL", "VISION_PROVIDER", "VISION_MODEL", "COMPUTE_ENV"):
+        monkeypatch.delenv(f"FEM_OPERATOR_{name}")
+    args = drive.parser().parse_args(["start", "--instruction", "a hook"])
+    assert args.provider == "deepseek" and args.model is None

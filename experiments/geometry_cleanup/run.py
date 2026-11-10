@@ -154,6 +154,7 @@ _made = []
 # 7th solve stopped at ||r||/||b|| 1.16e-6 against the 1e-6 tolerance after the default
 # 1000 iterations, still converging (jax_amg_solver's own advice: raise max_iters).
 SOLVER_EXTRA = {"jaxamg_max_iters": 4000}
+SAVE_EVERY = os.environ.get("GEOMETRY_CLEANUP_SAVE_EVERY", "0") == "1"
 if A.extra:
     SOLVER_EXTRA.update(json.loads(A.extra))
 
@@ -298,7 +299,11 @@ class CleanupOpt(_Base):
         return "continue" if verdict == "converged" else verdict
 
     def save(self, **kwargs):
-        if self._cu_it <= 0 or self._cu_stop:
+        # GEOMETRY_CLEANUP_SAVE_EVERY=1 (opt-in, off for the 50-object pipeline): keep the
+        # solver's own output (VTU volume + surface with displacement/stress) at EVERY
+        # iteration, so a figure can colour each iterate by the stress the optimizer
+        # computed for it (illustrations/demo_video).  Saving does not change the run.
+        if SAVE_EVERY or self._cu_it <= 0 or self._cu_stop:
             return super().save(**kwargs)
         self.__dict__.pop("_last_e_grad", None)
         self.__dict__.pop("_last_e_phi_grad", None)
