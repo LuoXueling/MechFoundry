@@ -1,12 +1,15 @@
 # MechFoundry: Autonomous generation, simulation and optimization of deformable real-world objects
 
+<p align="center">
+  <a href="https://arxiv.org/abs/2611.14571"><img src="https://img.shields.io/badge/arXiv-2611.14571-b31b1b.svg?style=for-the-badge&logo=arxiv&logoColor=white" alt="arXiv"></a>
+  <a href="https://xuelingluo.com/mechfoundry"><img src="https://img.shields.io/badge/Project-Page-2563eb.svg?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Project page"></a>
+</p>
+
 <img src=".assets/agentic_gallery.png" width="800" />
 
 MechFoundry is an agentic loop coupled with bespoke software that automates structural analyses of real-world objects without a human in the loop. From an object's lexical description, it generates a shape, poses a loading case relevant to how the object is used, assigns a material to each part, solves the nonlinear structural response, and improves the design against the loads it carries. A differentiable GPU solver built on an adaptive octree that need not conform to the surface enables the transition from shape generation to simulation and optimization. 
 
-[__[Paper]__](.assets/mechfoundry_manuscript_1109.pdf) (licensed under CC BY 4.0; submitted to arXiv, announcement pending)
-
-This repository is released for the paper *MechFoundry: An agentic loop that poses and performs engineering analyses and optimization of real-world objects*, authored by Xue-Ling Luo, Marco Conte, Peter Yichen Chen, and Nikolaos Bouklas. 
+This repository is released for the paper *MechFoundry: An agentic loop that poses and performs engineering analyses and optimization of real-world objects* ([arXiv:2611.14571](https://arxiv.org/abs/2611.14571)), authored by Xue-Ling Luo, Marco Conte, Peter Yichen Chen, and Nikolaos Bouklas. 
 
 ## Installation
 
@@ -771,3 +774,16 @@ Its outputs are `geometry_cleanup.tar.zst`.
 
 </details>
 
+## Citation
+
+If you use MechFoundry in your work, please cite:
+
+```bibtex
+@article{luo2026mechfoundry,
+  title         = {{MechFoundry}: An agentic loop that poses and performs engineering analyses and optimization of real-world objects},
+  author        = {Luo, Xue-Ling and Conte, Marco and Chen, Peter Yichen and Bouklas, Nikolaos},
+  journal       = {arXiv preprint arXiv:2611.14571},
+  year          = {2026},
+  url           = {https://arxiv.org/abs/2611.14571}
+}
+```
