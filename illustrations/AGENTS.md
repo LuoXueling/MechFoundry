@@ -8,6 +8,13 @@ rule gives it (the control arm, 0.9×, shrunk about its centre; the car brake di
 changing the rule or pinning a camera (README §1, "Per-object size override"). A prompt
 too long for the card is held to fewer lines in a smaller face by its entry's
 `prompt_max_lines` (the control arm: 2 lines, 5.8 pt), never by growing every row (README §1).
+The open-weight Codex batches (`output/agentic_batch50_deepseek`, `…_kimi`; `run_batch.sh
+--agent codex`) build with the same targets: per-category figures with `--suffix _deepseek` /
+`_kimi`, and `agenticcompare` with `ARC_MODELS="deepseek=ROOT kimi=ROOT"` (any two or three
+models; give `ARC_NAME` so the paper's pages stay). Their time bars come from the Codex
+rollout (`ar_time.py`), their tokens from `metrics.json` (README §1, §5). The paper trio's
+pages compose exactly as before; check that with the old and new code on the same plan
+(`compose --stub-panels crops|synthetic`, PNGs byte-identical) after any change to `ar_compare.py`.
 
 **Archived inputs.** The run folders some builds read are packed in
 `output/archives/<name>.tar.zst`: the three batches `agentic_batch50{,_haiku,_opus}`

@@ -38,6 +38,12 @@ fi
     || { echo "not a solved session folder: ${SOURCE:-<none>}" >&2; usage >&2; exit 2; }
 SOURCE="$(cd "$SOURCE" && pwd)"
 [ -z "$VARIANTS_FILE" ] || [ -f "$VARIANTS_FILE" ] || { echo "no such file: $VARIANTS_FILE" >&2; exit 2; }
+# The authoring call is a Claude Code call: with --agent codex (the runs on Codex) it needs a
+# Claude --author-model, or the variants given with --variants.
+if [ "$AGENT" = codex ] && [ -z "$VARIANTS_FILE" ] && [ -z "$AUTHOR_MODEL" ]; then
+    echo "--agent codex: the variants are authored by Claude Code; give --author-model (a Claude model) or --variants FILE" >&2
+    exit 2
+fi
 AUTHOR_MODEL="${AUTHOR_MODEL:-$MODEL}"
 ab_setup
 OBJECT="$("$PY" "$HELPER" source-info --session "$SOURCE" | "$PY" -c 'import json, sys; print(json.load(sys.stdin)["instruction"] or "")')"

@@ -4,9 +4,12 @@ Subcommands:
   slug TEXT                       a filesystem-safe slug of an instruction
   prompt --template F --worktree W --object O
                                   the initial instruction with the object inserted
-  finalize --run-dir D ...        after one `claude -p` exits: extract the result,
-                                  copy the transcripts and the workflow session(s),
-                                  write metrics.json; prints one status line
+  finalize --run-dir D ...        after one `claude -p` (or, --agent codex, `codex exec`)
+                                  exits: extract the result, copy the transcripts and the
+                                  workflow session(s), write metrics.json; prints one status line
+  codex-home --dir D --model M    a run's own CODEX_HOME (config.toml, rules/operator.rules)
+  codex-model --model M           the model, provider and key variable --model/--provider resolve to
+  conda-env-var --env E --name N  a variable stored in conda environment E (a provider key)
   summary --batch-dir B RUN...    the batch table (summary.csv, summary.json) and
                                   ar_runs.txt (the run folders, for AR_RUNS=)
 
@@ -364,48 +367,11 @@ def cmd_finalize(a):
     calls = scan_transcript(files)
     observed = effort_observed(files)
     final_text = result.get("result") or ""
-    wsid, wsids, how = workflow_sessions(calls, final_text, a.workflow_root)
-    wf_dest = os.path.join(run, "workflow")
-    os.makedirs(wf_dest, exist_ok=True)
-    copied = []
-    for s in wsids:
-        shutil.copytree(os.path.join(a.workflow_root, s), os.path.join(wf_dest, s),
-                        symlinks=True, dirs_exist_ok=True)
-        copied.append(s)
-    runner = {}
-    for cmd, _ in calls:
-        for sub, _sid in DRIVE_CMD.findall(cmd):
-            runner[sub] = runner.get(sub, 0) + 1
-    last_stop = None
-    if wsid:
-        try:
-            last_stop = json.load(open(os.path.join(wf_dest, wsid, "operator", "last_run.json"))).get("stop")
-        except (OSError, json.JSONDecodeError, AttributeError):
-            pass
-        # `judge --finish` (and `finish`) end the session without a `run`, so last_run.json still
-        # says "solve": the driver log's last stop is the session's own
-        try:
-            for line in open(os.path.join(wf_dest, wsid, "operator", "driver_log.jsonl")):
-                entry = json.loads(line)
-                if isinstance(entry, dict) and entry.get("stop"):
-                    last_stop = entry["stop"]
-        except (OSError, json.JSONDecodeError):
-            pass
-
-    # The instruction `start` stored (brief_snapshots/instruction.json; use_anchor.json before
-    # 2026-10-11) against the list line this run was given: a batch passes it in
-    # FEM_OPERATOR_INSTRUCTION.  The metrics keep their names (anchor_instruction*).
-    anchor_instruction = anchor_matches = anchor_given = None
-    if wsid:
-        for name in ("instruction.json", "use_anchor.json"):
-            try:
-                record = json.load(open(os.path.join(wf_dest, wsid, "brief_snapshots", name)))
-            except (OSError, json.JSONDecodeError):
-                continue
-            anchor_instruction = record.get("instruction")
-            anchor_given = record.get("instruction_given")
-            anchor_matches = anchor_instruction == a.instruction
-            break
+    wf = workflow_record(a, run, calls, final_text)
+    wsid, wsids, how, copied, runner, last_stop = (wf[k] for k in ("wsid", "wsids", "how", "copied",
+                                                                   "runner", "last_stop"))
+    anchor_instruction, anchor_matches, anchor_given = (wf[k] for k in ("anchor_instruction", "anchor_matches",
+                                                                        "anchor_given"))
 
     exit_code = int(a.exit_code)
     if a.timed_out == "1":
@@ -424,6 +390,7 @@ def cmd_finalize(a):
     metrics = {
         "run_name": os.path.basename(os.path.normpath(run)),
         "instruction": a.instruction,
+        "agent": "claude",
         "model": model,
         "model_requested": a.model,
         "session_id": wsid,
@@ -468,17 +435,7 @@ def cmd_finalize(a):
         "finished_at": a.finished_at,
         "transcript_source": src,
     }
-    # A realization or sweep run (run_realizations.sh, run_material_sweep.sh, run_bc_sweep.sh):
-    # what it varied, for the figure's label, and the case it solved, to check it.
-    variant = _load_json(a.variant) if getattr(a, "variant", None) else None
-    if isinstance(variant, dict):
-        metrics["variant"] = variant
-        metrics["variant_kind"] = variant.get("kind")
-        metrics["varied"] = variant.get("label") or variant.get("description")
-    if wsid:
-        metrics["case"] = case_summary(os.path.join(wf_dest, wsid))
-    with open(os.path.join(run, "metrics.json"), "w") as fh:
-        json.dump(metrics, fh, indent=1)
+    _write_metrics(a, run, metrics, wsid)
     if result.get("permission_denials"):
         with open(os.path.join(run, "permission_denials.json"), "w") as fh:
             json.dump(result["permission_denials"], fh, indent=1)
@@ -488,13 +445,377 @@ def cmd_finalize(a):
           f"{tokens['cache_creation_input_tokens']}/{tokens['output_tokens']} cost={metrics['cost_usd']}")
 
 
+def _write_metrics(a, run, metrics, wsid):
+    """metrics.json, with the variant a realization or sweep run varied (run_realizations.sh,
+    run_material_sweep.sh, run_bc_sweep.sh), for the figure's label, and the case it solved, to
+    check it."""
+    variant = _load_json(a.variant) if getattr(a, "variant", None) else None
+    if isinstance(variant, dict):
+        metrics["variant"] = variant
+        metrics["variant_kind"] = variant.get("kind")
+        metrics["varied"] = variant.get("label") or variant.get("description")
+    if wsid:
+        metrics["case"] = case_summary(os.path.join(run, "workflow", wsid))
+    with open(os.path.join(run, "metrics.json"), "w") as fh:
+        json.dump(metrics, fh, indent=1)
+
+
+def workflow_record(a, run, calls, final_text):
+    """The agent-independent half of finalize: the workflow session(s) the run's commands created,
+    copied into <run>/workflow/, the runner commands counted, the last stop, and the instruction
+    `start` stored against the list line."""
+    wsid, wsids, how = workflow_sessions(calls, final_text, a.workflow_root)
+    wf_dest = os.path.join(run, "workflow")
+    os.makedirs(wf_dest, exist_ok=True)
+    copied = []
+    for s in wsids:
+        shutil.copytree(os.path.join(a.workflow_root, s), os.path.join(wf_dest, s),
+                        symlinks=True, dirs_exist_ok=True)
+        copied.append(s)
+    runner = {}
+    for cmd, _ in calls:
+        for sub, _sid in DRIVE_CMD.findall(cmd):
+            runner[sub] = runner.get(sub, 0) + 1
+    last_stop = None
+    if wsid:
+        try:
+            last_stop = json.load(open(os.path.join(wf_dest, wsid, "operator", "last_run.json"))).get("stop")
+        except (OSError, json.JSONDecodeError, AttributeError):
+            pass
+        # `judge --finish` (and `finish`) end the session without a `run`, so last_run.json still
+        # says "solve": the driver log's last stop is the session's own
+        try:
+            for line in open(os.path.join(wf_dest, wsid, "operator", "driver_log.jsonl")):
+                entry = json.loads(line)
+                if isinstance(entry, dict) and entry.get("stop"):
+                    last_stop = entry["stop"]
+        except (OSError, json.JSONDecodeError):
+            pass
+
+    # The instruction `start` stored (brief_snapshots/instruction.json; use_anchor.json before
+    # 2026-10-11) against the list line this run was given: a batch passes it in
+    # FEM_OPERATOR_INSTRUCTION.  The metrics keep their names (anchor_instruction*).
+    anchor_instruction = anchor_matches = anchor_given = None
+    if wsid:
+        for name in ("instruction.json", "use_anchor.json"):
+            try:
+                record = json.load(open(os.path.join(wf_dest, wsid, "brief_snapshots", name)))
+            except (OSError, json.JSONDecodeError):
+                continue
+            anchor_instruction = record.get("instruction")
+            anchor_given = record.get("instruction_given")
+            anchor_matches = anchor_instruction == a.instruction
+            break
+
+    return {"wsid": wsid, "wsids": wsids, "how": how, "copied": copied, "runner": runner,
+            "last_stop": last_stop, "anchor_instruction": anchor_instruction,
+            "anchor_matches": anchor_matches, "anchor_given": anchor_given}
+
+
+# ---------------------------------------------------------------- Codex (--agent codex)
+
+# The open-weight operators run under the Codex CLI (`codex exec`), which since early 2026 speaks
+# only the OpenAI Responses API to a custom provider (`wire_api = "responses"`).  The models, the
+# provider each is pinned to on Hugging Face, and the prices are in codex_models.json beside this
+# script.  `hf` (Hugging Face Inference Providers) is the default; `vendor` is each company's own
+# Responses endpoint.
+CODEX_PROVIDERS = {
+    # HF_TOKEN needs the fine-grained "Make calls to Inference Providers" permission and credits.
+    "hf": {"name": "Hugging Face", "base_url": "https://router.huggingface.co/v1", "env_key": "HF_TOKEN"},
+    # Verified 2026-11-17: /models lists deepseek-flash = DeepSeek-V4.1-Flash, text + image input,
+    # and a codex exec run on it drove drive.py, viewed an image and wrote with apply_patch.
+    "deepseek": {"name": "DeepSeek", "base_url": "https://api.deepseek.com", "env_key": "DEEPSEEK_API_KEY"},
+    # Moonshot's Codex guide (platform.kimi.com/docs/guide/codex-kimi): native Responses API, keys
+    # from platform.kimi.com work only on api.moonshot.cn; international keys use api.moonshot.ai
+    # (set AB_CODEX_BASE_URL).  Not run here: no Moonshot key on this machine.
+    "moonshot": {"name": "Moonshot", "base_url": "https://api.moonshot.cn/v1", "env_key": "MOONSHOT_API_KEY"},
+}
+CODEX_MODELS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "codex_models.json")
+
+
+def codex_models():
+    return json.load(open(CODEX_MODELS_FILE, encoding="utf-8"))["models"]
+
+
+# Codex tools the skill never uses, off for the tokens of their definitions (as --tools does for
+# the Claude runs).  Two of Codex's defaults must be off for the HF router at all: the web-search
+# tool and the multi_agent tool namespace are not "function" tools, and the router refuses the
+# request (400 invalid_union, tools[i].type: expected "function"); measured 2026-11-17, codex-cli
+# 0.163.0, either one alone still refused.  With these off the run has exec_command, write_stdin,
+# view_image, apply_patch and request_user_input.
+CODEX_FEATURES_OFF = ("multi_agent", "apps", "plugins", "remote_plugin", "image_generation", "browser_use",
+                      "browser_use_external", "computer_use", "in_app_browser", "goals", "tool_suggest",
+                      "skill_search", "code_mode_host", "realtime_conversation", "workspace_dependencies", "hooks")
+OPERATOR_SCRIPTS = "src/agents_wrapper/fem_workflow/operator_skill/scripts/"
+
+
+def codex_model(name, provider):
+    """{model, key, label, route, provider, base_url, env_key, price} for a --model name under
+    --provider hf|vendor|<provider>.  `model` is what Codex sends: on Hugging Face the model id with
+    its pinned route (`<id>:<route>`, codex_models.json), so every request of a batch is served by the
+    same provider; `price` is the model's accounting price, whatever the provider.  A name outside
+    the table is taken as the provider's own model id (on hf, `<id>[:<route>]` as typed; no price)."""
+    table = codex_models()
+    key = name.lower()
+    for k, entry in table.items():
+        if key == k or key in (entry.get("aliases") or []):
+            key = k
+            break
+    entry = table.get(key)
+    route = None
+    if provider == "hf":
+        prov = "hf"
+        if entry:
+            route = os.environ.get("AB_CODEX_ROUTE") or entry["route"]
+            model = f"{entry['hf']}:{route}" if route else entry["hf"]
+        else:
+            model, route = name, (name.split(":", 1)[1] if ":" in name else None)
+    elif provider == "vendor":
+        if not entry:
+            raise SystemExit(f"--provider vendor knows {', '.join(table)}; for another model use "
+                             f"--provider {'|'.join(p for p in CODEX_PROVIDERS if p != 'hf')}")
+        prov, model = entry["vendor"]
+    elif provider in CODEX_PROVIDERS:
+        prov, model = provider, (entry["vendor"][1] if entry and entry["vendor"][0] == provider else name)
+    else:
+        raise SystemExit(f"unknown --provider {provider}: hf, vendor or {', '.join(CODEX_PROVIDERS)}")
+    p = dict(CODEX_PROVIDERS[prov])
+    p["base_url"] = os.environ.get("AB_CODEX_BASE_URL") or p["base_url"]
+    # The model's accounting price (codex_models.json `price`), the same whichever provider served
+    # it, so a batch's cost does not depend on the route; a model outside the table is unpriced.
+    price = entry.get("price") if entry else None
+    return {"model": model, "key": key if entry else None, "label": entry["label"] if entry else None,
+            "route": route, "provider": prov, "price": price, "effort": entry.get("effort") if entry else None, **p}
+
+
+def codex_cost(tokens, price):
+    """USD for a run's tokens at a codex_models.json price (USD per million tokens): the uncached input
+    (cache misses) at `input`, cache hits at `cached_input`, input written to the cache at
+    `cache_write`, output at `output`; a rate the price does not list is charged as `input`."""
+    if not price or any(tokens.get(k) is None for k in TOKEN_FIELDS):
+        return None
+    usd = (tokens["input_tokens"] * price["input"]
+           + tokens["cache_read_input_tokens"] * price.get("cached_input", price["input"])
+           + tokens["cache_creation_input_tokens"] * price.get("cache_write", price["input"])
+           + tokens["output_tokens"] * price["output"]) / 1e6
+    return round(usd, 6)
+
+
+def conda_env_var(env, name):
+    """A variable stored in a conda environment (`conda env config vars set`), read from its
+    conda-meta/state as drive.py does, without starting conda; "" when not there."""
+    bases = []
+    for exe in (os.environ.get("CONDA_EXE"), shutil.which("conda")):
+        if exe:
+            bases.append(os.path.dirname(os.path.dirname(os.path.realpath(exe))))
+    prefixes = [os.path.join(b, "envs", env) for b in bases] + [os.path.expanduser(f"~/.conda/envs/{env}")]
+    for prefix in prefixes:
+        state = _load_json(os.path.join(prefix, "conda-meta", "state"))
+        value = ((state or {}).get("env_vars") or {}).get(name) if isinstance(state, dict) else None
+        if value:
+            return str(value)
+    return ""
+
+
+def _toml(value):
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, (int, float)):
+        return str(value)
+    return json.dumps(str(value))   # a TOML basic string takes JSON's escapes
+
+
+def cmd_codex_home(a):
+    """A fresh CODEX_HOME for one run: config.toml (provider, model, sandbox, the developer note)
+    and rules/operator.rules.  Nothing of ~/.codex (its model, rules, memories, plugins, skills,
+    approvals reviewer) reaches the run.  Prints the resolved model as one JSON line."""
+    m = codex_model(a.model, a.provider)
+    note = "\n\n".join(open(f, encoding="utf-8").read().strip() for f in a.note if f)
+    os.makedirs(os.path.join(a.dir, "rules"), exist_ok=True)
+    cfg = [f"model_provider = {_toml(m['provider'])}",
+           f"model = {_toml(m['model'])}",
+           # exec mode: nothing is asked; a command outside the rules runs sandboxed or not at all
+           'approval_policy = "never"',
+           # the agent's own commands (reading the skill with sed/cat/rg) and apply_patch writes run in
+           # the sandbox: writes only under the repository and /tmp, no network, no GPU
+           'sandbox_mode = "workspace-write"',
+           'web_search = "disabled"',
+           # AGENTS.md is the repository guide for a developer, not for the operator: like the Claude
+           # runs (which read no AGENTS.md), the operator starts from the prompt and SKILL.md only
+           "project_doc_max_bytes = 0"]
+    if a.effort:
+        cfg.append(f"model_reasoning_effort = {_toml(a.effort)}")
+    if note:
+        cfg.append(f"developer_instructions = {_toml(note)}")
+    cfg += ["", "[features]"] + [f"{f} = false" for f in CODEX_FEATURES_OFF]
+    if m["provider"] == "hf":
+        # hf_relay.py rewrites request bodies, so they go uncompressed (Codex compresses by default).
+        cfg.append("enable_request_compression = false")
+    cfg += ["", f"[model_providers.{m['provider']}]", f"name = {_toml(m['name'])}",
+            f"base_url = {_toml(m['base_url'])}", f"env_key = {_toml(m['env_key'])}", 'wire_api = "responses"']
+    with open(os.path.join(a.dir, "config.toml"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(cfg) + "\n")
+    # Codex rules: `allow` runs the command outside the sandbox without asking (it needs the GPU, the
+    # network for the workflow's API calls, conda and the resident workers); `forbidden` refuses it.
+    # The skill's two command forms are the only ones allowed out; git and code typed into python
+    # are refused, as in the Claude runs' deny list.
+    rules = [f'prefix_rule(pattern=["python3", "-u", "{OPERATOR_SCRIPTS}{s}"], decision="allow")'
+             for s in ("drive.py", "inspect_session.py")]
+    rules += ['prefix_rule(pattern=["git"], decision="forbidden")']
+    rules += [f'prefix_rule(pattern=["{py}", "{flag}"], decision="forbidden")'
+              for py in ("python3", "python") for flag in ("-", "-c")]
+    with open(os.path.join(a.dir, "rules", "operator.rules"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(rules) + "\n")
+    print(json.dumps(m))
+
+
+def codex_rollout(codex_home, thread_id):
+    """The run's own session file, $CODEX_HOME/sessions/YYYY/MM/DD/rollout-<stamp>-<thread>.jsonl."""
+    hits = sorted(glob.glob(os.path.join(codex_home, "sessions", "**", "rollout-*.jsonl"), recursive=True))
+    own = [h for h in hits if thread_id and thread_id in os.path.basename(h)]
+    return (own or hits or [None])[-1]
+
+
+def cmd_finalize_codex(a):
+    """finalize for a `codex exec --json` run: the same metrics.json fields as a Claude run.
+
+    Tokens: Codex reports input_tokens including the cached part (OpenAI's convention), and
+    output_tokens including reasoning_output_tokens.  They are recorded the Claude way:
+    input_tokens = uncached input, cache_read_input_tokens = cached, cache_creation_input_tokens =
+    cache_write_input_tokens, thinking_tokens = reasoning (part of output_tokens).  The stream's
+    turn.completed usage is the headline; a run killed before it falls back to the rollout's last
+    token_count total."""
+    run = a.run_dir
+    thread, calls, final_text, usages, failure, errors = None, [], "", [], None, []
+    for rec in read_jsonl(os.path.join(run, "codex_stream.jsonl")):
+        kind = rec.get("type")
+        item = rec.get("item") if isinstance(rec.get("item"), dict) else {}
+        if kind == "thread.started":
+            thread = rec.get("thread_id")
+        elif kind == "item.completed" and item.get("type") == "command_execution":
+            calls.append((str(item.get("command") or ""), str(item.get("aggregated_output") or "")))
+        elif kind == "item.completed" and item.get("type") == "agent_message":
+            final_text = item.get("text") or final_text
+        elif kind == "turn.completed":
+            usages.append(rec.get("usage") or {})
+        elif kind == "turn.failed":
+            failure = (rec.get("error") or {}).get("message") or "turn failed"
+        elif kind == "error":
+            errors.append(str(rec.get("message") or ""))
+    rollout = codex_rollout(a.codex_home, thread) if a.codex_home else None
+    tools, last_total, ctx_model = {}, None, None
+    for rec in read_jsonl(rollout) if rollout else []:
+        p = rec.get("payload") if isinstance(rec.get("payload"), dict) else {}
+        if rec.get("type") == "response_item" and p.get("type") == "function_call":
+            tools[p.get("name")] = tools.get(p.get("name"), 0) + 1
+        elif rec.get("type") == "response_item" and p.get("type") in ("custom_tool_call", "local_shell_call"):
+            tools[p.get("name") or p["type"]] = tools.get(p.get("name") or p["type"], 0) + 1
+        elif rec.get("type") == "event_msg" and p.get("type") == "token_count" and isinstance(p.get("info"), dict):
+            last_total = p["info"].get("total_token_usage") or last_total
+        elif rec.get("type") == "turn_context" and p.get("model"):
+            ctx_model = p.get("model")
+    raw = {}
+    if usages:
+        for u in usages:
+            for k, v in u.items():
+                raw[k] = raw.get(k, 0) + int(v or 0)
+        tokens_source = "codex exec --json turn.completed usage"
+    elif last_total:
+        raw, tokens_source = {k: int(v or 0) for k, v in last_total.items()}, "rollout token_count total (no turn.completed)"
+    else:
+        tokens_source = "none"
+    if raw:
+        cached, written = raw.get("cached_input_tokens", 0), raw.get("cache_write_input_tokens", 0)
+        tokens = {"input_tokens": max(0, raw.get("input_tokens", 0) - cached - written),
+                  "cache_read_input_tokens": cached, "cache_creation_input_tokens": written,
+                  "output_tokens": raw.get("output_tokens", 0)}
+    else:
+        tokens = {k: None for k in TOKEN_FIELDS}
+
+    wf = workflow_record(a, run, calls, final_text)
+    exit_code = int(a.exit_code)
+    # As for Claude: cli_error is a turn the CLI ended with an error (turn.failed: the provider
+    # refused, the context ran out) or a non-zero exit after a completed turn; no_result is a CLI
+    # that died before it reported any turn.
+    if a.timed_out == "1":
+        status = "timeout"
+    elif exit_code == 0 and usages and not failure:
+        status = "ok"
+    elif failure or usages:
+        status = "cli_error"
+    else:
+        status = "no_result"
+    if final_text:
+        with open(os.path.join(run, "agent_reply.md"), "w") as fh:
+            fh.write(final_text)
+    # The model as launched (codex_model.json, written by ab_launch_codex from `codex-home`): the id
+    # Codex sent is `<id>:<route>` on Hugging Face; metrics keep the id and the route apart.
+    launched = _load_json(os.path.join(run, "codex_model.json")) or {}
+    sent = ctx_model or launched.get("model") or a.model
+    route = launched.get("route")
+    price = launched.get("price")
+    metrics = {
+        "run_name": os.path.basename(os.path.normpath(run)),
+        "instruction": a.instruction,
+        "agent": "codex",
+        "model": sent[: -len(route) - 1] if route and sent.endswith(":" + route) else sent,
+        "model_label": launched.get("label"),
+        "model_requested": a.model,
+        "provider": launched.get("provider") or a.provider or None,
+        "route": route,
+        "session_id": wf["wsid"],
+        "session_ids": wf["wsids"],
+        "session_id_found_by": wf["how"],
+        "claude_session_id": None,
+        "codex_thread_id": thread,
+        **tokens,
+        "tokens_source": tokens_source,
+        "tokens_raw": raw or None,
+        "thinking_tokens": raw.get("reasoning_output_tokens") if raw else None,
+        "effort": a.effort or None,
+        "effort_observed": None,
+        "system_note": (open(os.path.join(run, "system_note.txt")).read().strip()
+                        if os.path.exists(os.path.join(run, "system_note.txt")) else None),
+        "tool_calls": tools or None,
+        "images_viewed": tools.get("view_image", 0),
+        # Priced from the tokens with the model's accounting price (codex_models.json), not a billed
+        # amount: see codex_cost.
+        "cost_usd": codex_cost(tokens, price),
+        "cost_basis": price or None,
+        "wall_clock_s": _iso_seconds(a.t0, a.t1),
+        "num_turns": len(usages),
+        "status": status,
+        "exit_code": exit_code,
+        "cli_error": failure,
+        "cli_errors_retried": len([e for e in errors if e.startswith("Reconnecting")]),
+        "permission_denials": None,
+        "drive_commands": wf["runner"],
+        "runner_runs": wf["runner"].get("run", 0),
+        "workflow_last_stop": wf["last_stop"],
+        "anchor_instruction": wf["anchor_instruction"],
+        "anchor_instruction_matches": wf["anchor_matches"],
+        "anchor_instruction_given": wf["anchor_given"],
+        "started_at": a.started_at,
+        "finished_at": a.finished_at,
+        "transcript_source": os.path.relpath(rollout, run) if rollout else None,
+    }
+    _write_metrics(a, run, metrics, wf["wsid"])
+    print(f"status={status} exit={exit_code} session={wf['wsid']} copied={','.join(wf['copied']) or '-'} "
+          f"codex={thread} wall={metrics['wall_clock_s']}s "
+          f"tokens(in/cr/cc/out)={tokens['input_tokens']}/{tokens['cache_read_input_tokens']}/"
+          f"{tokens['cache_creation_input_tokens']}/{tokens['output_tokens']} cost={metrics['cost_usd']} "
+          f"images={metrics['images_viewed']}"
+          + (f" error={failure[:120]!r}" if failure else ""))
+
+
 # ---------------------------------------------------------------- summary
 
-SUMMARY_COLS = ("run_name", "instruction", "status", "exit_code", "session_id", "claude_session_id",
+SUMMARY_COLS = ("run_name", "instruction", "agent", "model", "status", "exit_code", "session_id",
+                "claude_session_id", "codex_thread_id",
                 "workflow_last_stop", "runner_runs", "effort", "effort_observed", *TOKEN_FIELDS,
                 "thinking_tokens", "cost_usd", "wall_clock_s",
                 "cli_duration_s", "num_turns", "subagents_spawned", "permission_denials",
-                "started_at", "finished_at", "variant_kind", "varied")
+                "images_viewed", "started_at", "finished_at", "variant_kind", "varied")
 
 
 def cmd_summary(a):
@@ -716,12 +1037,25 @@ def main(argv=None):
     s.add_argument("--template", required=True); s.add_argument("--worktree", required=True)
     s.add_argument("--object", required=True)
     s = sp.add_parser("finalize")
-    for k in ("run-dir", "instruction", "model", "claude-session-id", "projects-dir",
-              "workflow-root", "exit-code", "started-at", "finished-at", "t0", "t1"):
+    for k in ("run-dir", "instruction", "model", "workflow-root", "exit-code", "started-at", "finished-at",
+              "t0", "t1"):
         s.add_argument("--" + k, required=True)
+    s.add_argument("--agent", choices=("claude", "codex"), default="claude")
+    # claude: where its transcript is; codex: the run's CODEX_HOME and the resolved model
+    s.add_argument("--claude-session-id", default=""); s.add_argument("--projects-dir", default="")
+    s.add_argument("--codex-home", default=""); s.add_argument("--provider", default="")
+    s.add_argument("--resolved-model", default="", help="unused; kept so older command lines still parse")
     s.add_argument("--timed-out", default="0")
     s.add_argument("--effort", default="")
     s.add_argument("--variant", default="", help="a JSON file: what this run varied (metrics.json `variant`)")
+    s = sp.add_parser("codex-home", help="write a run's CODEX_HOME (config.toml, rules/); print the model")
+    s.add_argument("--dir", required=True); s.add_argument("--model", required=True)
+    s.add_argument("--provider", default="hf"); s.add_argument("--effort", default="")
+    s.add_argument("--note", action="append", default=[], help="a file for developer_instructions (repeatable)")
+    s = sp.add_parser("codex-model", help="the resolved model for --model/--provider, as JSON")
+    s.add_argument("--model", required=True); s.add_argument("--provider", default="hf")
+    s = sp.add_parser("conda-env-var", help="print a variable stored in a conda environment")
+    s.add_argument("--env", required=True); s.add_argument("--name", required=True)
     s = sp.add_parser("summary")
     s.add_argument("--batch-dir", required=True); s.add_argument("--repo", default="")
     s.add_argument("runs", nargs="*")
@@ -749,7 +1083,14 @@ def main(argv=None):
         text = open(a.template, encoding="utf-8").read()
         sys.stdout.write(text.replace("{WORKTREE}", a.worktree).replace("{OBJECT}", a.object))
     elif a.cmd == "finalize":
-        cmd_finalize(a)
+        cmd_finalize_codex(a) if a.agent == "codex" else cmd_finalize(a)
+    elif a.cmd == "codex-home":
+        cmd_codex_home(a)
+    elif a.cmd == "conda-env-var":
+        value = conda_env_var(a.env, a.name)
+        print(value) if value else sys.exit(1)
+    elif a.cmd == "codex-model":
+        print(json.dumps(codex_model(a.model, a.provider)))
     elif a.cmd == "summary":
         cmd_summary(a)
     elif a.cmd == "source-info":

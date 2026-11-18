@@ -427,6 +427,14 @@ def test_a_new_agent_on_a_resumed_session_is_shown_the_advice_whole_once(tmp_pat
     assert drive.agent_session() == "agent-2"
 
 
+def test_a_codex_agent_is_its_thread(monkeypatch):
+    monkeypatch.delenv("CLAUDE_CODE_SESSION_ID", raising=False)
+    monkeypatch.setenv("CODEX_THREAD_ID", "01a1eac5-fa51-7f73-8475-c05b45e9f7ae")
+    assert drive.agent_session() == "01a1eac5-fa51-7f73-8475-c05b45e9f7ae"
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "agent-1")           # a Claude session wins
+    assert drive.agent_session() == "agent-1"
+
+
 def test_the_runners_prediction_is_an_upper_bound_a_solve_far_under_it_agrees_with():
     runner = {"max_displacement": 1e-3, "max_stress": 1e8, "source": "the runner's"}
     history = [{"run": "r", "body": {"sha": "b", "size": 1.0}, "ends": "e", "load_N": 1.0, "table_loads": True,

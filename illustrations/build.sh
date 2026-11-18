@@ -25,7 +25,7 @@
 #         ./build.sh ovassets   # Figure 1's generative inputs, opt-in (see build_ovassets)
 #         ./build.sh agenticresults # agentic FEM runs, one row each (AR_RUNS=...)
 #         ./build.sh gallery        # the 50 Opus objects in one amphitheater
-#         ./build.sh agenticcompare # Haiku / Sonnet / Opus side by side, letter pages (ARC_*=...)
+#         ./build.sh agenticcompare # Haiku / Sonnet / Opus (or ARC_MODELS) side by side, letter pages
 #         ./build.sh showcase  # variation figure: shapes / materials / loadings (SC_*_RUNS=...)
 #         ./build.sh challenge # intro figure: the set-up's challenges for engineer / agent, and Figure 2's answers
 #         ./build.sh introoverview # challenge_overview stacked above method_overview, one vector page
@@ -584,10 +584,14 @@ build_gallery() {
   echo "built: ${GL_NAME:-agentic_gallery}.{pdf,png}"
 }
 
-# --- Agentic results, model comparison: three batch roots side by side ---------
-# ARC_HAIKU / ARC_SONNET / ARC_OPUS = the three batch roots (absolute, or relative to
-# the repo root); every object of experiments/agentic_batch/objects_50.txt must have a
-# run in each, or the plan step fails naming the missing ones.  ARC_ONLY="slug ..."
+# --- Agentic results, model comparison: two or three batch roots side by side ---------
+# ARC_HAIKU / ARC_SONNET / ARC_OPUS = the paper's three batch roots (absolute, or relative
+# to the repo root); or ARC_MODELS="KEY=ROOT KEY=ROOT [KEY=ROOT]", any two or three, left
+# to right (the open-weight Codex batches: ARC_MODELS="deepseek=output/agentic_batch50_deepseek
+# kimi=output/agentic_batch50_kimi"), which then replaces the three; name such pages with
+# ARC_NAME (e.g. agentic_results_compare_open) so the paper's are not overwritten.  Every
+# object of experiments/agentic_batch/objects_50.txt must have a run in each, or the plan
+# step fails naming the missing ones.  ARC_ONLY="slug ..."
 # restricts to categories; ARC_ROWS = rows per page at most (17); ARC_GPU (1) for the
 # prep and pvbatch; ARC_GROUND (grid); ARC_KEEP_WORK=1 keeps _cwork (renders) so a
 # layout change reruns only the compose.  One prep over all runs: one E scale and one
@@ -595,13 +599,19 @@ build_gallery() {
 build_agenticcompare() {
   ( cd agentic_results
     set -e
-    : "${ARC_HAIKU:?set ARC_HAIKU to the Haiku batch root}" "${ARC_SONNET:?set ARC_SONNET}" \
-      "${ARC_OPUS:?set ARC_OPUS}"
     local name="${ARC_NAME:-agentic_results_compare}" work=_cwork gpu="${ARC_GPU:-1}" only=() runs=()
+    local models=() m
+    if [ -n "${ARC_MODELS:-}" ]; then
+      for m in $ARC_MODELS; do models+=(--model "$m"); done
+    else
+      : "${ARC_HAIKU:?set ARC_HAIKU to the Haiku batch root (or ARC_MODELS=\"KEY=ROOT ...\")}" \
+        "${ARC_SONNET:?set ARC_SONNET}" "${ARC_OPUS:?set ARC_OPUS}"
+      models=(--haiku "$ARC_HAIKU" --sonnet "$ARC_SONNET" --opus "$ARC_OPUS")
+    fi
     [ -z "${ARC_ONLY:-}" ] || only=(--only $ARC_ONLY)
     python3 ar_style.py                                   # gate: look == overview's source
     rm -rf "$work"
-    python3 ar_compare.py plan --haiku "$ARC_HAIKU" --sonnet "$ARC_SONNET" --opus "$ARC_OPUS" \
+    python3 ar_compare.py plan "${models[@]}" \
         --work "$work" "${only[@]}"                       # -> compare_plan.json, runs.txt
     read -r -a runs < "$work/runs.txt"
     CUDA_VISIBLE_DEVICES="$gpu" AR_FLOOR="${AR_FLOOR:-warn}" \

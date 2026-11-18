@@ -500,6 +500,15 @@ TABLE_NOTE = ("Token use per run of agentic_results (sources: agentic_results/ar
               "tokens written to the cache (cache_creation_input_tokens) were processed in full "
               "and count as not cached, with the plain uncached input (input_tokens).  "
               "Input total = cached + not cached.")
+# Added to the notes only when a run is a Codex run (metrics.json agent "codex"), so a Claude
+# figure's tables keep their text: the batch helper maps Codex's counts onto Claude's fields.
+CODEX_TOKEN_NOTE = ("  Codex runs (agent codex): metrics.json records Codex's counts in these fields "
+                    "(cache_read_input_tokens = cached_input_tokens, cache_creation_input_tokens = "
+                    "cache_write_input_tokens, input_tokens = the rest of the input).")
+
+
+def is_codex(rec):
+    return (rec.get("meta") or {}).get("agent") == "codex"
 
 
 def write_table(runs, out, maxima):
@@ -507,6 +516,20 @@ def write_table(runs, out, maxima):
             "input_tokens_cached", "input_tokens_not_cached",
             "of_which_written_to_cache", "of_which_plain_uncached", "output_tokens",
             "wall_clock_s", "status", "displacement_scale"]
+    # A table with a Codex run gets an "agent" column (the harness, metrics.json ``agent``:
+    # "codex", else "claude") after the model id, which alone does not say what drove the run;
+    # an all-Claude table keeps its columns.
+    codex = any(is_codex(r) for r in runs)
+    if codex:
+        cols.insert(cols.index("model") + 1, "agent")
+    # An "effort" column (metrics.json ``effort``, the reasoning effort the run was started with)
+    # only when the table's runs were not all run at one effort: a comparison of one model at two
+    # efforts (DeepSeek at medium and at max) would otherwise give the two sets identical rows of
+    # model and agent.  A table at a single effort keeps its columns.
+    efforts = {r["meta"].get("effort") for r in runs}
+    by_effort = len(efforts) > 1
+    if by_effort:
+        cols.insert(cols.index("agent" if codex else "model") + 1, "effort")
     rows = []
     for k, rec in enumerate(runs):
         m = rec["meta"]
@@ -522,10 +545,15 @@ def write_table(runs, out, maxima):
                      "output_tokens": m.get("output_tokens"),
                      "wall_clock_s": m.get("wall_clock_s"), "status": m.get("status"),
                      "displacement_scale": (rec.get("scale") or {}).get("factor")})
-    note = TABLE_NOTE + (f"  The figure's cost bars are relative to the largest run: "
-                         f"{fmt_count(maxima['input'])} input tokens, "
-                         f"{fmt_count(maxima['output'])} output tokens, "
-                         f"{fmt_clock(maxima['time'])}.")
+        if codex:
+            rows[-1]["agent"] = m.get("agent") or "claude"
+        if by_effort:
+            rows[-1]["effort"] = m.get("effort")
+    note = TABLE_NOTE + (CODEX_TOKEN_NOTE if codex else "") + (
+        f"  The figure's cost bars are relative to the largest run: "
+        f"{fmt_count(maxima['input'])} input tokens, "
+        f"{fmt_count(maxima['output'])} output tokens, "
+        f"{fmt_clock(maxima['time'])}.")
     with open(f"{out}_tokens.csv", "w", newline="") as fh:
         fh.write("# " + note + "\n")
         w = csv.DictWriter(fh, fieldnames=cols)
@@ -544,11 +572,27 @@ def write_time_table(runs, out):
     """``{out}_time.csv``: for every section of ar_time.SECTIONS, its bar group (the figure's
     time bar shows only the groups), what it holds, and the seconds of each object's run."""
     heads = [(r["meta"].get("instruction") or f"row {k + 1}") for k, r in enumerate(runs)]
+    # A comparison's table holds each object once per model (ar_compare.write_tables), so a
+    # column named by the instruction alone does not say whose run it is: when the runs come from
+    # more than one set, each head also names the model, and the effort when the efforts differ
+    # (one model at two efforts).  A one-set table (a category figure) keeps its heads.
+    sets = {(r["meta"].get("model"), r["meta"].get("effort")) for r in runs}
+    if len(sets) > 1:
+        by_effort = len({e for _, e in sets}) > 1
+        heads = [f"{h} [{r['meta'].get('model') or '?'}"
+                 + (f", {r['meta'].get('effort') or '?'} effort" if by_effort else "") + "]"
+                 for h, r in zip(heads, runs)]
     splits = [(r["meta"].get("time_split") or {}) for r in runs]
     groups = dict(ar_time.GROUPS)
+    # the transcript whose timestamps time the runner commands: claude_session/ for a Claude
+    # run, the Codex rollout for a Codex run (ar_time.split_run picks by what the folder has)
+    codex = [is_codex(r) for r in runs]
+    source = ("the Codex rollout's timestamps" if all(codex) else
+              "the Claude transcript's or, for a Codex run, the Codex rollout's timestamps"
+              if any(codex) else "the Claude transcript's timestamps")
     with open(f"{out}_time.csv", "w", newline="") as fh:
-        fh.write("# Where each run's wall clock went (ar_time.py; sources: metrics.json, the Claude "
-                 "transcript's timestamps, the runner's operator/driver_log.jsonl). The sections add "
+        fh.write(f"# Where each run's wall clock went (ar_time.py; sources: metrics.json, {source}, "
+                 "the runner's operator/driver_log.jsonl). The sections add "
                  "up to the wall clock; the figure's time bar shows the bar groups.\n")
         w = csv.writer(fh)
         w.writerow(["section", "bar group", "label", "meaning"] + [f"{h} (s)" for h in heads])

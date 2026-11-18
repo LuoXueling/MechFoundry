@@ -53,7 +53,10 @@ On top of the workflow sits the **AI operator**: a coding agent that follows the
 operator skill (`fem_workflow/operator_skill/`) and drives the workflow CLI with
 no human in the loop, deciding the case, checking every picture and reporting the
 result. The paper's 50-object batches (Haiku, Sonnet, Opus) are runs of this
-skill, launched by `experiments/agentic_batch/run_batch.sh`.
+skill, launched by `experiments/agentic_batch/run_batch.sh`; its `--agent codex` runs the
+same skill under the Codex CLI on open-weight models (DeepSeek-V4.1-Flash-1017, Kimi-K3.1-Pro;
+`codex_models.json`) through Hugging Face Inference Providers, each pinned to one provider, or
+each company's own API.
 
 ---
 
@@ -88,7 +91,8 @@ src/
     controller.py         WorkflowController: adapter between Streamlit and the checkpointed graph
     browse.py             session file browsing/preview/zip (Streamlit-free, testable)
     telemetry.py          machine-load sampler + solver-progress reader for the tool window
-    agent_session.py      optional agent sessions: Claude Code (Agent SDK) drives the operator skill (Streamlit-free)
+    agent_session.py      optional agent sessions: Claude Code (Agent SDK) or Codex drives the operator skill (Streamlit-free)
+    operators.py          the operators that can run here (Claude models from Claude Code, Codex models from codex_models.json and the Codex login's catalog), their keys, Codex command parsing (standard library only; loaded by path by other front ends)
   material_parts/         per-part materials → 64³ material field (same artifact format as VoMP)
   partfield_wrapper/      optional PartField segmentation (own env `mechfoundry-partfield`), with a server/worker
   cad_wrapper/            optional text→CAD: text2cad_wrapper/, cadcoder_wrapper/ (sandboxed), cad_common/
@@ -102,8 +106,10 @@ examples/                 one independently runnable leaf per capability (geomet
                           optimization/, boundary_conditions/, benchmarks/). Each has run.py (+ prepare.py)
 experiments/              research studies behind the paper, not production (each has a README)
   agentic_batch/          run_batch.sh: one headless Claude Code session per object following the
-                          operator skill (objects_50.txt = the paper's 50); realization/material/BC
-                          sweeps for the showcase; tests/ with a stubbed claude
+                          operator skill (objects_50.txt = the paper's 50), or with --agent codex one
+                          Codex session on an open-weight model (codex_tools.txt maps the skill's tool
+                          names, codex_note.txt adds the batch's rules); realization/material/BC sweeps for the showcase; tests/ with a
+                          stubbed claude and a stubbed codex
   model_eval/             three blinded evaluators grading the Haiku/Sonnet/Opus batches: the Fable
                           round (top level: prompts, eval_<k>.json, evaluation_table.{md,xlsx}) and
                           the GPT-6-Astra round (astra_high/, with agreement.md between the two)
@@ -377,6 +383,18 @@ FEM_WORKFLOW_OUTPUT_ROOT=/abs/root CUDA_VISIBLE_DEVICES=1 streamlit run src/ui/a
   agent-driven session go to its agent view. Conversations are stored in
   `<root>_agent/<id>/` (`meta.json`, `chat.jsonl`, `uploads/`). Offered only when
   `agent_status()` is ready (the SDK importable and a `claude` CLI found).
+  The card's *Operator* choice adds Codex (`CodexConversation`): one `codex exec --json` (later
+  `exec resume`) per message, with a private `codex_home/`, as `run_batch.sh --agent codex` runs
+  it, and no Allow/Deny cards (approval never, Codex's sandbox and rules). Its models come from
+  `operators.py`: the open-weight models of `codex_models.json` through Hugging Face
+  (`ab_helper.py codex-home`, one `hf_relay.py` per server, started with an interpreter that has
+  Pillow) or their company's API (`DEEPSEEK_API_KEY`/`MOONSHOT_API_KEY`), and the OpenAI models
+  of the user's Codex login (`write_openai_home`; the login is copied in per turn and back only
+  when refreshed, `sync_login`). The Claude models are the current ones Claude Code lists when the
+  Agent SDK connects (`claude_models`, cached ten minutes, the built-in four as fallback). A Codex
+  command is shown as Claude's tool would be (`classify`: a file read as Read, `ls` as Glob,
+  `grep` as Grep). `operators.py` is standard library only (the SDK is imported only to ask Claude
+  Code), so front ends outside this checkout's environments load it by path.
 
 The UI cannot be imported outside a Streamlit runtime. Put testable logic in
 `controller.py`, `browse.py` or `telemetry.py`, not in `app.py`. To see a UI change working,

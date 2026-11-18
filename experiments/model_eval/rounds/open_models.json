@@ -1,0 +1,104 @@
+{
+ "name": "open_models",
+ "description": "Three open-weight operator sets run under the Codex CLI on the same 50 objects: DeepSeek-V4.1-Flash-1017 at medium and at max reasoning effort, and Kimi-K3.1-Pro; graded as the paper round was: three agents A/B/C, 150 simulations per evaluator, three Fable evaluators (run_fable.sh) and three Astra evaluators (astra_high/run_evaluator.sh) reading the same self-contained packets.",
+ "objects": "experiments/agentic_batch/objects_50.txt",
+ "models": [
+  {
+   "key": "deepseek",
+   "display": "DeepSeek-V4.1-Flash-1017, medium effort",
+   "root": "output/agentic_batch50_deepseek",
+   "suffix": "_deepseek",
+   "leak_terms": [
+    "deepseek-ai",
+    "deepseek[-_ ]?v\\d+(\\.\\d+)*",
+    "v4\\.1[-_ ]?flash",
+    "flash[-_ ]?1017"
+   ]
+  },
+  {
+   "key": "deepseek_max",
+   "display": "DeepSeek-V4.1-Flash-1017, max effort",
+   "root": "output/agentic_batch50_deepseek_max",
+   "suffix": "_deepseek_max",
+   "leak_terms": [
+    "deepseek-ai",
+    "deepseek[-_ ]?v\\d+(\\.\\d+)*",
+    "v4\\.1[-_ ]?flash",
+    "flash[-_ ]?1017"
+   ]
+  },
+  {
+   "key": "kimi",
+   "display": "Kimi-K3.1-Pro",
+   "root": "output/agentic_batch50_kimi",
+   "suffix": "_kimi",
+   "leak_terms": [
+    "kimi\\w*",
+    "moonshot\\w*",
+    "k3\\.\\d\\w*"
+   ]
+  }
+ ],
+ "evaluators": 3,
+ "label_seed": 2029,
+ "label_seed_note": "2029 is the first seed from 2026 on that gives each model a different label for each evaluator (deepseek A/B/C, deepseek_max C/A/B, kimi B/C/A for k = 1, 2, 3): evaluators grade in label order, so every model is graded first, second and third once.",
+ "figures": "output/agentic_object_record/model_eval_round2_figures/agentic_results_{slug}{suffix}.png",
+ "figures_note": "Staged copies of the category figures (illustrations/agentic_results/ar_categories.py): DeepSeek medium and Kimi built 2026-11-18; DeepSeek max is added once its batch has finished. The _sonnet figures in the folder belong to a stopped first version of this round (open_models/RUN.md) and are not used.",
+ "mappings": "experiments/model_eval/open_models/mappings",
+ "packets": "output/agentic_object_record/model_eval_round2",
+ "packet_mode": "copy",
+ "packet_edits": [
+  {
+   "model": "kimi",
+   "object": "a car brake disc",
+   "file": "reply",
+   "old": "so Kimi rewrote",
+   "new": "so I rewrote",
+   "why": "The agent named itself (leak_check.py flags it)."
+  },
+  {
+   "model": "deepseek",
+   "object": "a crocodile",
+   "file": "reply",
+   "old": "\n- The skill’s tool wording differed from this run’s environment note; I followed the note’s mapping (shell `sed`/`cat` for reads, `apply_patch` for writes, and the literal `drive.py` commands).",
+   "new": "",
+   "why": "The reply's last line says it followed the environment note's tool mapping (sed/cat, apply_patch): the Codex tool mapping only the open-weight runs had. No leak term matches it. The newline before it goes too, so the reply ends without one, as every reply does."
+  }
+ ],
+ "families": {
+  "fable": {
+   "display": "Fable",
+   "title": "claude-fable-5-1, high effort",
+   "model": "claude-fable-5-1",
+   "effort": "high",
+   "harness": "headless Claude Code (claude -p) in bubblewrap, run_fable.sh",
+   "prompts": "experiments/model_eval/open_models/fable",
+   "ratings": "experiments/model_eval/open_models/fable",
+   "packet": "{packets}/packet_{k}",
+   "out": "output/agentic_object_record/model_eval_round2/fable/evaluator_{k}/eval_{k}.json",
+   "logs": "output/agentic_object_record/model_eval_round2/fable/logs",
+   "home": "output/agentic_object_record/model_eval_round2/fable/home_{k}"
+  },
+  "astra": {
+   "display": "Astra",
+   "title": "GPT-6-Astra, high effort",
+   "model": "gpt-6-astra",
+   "effort": "high",
+   "harness": "Codex CLI (codex exec) in bubblewrap, astra_high/run_evaluator.sh",
+   "prompts": "experiments/model_eval/open_models/astra",
+   "ratings": "experiments/model_eval/open_models/astra",
+   "packet": "{packets}/packet_{k}",
+   "out": "output/agentic_object_record/model_eval_round2/astra/evaluator_{k}/eval_{k}.json",
+   "logs": "output/agentic_object_record/model_eval_round2/astra/logs",
+   "home": "output/agentic_object_record/model_eval_round2/astra/home_{k}"
+  }
+ },
+ "agreement": {
+  "families": [
+   "fable",
+   "astra"
+  ],
+  "out": "experiments/model_eval/open_models/agreement.md"
+ },
+ "cost_note": "Cost: the coding agent's Codex session priced from its token counts with the batch runner's dated price table (metrics.json cost_usd), not a billed amount; n/p: no price for that run (left out of the totals and the mean); the FEM workflow's own API calls are excluded."
+}

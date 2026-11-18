@@ -261,13 +261,31 @@ Then open `http://127.0.0.1:8501`.
 their checks, *Start agent session* hands the conversation to Claude Code, which follows the
 operator skill and drives the workflow while the visualization updates live; you can send
 further prompts, attach images or meshes, stop a reply, and approve or deny any action outside
-its allow list. It needs Claude Code installed and logged in (`claude` on the PATH, or
-`CLAUDE_CLI=/path/to/claude`) and the Agent SDK in this environment; without either, the option
-stays disabled and says why:
+its allow list. The card's *Agent model* lists the current Claude models of your login (Opus,
+Fable, Sonnet and Haiku, as Claude Code reports them, with the effort levels each takes), so a
+new release appears without a code change. It needs Claude Code installed and logged in (`claude`
+on the PATH, or `CLAUDE_CLI=/path/to/claude`) and the Agent SDK in this environment; without
+either, the option stays disabled and says why:
 
 ```shell
 python -m pip install "claude-agent-sdk>=0.2,<0.3"
 ```
+
+The card's *Operator* choice can instead run Codex (the `codex` CLI installed, or `CODEX_CLI`
+naming it), as `run_batch.sh --agent codex` does, on any model that can run here:
+
+| Model | Through | Needs |
+|---|---|---|
+| DeepSeek V4.1 Flash, Kimi K3.1 Pro (`codex_models.json`) | Hugging Face Inference Providers, pinned to the model's route | `HF_TOKEN` or `hf auth login`, with Inference Providers credit |
+| the same models | the company's own API (DeepSeek, Moonshot) | `DEEPSEEK_API_KEY` / `MOONSHOT_API_KEY`, exported or in `mechfoundry-agents`' conda variables |
+| OpenAI models | your own Codex login (`codex login`) | listed from Codex's catalog for that login: the models it shows that take images |
+
+A model that cannot run is named under the card with the reason. Codex asks no approvals: the
+runner's commands run outside its sandbox and everything else inside it. With an OpenAI model the
+login is copied into the conversation's own Codex home for each reply, and copied back only when
+Codex refreshed it, so your own `codex` stays signed in. The list, the keys and how Codex's
+commands are shown live in [`src/ui/operators.py`](src/ui/operators.py), which other front ends on
+this checkout can load by path.
 
 See [`src/agents_wrapper/fem_workflow/README.md`](src/agents_wrapper/fem_workflow/README.md)
 for details.
@@ -623,6 +641,60 @@ Start the agent in the repository root and ask, for example:
 claude "Follow AGENTS.md and simulate a park bench."
 ```
 
+Codex works the same way, with one more file: the skill names Claude Code's tools (Read, Write,
+Edit, "the file reader" for pictures), and
+[`experiments/agentic_batch/codex_tools.txt`](experiments/agentic_batch/codex_tools.txt) maps
+them to Codex's own (`sed -n`/`cat`, `apply_patch`, `view_image`), whatever the model:
+
+```shell
+codex "Follow AGENTS.md and experiments/agentic_batch/codex_tools.txt, and simulate a park bench."
+```
+
+The runner (`drive.py`) needs the GPU and the network, which Codex's default sandbox withholds:
+approve running it outside the sandbox when Codex asks.
+
+<details>
+<summary>
+Codex on open-weight models (Hugging Face Inference Providers)
+</summary>
+
+Codex supports only Responses-API providers. Define Hugging Face's router as one, and a profile
+per model. The token needs the fine-grained *Make calls to Inference Providers* permission, and
+the account needs credits:
+
+```toml
+# ~/.codex/config.toml
+[model_providers.huggingface]
+name = "Hugging Face"
+base_url = "https://router.huggingface.co/v1"
+env_key = "HF_TOKEN"
+wire_api = "responses"
+```
+
+```toml
+# ~/.codex/kimi.config.toml (likewise deepseek.config.toml)
+model_provider = "huggingface"
+# The id and, after the colon, the provider HF pins it to (experiments/agentic_batch/codex_models.json);
+# deepseek: "deepseek-ai/DeepSeek-V4.1-Flash-1017:deepinfra"
+model = "moonshotai/Kimi-K3.1-Pro:moonshotai"
+# The router refuses Codex's web-search tool and multi-agent tool namespace
+# (400 "invalid_union ... expected \"function\""); turn both off.
+web_search = "disabled"
+[features]
+multi_agent = false
+```
+
+```shell
+export HF_TOKEN=hf_...
+codex -p kimi "Follow AGENTS.md and experiments/agentic_batch/codex_tools.txt, and simulate a park bench."
+```
+
+`codex_tools.txt` is the same tool-name mapping as above. The headless batch adds
+`codex_note.txt` after it: rules for an unattended run in the batch's own Codex home (its runner
+form, waiting on long commands, never asking the user), which do not fit a session you operate.
+
+</details>
+
 ### Headless batch with Claude Code
 
 `experiments/agentic_batch/run_batch.sh` gives each line of a list to its own headless
@@ -649,6 +721,29 @@ Each object gets `output/my_batch/<object>-<timestamp>/`, with the workflow sess
 the batch's `summary.csv` is in `output/my_batch/_batches/<batch_id>/`. All options are
 in the script header; the paper's 50-object batches are under
 [Agentic batch runs](#agentic-batch-runs).
+
+### Headless batch with Codex and open-weight models
+
+`run_batch.sh --agent codex` gives each object its own headless Codex session (`codex exec`,
+tested with codex-cli 0.163.0) on an open-weight model. The prompt, the skill and the run layout
+stay the same. The models are served through Hugging Face Inference Providers, each pinned to one
+provider. That needs `HF_TOKEN` or the `hf auth login` token, with the *Make calls to Inference
+Providers* permission and credits. Hugging Face's own Responses endpoint can't carry these
+sessions: it refuses requests over 100 KB and drops the system prompt. So the runner starts a local
+translator, `hf_relay.py`, which turns Codex's Responses requests into Chat Completions calls.
+`--provider vendor` uses the company's own API instead.
+
+| `--model` | Hugging Face id (pinned provider) | `--provider vendor` |
+|---|---|---|
+| `deepseek-v4.1-flash` | `deepseek-ai/DeepSeek-V4.1-Flash-1017` (`deepinfra`) | `deepseek-flash`, `api.deepseek.com` |
+| `kimi-k3.1-pro` | `moonshotai/Kimi-K3.1-Pro` (`moonshotai`) | `kimi-k3.1-pro`, `api.moonshot.cn` |
+
+```shell
+# One short session: the provider answers, drive.py runs, the model sees a picture -> ALL PASS
+experiments/agentic_batch/codex_preflight.sh --model kimi-k3.1-pro
+experiments/agentic_batch/run_batch.sh --agent codex --model kimi-k3.1-pro -j 1 --gpus 0 \
+    --out output/my_batch_kimi output/my_objects.txt
+```
 
 ## Paper results reproducibility
 

@@ -1,20 +1,29 @@
 # Shared by run_batch.sh, run_realizations.sh, run_material_sweep.sh and run_bc_sweep.sh: the
-# options every one of them takes, the per-run Claude Code launch (permissions, isolation, the
-# record ab_helper.py finalizes), and the slot scheduler.  Sourced, never run.
+# options every one of them takes, the per-run agent launch (Claude Code, or with --agent codex the
+# Codex CLI on an open-weight model; permissions, isolation, the record ab_helper.py finalizes), and
+# the slot scheduler.  Sourced, never run.
 #
 # The caller sets HERE (its own folder) before sourcing; this file sets WORKTREE (the repository
-# the scripts sit in: they run against the checkout they belong to), HELPER, PY and CLAUDE_BIN.
+# the scripts sit in: they run against the checkout they belong to), HELPER, PY, CLAUDE_BIN and
+# CODEX_BIN.
 #
 # Common options (ab_common_opt):
 #   -j, --jobs N        runs at once (default: the number of GPUs, `nvidia-smi -L`)
-#   --model M           Claude model (default: sonnet)
+#   --agent claude|codex  the AI operator's harness (default: claude).  codex: `codex exec` on an
+#                       open-weight model through a Responses-API provider (ab_launch_codex)
+#   --model M           Claude model (default: sonnet); with --agent codex required, one of
+#                       codex_models.json's (deepseek-v4.1-flash | kimi-k3.1-pro) or a provider's own id
+#   --provider P        --agent codex only: hf (default; Hugging Face Inference Providers, HF_TOKEN,
+#                       each model pinned to the route codex_models.json names), vendor (the model's
+#                       company: DEEPSEEK_API_KEY or MOONSHOT_API_KEY), or deepseek|moonshot by name
 #   --timeout SEC       wall-clock limit per run, then the run is killed (default: 7200)
 #   --out DIR           where run folders go (default: <worktree>/output/agentic_batch)
 #   --template FILE     the initial instruction ({WORKTREE}, {OBJECT} and the script's own fields)
-#   --effort LEVEL      thinking effort, low|medium|high|xhigh|max (default: medium)
+#   --effort LEVEL      thinking effort, low|medium|high|xhigh|max (default: medium; with --agent codex
+#                       sent as model_reasoning_effort, default the model's effort in codex_models.json)
 #   --no-path-note      do not append the one-line repository-root note to the system prompt
-#   --memory            leave auto-memory on (default: off)
-#   --cache-ttl 5m|1h   prompt-cache TTL (default: 5m)
+#   --memory            leave auto-memory on (default: off; Claude only)
+#   --cache-ttl 5m|1h   prompt-cache TTL (default: 5m; Claude only)
 #   --gpus LIST         comma-separated GPU indices the slots take in turn (default: all)
 #   --dry-run           print what would run, start nothing
 
@@ -23,10 +32,12 @@ WORKTREE="$(cd "$HERE/../.." && pwd)"
 HELPER="$HERE/ab_helper.py"
 PY="${PYTHON:-python3}"
 CLAUDE_BIN="${CLAUDE_BIN:-claude}"
+CODEX_BIN="${CODEX_BIN:-codex}"
 DRIVE_REL="src/agents_wrapper/fem_workflow/operator_skill/scripts/drive.py"
 
 JOBS="" GPU_LIST="" MODEL="sonnet" TIMEOUT=7200 OUT="$WORKTREE/output/agentic_batch"
 TEMPLATE="${TEMPLATE:-$HERE/prompt_template.txt}" NO_MEMORY=1 CACHE_TTL=5m DRY=0 EFFORT="medium" PATH_NOTE=1
+AGENT=claude PROVIDER=hf MODEL_GIVEN=0 EFFORT_GIVEN=0
 
 usage() { awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "$0"; }
 
@@ -37,11 +48,13 @@ ab_common_opt() {
     case "$1" in
         -j|--jobs) JOBS="$2" ;;
         --gpus) GPU_LIST="$2" ;;
-        --model) MODEL="$2" ;;
+        --model) MODEL="$2"; MODEL_GIVEN=1 ;;
+        --agent) AGENT="$2" ;;
+        --provider) PROVIDER="$2" ;;
         --timeout) TIMEOUT="$2" ;;
         --out) OUT="$2" ;;
         --template) TEMPLATE="$2" ;;
-        --effort) EFFORT="$2" ;;
+        --effort) EFFORT="$2"; EFFORT_GIVEN=1 ;;
         --cache-ttl) CACHE_TTL="$2" ;;
         --no-memory) NO_MEMORY=1; AB_SHIFT=1 ;;   # the default; kept so older commands still run
         --memory) NO_MEMORY=0; AB_SHIFT=1 ;;
@@ -59,7 +72,11 @@ ab_setup() {
     fi
     case "$EFFORT" in low|medium|high|xhigh|max) ;; *) echo "bad --effort: $EFFORT" >&2; exit 2 ;; esac
     case "$CACHE_TTL" in 5m|1h) ;; *) echo "bad --cache-ttl: $CACHE_TTL" >&2; exit 2 ;; esac
-    command -v "$CLAUDE_BIN" >/dev/null || { echo "claude CLI not found: $CLAUDE_BIN" >&2; exit 2; }
+    case "$AGENT" in
+        claude) command -v "$CLAUDE_BIN" >/dev/null || { echo "claude CLI not found: $CLAUDE_BIN" >&2; exit 2; } ;;
+        codex) ;;   # codex_setup, at the end: it logs, so it needs the batch log
+        *) echo "bad --agent: $AGENT (claude or codex)" >&2; exit 2 ;;
+    esac
     # Both overridable only so the stub test can keep its fakes out of the real folders.
     WORKFLOW_ROOT="${AB_WORKFLOW_ROOT:-$WORKTREE/output/fem_workflow_operator}"
     PROJECTS_DIR="${AB_PROJECTS_DIR:-$HOME/.claude/projects}"
@@ -76,6 +93,71 @@ ab_setup() {
         mapfile -t GPUS < <(nvidia-smi --query-gpu=index --format=csv,noheader 2>/dev/null | tr -d ' ')
     fi
     NGPU="${#GPUS[@]}"
+    if [ "$AGENT" = codex ]; then codex_setup; fi
+}
+
+# --agent codex: the model and provider (ab_helper.py codex-model), and the provider's key in the
+# environment the runs inherit.  A key not exported is taken from where this project keeps keys:
+# HF_TOKEN from the Hugging Face login's token file (`hf auth login`), any other from the
+# mechfoundry-agents conda environment's variables (where DEEPSEEK_API_KEY already is).  Codex
+# keeps every *KEY*/*TOKEN* variable out of the agent's commands (its shell_environment_policy
+# default), so the key reaches the provider and not the transcript; drive.py reads the workflow's
+# own key from the conda environment itself.
+codex_setup() {
+    command -v "$CODEX_BIN" >/dev/null || { echo "codex CLI not found: $CODEX_BIN" >&2; exit 2; }
+    [ "$MODEL_GIVEN" = 1 ] || { echo "--agent codex needs --model: deepseek-v4.1-flash, kimi-k3.1-pro or a model id" >&2; exit 2; }
+    CODEX_MODEL_JSON="$("$PY" "$HELPER" codex-model --model "$MODEL" --provider "$PROVIDER")" || exit 2
+    CODEX_MODEL_ID="$(codex_field model)" CODEX_KEY_VAR="$(codex_field env_key)"
+    local from="the environment"
+    if [ -z "${!CODEX_KEY_VAR:-}" ]; then
+        local value=""
+        if [ "$CODEX_KEY_VAR" = HF_TOKEN ]; then
+            local f="${HF_TOKEN_PATH:-${HF_HOME:-$HOME/.cache/huggingface}/token}"
+            [ -s "$f" ] && value="$(cat "$f")" && from="$f"
+        else
+            value="$("$PY" "$HELPER" conda-env-var --env mechfoundry-agents --name "$CODEX_KEY_VAR" 2>/dev/null)" \
+                && [ -n "$value" ] && from="mechfoundry-agents' conda variables"
+        fi
+        if [ -n "$value" ]; then
+            printf -v "$CODEX_KEY_VAR" '%s' "$value"; export "${CODEX_KEY_VAR?}"
+        elif [ "$DRY" = 1 ]; then
+            from="nowhere (a real batch stops here)"
+        else
+            echo "--agent codex: $CODEX_KEY_VAR is not set (provider $(codex_field provider), $(codex_field base_url))" >&2; exit 2
+        fi
+    fi
+    # Hugging Face's router refuses a tool result that carries an image (Codex's view_image), so
+    # Hugging Face runs go through hf_relay.py, which moves such images into a user message; one
+    # relay per batch, on a free local port, stopped when the batch exits (AB_HF_RELAY=0: none).
+    if [ "$(codex_field provider)" = hf ] && [ "${AB_HF_RELAY:-1}" = 1 ] && [ "$DRY" != 1 ]; then
+        start_hf_relay "$(codex_field base_url)"
+        # Every later codex-model/codex-home call (each run's config.toml) points Codex at the relay.
+        export AB_CODEX_BASE_URL="$HF_RELAY_URL"
+        CODEX_MODEL_JSON="$("$PY" "$HELPER" codex-model --model "$MODEL" --provider "$PROVIDER")" || exit 2
+    fi
+    # No --effort: the model's own default from codex_models.json, so a run never goes without one.
+    local effort_from="--effort"
+    if [ "$EFFORT_GIVEN" != 1 ]; then
+        local d; d="$(codex_field effort)"
+        if [ -n "$d" ] && [ "$d" != None ]; then EFFORT="$d"; EFFORT_GIVEN=1; effort_from="codex_models.json"; fi
+    fi
+    log "agent codex: model $CODEX_MODEL_ID via $(codex_field name) ($(codex_field base_url)), effort $([ "$EFFORT_GIVEN" = 1 ] && echo "$EFFORT from $effort_from" || echo none), price $(codex_field price), key $CODEX_KEY_VAR from $from"
+}
+codex_field() { "$PY" -c 'import json, sys; print(json.loads(sys.argv[1])[sys.argv[2]])' "$CODEX_MODEL_JSON" "$1"; }
+
+# Start hf_relay.py for upstream $1; sets HF_RELAY_URL and HF_RELAY_PID.  Started from a subshell, so
+# it is not one of this shell's jobs (ab_schedule's `wait` would wait for it forever); an EXIT trap
+# stops it, and Ctrl-C's `kill -TERM 0` reaches it through the process group.
+start_hf_relay() {
+    local upstream="$1" port_file="$BATCH_DIR/hf_relay.port" k
+    rm -f "$port_file"
+    HF_RELAY_PID="$( ( "$PY" "$HERE/hf_relay.py" --upstream "$upstream" --port-file "$port_file" \
+        --log "$BATCH_DIR/hf_relay.log" > /dev/null 2>> "$BATCH_DIR/hf_relay.err" & echo $! ) )"
+    for ((k = 0; k < 100; k++)); do [ -s "$port_file" ] && break; sleep 0.1; done
+    [ -s "$port_file" ] || { echo "hf_relay.py did not start (see $BATCH_DIR/hf_relay.err)" >&2; exit 2; }
+    HF_RELAY_URL="http://127.0.0.1:$(cat "$port_file")/v1"
+    trap 'kill "$HF_RELAY_PID" 2>/dev/null' EXIT
+    log "hf relay: $HF_RELAY_URL -> $upstream (pid $HF_RELAY_PID, log $BATCH_DIR/hf_relay.log)"
 }
 
 log() { printf '%s %s\n' "$(date '+%F %T')" "$*" | tee -a "$LOG" >&2; }
@@ -154,10 +236,10 @@ denied_tools() {
 BUILTIN_TOOLS="Bash,Read,Write,Edit,Glob,Grep"
 
 # A child must be a fresh, standalone session even when this script is itself
-# started from inside Claude Code, whose session variables would otherwise leak in.
+# started from inside Claude Code or Codex, whose session variables would otherwise leak in.
 clean_env_args() {
     local v
-    for v in $(env | grep -o '^CLAUDE[A-Z0-9_]*=' | tr -d '='); do
+    for v in $(env | grep -oE '^(CLAUDE|CODEX)[A-Z0-9_]*=' | tr -d '='); do
         case "$v" in CLAUDE_CONFIG_DIR) ;; *) printf -- '-u\n%s\n' "$v" ;; esac
     done
 }
@@ -181,6 +263,7 @@ ab_new_run_dir() {
 # assignments for the run (NAME=value).  A $run/variant.json, when present, is recorded in
 # metrics.json as `variant` (what a realization or a sweep varied).
 ab_launch() {
+    if [ "$AGENT" = codex ]; then ab_launch_codex "$@"; return; fi
     local idx="$1" instr="$2" slot="$3" run="$4"; shift 4
     local name uuid t0 t1 started finished rc=0 timed_out=0
     name="$(basename "$run")"
@@ -197,33 +280,15 @@ ab_launch() {
     settings+="}"
     printf '%s\n' "$settings" > "$run/settings.json"
     extra=(--settings "$settings")
-    # Measured in batch 20261008-142904: 3 of 5 agents first wrote their brief to
-    # <main checkout>/output/... -- the worktree path with its
-    # ".claude/worktrees/<name>" part dropped, as if that were a config folder.  The
-    # rules refuse it (it is another checkout); two agents then used the right path,
-    # one stopped.  The note below says where the repository is; it is the
-    # environment's, not the instruction's, and is recorded in system_note.txt.
-    # The worktree sentence only when the root is a linked worktree (its git dir differs from the
-    # common one, or its path has a .claude/worktrees/ part): run from the main checkout it is not.
+    # The repository-root note (write_path_note says why).
     if [ "$PATH_NOTE" = 1 ]; then
-        local linked=""
-        local git_dir common_dir
-        git_dir="$(git -C "$WORKTREE" rev-parse --path-format=absolute --git-dir 2>/dev/null || true)"
-        common_dir="$(git -C "$WORKTREE" rev-parse --path-format=absolute --git-common-dir 2>/dev/null || true)"
-        if { [ -n "$git_dir" ] && [ "$git_dir" != "$common_dir" ]; } || [[ "$WORKTREE/" == */.claude/worktrees/* ]]; then
-            linked=' It is a git worktree; the ".claude/worktrees/..." part is part of the repository path, not a configuration folder.'
-        fi
-        printf 'Environment note: the repository root and working directory is %s.%s Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with %s/.\n' \
-            "$WORKTREE" "$linked" "$WORKTREE" > "$run/system_note.txt"
+        write_path_note "$run"
         extra+=(--append-system-prompt "$(cat "$run/system_note.txt")")
     fi
     printf '%s\n' "${allow[@]}" > "$run/allowed_tools.txt"
     printf '%s\n' "${deny[@]}" > "$run/disallowed_tools.txt"
-    local -a slot_env=("FEM_OPERATOR_OUTPUT_ROOT=$(slot_root "$slot")")
-    [ "$NGPU" -ge 1 ] && slot_env+=("FEM_OPERATOR_GPUS=$(slot_gpu "$slot")")
-    # The user's instruction itself, which `drive.py start` stores for the checks: the list line, not
-    # the template's text around it, and not what the agent retypes (ab_helper finalize compares them).
-    slot_env+=("FEM_OPERATOR_INSTRUCTION=$instr" "$@")
+    local -a slot_env
+    mapfile -t slot_env < <(run_slot_env "$slot" "$instr" "$@")
     printf '%s\n' "${slot_env[@]}" > "$run/slot_env.txt"
     log "[$idx] start  $name  claude=$uuid  slot=$slot ${slot_env[*]}  \"$instr\""
     started="$(date -Iseconds)"; t0="$(date +%s.%N)"
@@ -250,6 +315,86 @@ ab_launch() {
         --claude-session-id "$uuid" --projects-dir "$PROJECTS_DIR" --workflow-root "$WORKFLOW_ROOT" \
         --exit-code "$rc" --timed-out "$timed_out" --started-at "$started" --finished-at "$finished" \
         --t0 "$t0" --t1 "$t1" --effort "$EFFORT" "${variant[@]}" 2>>"$run/finalize_error.log")" \
+        || line="finalize failed (see $run/finalize_error.log)"
+    [ -s "$run/finalize_error.log" ] || rm -f "$run/finalize_error.log"
+    log "[$idx] finish $name  rc=$rc  $line"
+    echo "$run" > "$BATCH_DIR/.done_$(printf %04d "$idx")"
+}
+
+# The repository-root note ($run/system_note.txt), appended to the system prompt (Claude) or the
+# developer instructions (Codex).
+# Measured in batch 20261008-142904: 3 of 5 agents first wrote their brief to
+# <main checkout>/output/... -- the worktree path with its
+# ".claude/worktrees/<name>" part dropped, as if that were a config folder.  The
+# rules refuse it (it is another checkout); two agents then used the right path,
+# one stopped.  The note below says where the repository is; it is the
+# environment's, not the instruction's, and is recorded in system_note.txt.
+# The worktree sentence only when the root is a linked worktree (its git dir differs from the
+# common one, or its path has a .claude/worktrees/ part): run from the main checkout it is not.
+write_path_note() {
+    local run="$1" linked="" git_dir common_dir
+    git_dir="$(git -C "$WORKTREE" rev-parse --path-format=absolute --git-dir 2>/dev/null || true)"
+    common_dir="$(git -C "$WORKTREE" rev-parse --path-format=absolute --git-common-dir 2>/dev/null || true)"
+    if { [ -n "$git_dir" ] && [ "$git_dir" != "$common_dir" ]; } || [[ "$WORKTREE/" == */.claude/worktrees/* ]]; then
+        linked=' It is a git worktree; the ".claude/worktrees/..." part is part of the repository path, not a configuration folder.'
+    fi
+    printf 'Environment note: the repository root and working directory is %s.%s Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with %s/.\n' \
+        "$WORKTREE" "$linked" "$WORKTREE" > "$run/system_note.txt"
+}
+
+# A run's slot environment, one NAME=value a line: its output root and GPU, the instruction, and
+# the caller's extra assignments ($3...).
+run_slot_env() {
+    local slot="$1" instr="$2"; shift 2
+    printf '%s\n' "FEM_OPERATOR_OUTPUT_ROOT=$(slot_root "$slot")"
+    [ "$NGPU" -ge 1 ] && printf '%s\n' "FEM_OPERATOR_GPUS=$(slot_gpu "$slot")"
+    # The user's instruction itself, which `drive.py start` stores for the checks: the list line, not
+    # the template's text around it, and not what the agent retypes (ab_helper finalize compares them).
+    printf '%s\n' "FEM_OPERATOR_INSTRUCTION=$instr" "$@"
+}
+
+# One headless Codex session (`codex exec --json`) on the prompt in $run/prompt.txt, then ab_helper's
+# finalize; the same arguments as ab_launch.  The run gets its own CODEX_HOME ($run/codex_home:
+# config.toml, rules/operator.rules, and the session's rollout under sessions/), so nothing of
+# ~/.codex reaches it.  Permissions (see ab_helper.py cmd_codex_home): approval never, the
+# workspace-write sandbox for the agent's own commands and apply_patch writes, and rules that let
+# the skill's two command forms out of the sandbox (GPU, network, conda) and refuse git and
+# `python -c`/`python -`.  Unlike the Claude runs, reads are not confined to the two folders by
+# rule: Codex reads with shell commands, which the sandbox lets read anything, so rule 3 of the
+# skill holds by instruction only.  The prompt is the Claude runs' own; the tool names the skill
+# uses are mapped in codex_tools.txt (any Codex use) and the batch's own rules are in
+# codex_note.txt, given in that order as developer instructions after the path note.
+ab_launch_codex() {
+    local idx="$1" instr="$2" slot="$3" run="$4"; shift 4
+    local name t0 t1 started finished rc=0 timed_out=0 home="$run/codex_home"
+    name="$(basename "$run")"
+    local -a env_args slot_env notes=() effort=()
+    mapfile -t env_args < <(clean_env_args)
+    if [ "$PATH_NOTE" = 1 ]; then write_path_note "$run"; notes+=(--note "$run/system_note.txt"); fi
+    notes+=(--note "$HERE/codex_tools.txt" --note "$HERE/codex_note.txt")
+    [ "$EFFORT_GIVEN" = 1 ] && effort=(--effort "$EFFORT")
+    "$PY" "$HELPER" codex-home --dir "$home" --model "$MODEL" --provider "$PROVIDER" "${effort[@]}" "${notes[@]}" \
+        > "$run/codex_model.json"
+    mapfile -t slot_env < <(run_slot_env "$slot" "$instr" "$@")
+    printf '%s\n' "${slot_env[@]}" > "$run/slot_env.txt"
+    log "[$idx] start  $name  codex=$CODEX_MODEL_ID  slot=$slot ${slot_env[*]}  \"$instr\""
+    started="$(date -Iseconds)"; t0="$(date +%s.%N)"
+    # stdin closed: with a prompt argument and an open stdin, codex exec waits to read more.
+    ( cd "$WORKTREE" && env "${env_args[@]}" "${slot_env[@]}" CODEX_HOME="$home" \
+        timeout --signal=TERM --kill-after=60 "$TIMEOUT" \
+        "$CODEX_BIN" exec --json -C "$WORKTREE" "$(cat "$run/prompt.txt")" \
+            < /dev/null > "$run/codex_stream.jsonl" 2> "$run/codex_stderr.log" )
+    rc=$?
+    t1="$(date +%s.%N)"; finished="$(date -Iseconds)"
+    [ "$rc" = 124 ] || [ "$rc" = 137 ] && timed_out=1
+    local line
+    local -a variant=()
+    [ -f "$run/variant.json" ] && variant=(--variant "$run/variant.json")
+    line="$("$PY" "$HELPER" finalize --agent codex --run-dir "$run" --instruction "$instr" --model "$MODEL" \
+        --provider "$(codex_field provider)" --codex-home "$home" \
+        --workflow-root "$WORKFLOW_ROOT" --exit-code "$rc" --timed-out "$timed_out" \
+        --started-at "$started" --finished-at "$finished" --t0 "$t0" --t1 "$t1" \
+        --effort "$([ "$EFFORT_GIVEN" = 1 ] && echo "$EFFORT")" "${variant[@]}" 2>>"$run/finalize_error.log")" \
         || line="finalize failed (see $run/finalize_error.log)"
     [ -s "$run/finalize_error.log" ] || rm -f "$run/finalize_error.log"
     log "[$idx] finish $name  rc=$rc  $line"

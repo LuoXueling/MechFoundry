@@ -56,6 +56,13 @@ evaluator could not do: see the repo's `experiments/`, other packets or `~/.code
 change a figure, or keep a file in its cwd. It could write to its output dir. Switching off
 Codex's sandbox (and relying on layer 1 alone) was not used.
 
+Since 2026-11-17 `run_evaluator.sh` takes a round (`--round NAME`; see `../README.md`, "Rounds").
+It now gets its paths from the round config, and its layer 1 is the shared `../isolate.sh`. That
+layer empties the whole `$HOME` instead of only `~/.claude` and `~/.codex`, and clears the
+environment. The model, effort and Codex flags are unchanged. The script as it ran for this round
+is in git history before that date. This round cannot be re-run as it was: the repo and its work
+dir have moved, and `round_config.py runner-env` refuses it.
+
 ## Command lines
 
 Start (evaluator k; the full bwrap line is in `logs/commands_<k>.txt`):

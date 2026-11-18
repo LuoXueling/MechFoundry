@@ -1,14 +1,24 @@
 """Check an evaluator's eval_<k>.json against its packet and the rubric.
 
     python3 validate.py FILE INDEX_JSON
+    python3 validate.py --round open_models --family fable [--live]
+
+The second form checks every evaluator of a family: eval_<k>.json from the family's committed
+ratings folder (with --live: the output file the evaluator wrote, where its prompt sent it)
+against the round's packet_<k>/index.json.  The rubric is the same for every round, so CRIT and
+the rating rule below are not per round; the entry count follows from the packet.
 
 Reports: entry count, missing / duplicate / unknown (label, category, object) keys, missing
 fields, invalid ratings or criterion scores, and ratings that do not follow mechanically from
 the criteria (High: all met; Moderate: none failed and one or two partial; Low: any failed or
 three or more partial).  Exit status 0 only if the file is complete and valid; a rating that
 disagrees with its criteria is reported but not fatal (the Fable round was not held to it)."""
-import json, sys
+import argparse, json, sys
 from collections import Counter
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from round_config import Round                                   # noqa: E402
 
 CRIT = {"geometry": ("G1", "G2", "G3", "G4"), "bc": ("B1", "B2", "B3", "B4"),
         "material": ("M1", "M2", "M3")}
@@ -66,7 +76,31 @@ def check(path, index_path):
     return ok, msgs
 
 
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("file", nargs="?")
+    ap.add_argument("index", nargs="?")
+    ap.add_argument("--round")
+    ap.add_argument("--family")
+    ap.add_argument("--live", action="store_true",
+                    help="the files the evaluators wrote (output/), not the committed copies")
+    a = ap.parse_args()
+    if a.file and a.index:
+        pairs = [(a.file, a.index)]
+    elif a.round:
+        rnd = Round(a.round)
+        fam = a.family or rnd.default_family()
+        pairs = [(rnd.out_file(fam, k) if a.live else rnd.ratings_dir(fam) / f"eval_{k}.json",
+                  rnd.packets / f"packet_{k}" / "index.json") for k in range(1, rnd.evaluators + 1)]
+    else:
+        ap.error("give FILE INDEX_JSON, or --round [--family]")
+    all_ok = True
+    for f, idx in pairs:
+        ok, msgs = check(f, idx)
+        all_ok &= ok
+        print((f"{f}: " if len(pairs) > 1 else "") + ("VALID" if ok else "INVALID") + ": " + "; ".join(msgs))
+    sys.exit(0 if all_ok else 1)
+
+
 if __name__ == "__main__":
-    ok, msgs = check(sys.argv[1], sys.argv[2])
-    print(("VALID" if ok else "INVALID") + ": " + "; ".join(msgs))
-    sys.exit(0 if ok else 1)
+    main()
