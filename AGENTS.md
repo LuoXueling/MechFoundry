@@ -130,7 +130,9 @@ output/                   all run outputs (git-ignored): output/fem_workflow/<se
 is packed in `output/archives/<name>.tar.zst`, with `<name>/` as its top-level
 directory, and the archives are released on Zenodo:
 <https://zenodo.org/records/23511564>. They are `agentic_batch50` (Sonnet), `agentic_batch50_haiku`,
-`agentic_batch50_opus`, `bodyfitted_vs_nitsche`, `geometry_cleanup` and `showcase`.
+`agentic_batch50_opus`, the open-weight batches `agentic_batch50_deepseek`,
+`agentic_batch50_deepseek_max` and `agentic_batch50_kimi`, `bodyfitted_vs_nitsche`,
+`geometry_cleanup` and `showcase`.
 Scripts and figure builds that read one of these folders (`model_eval`,
 `bodyfitted_vs_nitsche`, `geometry_cleanup`, and `illustrations/build.sh` targets such as
 `agenticresults`, `agenticcompare`, `gallery`, `showcase` (its `SC_*_RUNS` sweeps) and

@@ -10,6 +10,9 @@ route:
 | `output/agentic_batch50_deepseek_max` | DeepSeek-V4.1-Flash-1017, max | `:deepinfra` |
 | `output/agentic_batch50_kimi` | Kimi-K3.1-Pro, medium | `:moonshotai` |
 
+Each is packed as `output/archives/<batch>.tar.zst` and released on Zenodo with the Claude batches
+(top-level README, "Archived run outputs"); extract it to `output/` before reading it.
+
 They are graded beside the paper's Haiku, Sonnet and Opus batches, all six together, in
 `../model_eval/` (Fable and GPT-6-Astra evaluators, 2026-11-19; `../model_eval/RUN.md`). Their
 category figures are built with `illustrations/agentic_results/ar_categories.py --suffix _deepseek |

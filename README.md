@@ -775,6 +775,9 @@ zstd -dc output/archives/<name>.tar.zst | tar -x -C output    # -> output/<name>
 | `agentic_batch50_opus.tar.zst` | Opus 50-object batch: one run folder (sessions, transcript, metrics) per object | `illustrations/build.sh agenticresults`, `gallery`, `agenticcompare`; `model_eval`, `bodyfitted_vs_nitsche`, `geometry_cleanup` |
 | `agentic_batch50.tar.zst` | Sonnet 50-object batch | `agenticcompare`, Sonnet category pages; `model_eval` |
 | `agentic_batch50_haiku.tar.zst` | Haiku 50-object batch | `agenticcompare`, Haiku category pages; `model_eval` |
+| `agentic_batch50_deepseek.tar.zst` | DeepSeek-V4.1-Flash-1017 50-object batch under Codex, high effort (run with `--effort medium`, which DeepSeek serves as high): one run folder (sessions, Codex rollout, metrics) per object | `_deepseek` category pages, `agentic_results_compare_open`; `model_eval` |
+| `agentic_batch50_deepseek_max.tar.zst` | DeepSeek-V4.1-Flash-1017 50-object batch under Codex, max effort | `_deepseek_max` category pages, `agentic_results_compare_open`; `model_eval` |
+| `agentic_batch50_kimi.tar.zst` | Kimi-K3.1-Pro 50-object batch under Codex, medium effort | `_kimi` category pages, `agentic_results_compare_open`; `model_eval` |
 | `showcase.tar.zst` | geometry realizations, material and BC sweeps (`realizations/`, `material_sweep/`, `bc_sweep/`) | `illustrations/build.sh showcase` |
 | `bodyfitted_vs_nitsche.tar.zst` | per-object Nitsche and body-fitted P1 solves, `_summary/` | re-evaluating or re-summarizing that experiment |
 | `geometry_cleanup.tar.zst` | per-object clean-up runs, logs, contact sheets | re-rendering row c of `shapeoptmerged` (`SOM_CU_RENDER=1`) |
@@ -841,6 +844,9 @@ most of it the model's own time. Each run's `cost_usd` is priced from its tokens
 price (`codex_models.json`), not billed. The open-weight batches are graded beside the Claude ones
 in [`experiments/model_eval/`](experiments/model_eval/README.md).
 
+These batches are `output/agentic_batch50_deepseek`, `…_deepseek_max` and `…_kimi` (archived,
+above).
+
 </details>
 
 ### Experiments
@@ -874,8 +880,8 @@ high effort (requested as medium, which DeepSeek serves as high) and at max effo
 Kimi-K3.1-Pro, Haiku, Sonnet, Opus) on geometry, boundary conditions and material, from blinded
 packets; `scripts/combine.py` writes each family's `results/<family>/evaluation_table.{md,xlsx}`
 (graded 2026-11-19; notes and headline numbers in `RUN.md`). The paper's grading of the Haiku,
-Sonnet and Opus batches is kept in `records/paper/`. Needs the three Claude batch archives and the
-three open-weight batch folders.
+Sonnet and Opus batches is kept in `records/paper/`. Needs all six batch archives (three Claude, three
+open-weight).
 
 </details>
 

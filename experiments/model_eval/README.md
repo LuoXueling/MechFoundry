@@ -45,9 +45,10 @@ commands below are from `experiments/model_eval`.
 
 ```shell
 cd experiments/model_eval
-# 0. All six batch roots in output/. The Claude ones are archived:
+# 0. All six batch roots in output/. All six are archived:
 #      zstd -dc ../../output/archives/<name>.tar.zst | tar -x -C ../../output
-#    (agentic_batch50_haiku, agentic_batch50, agentic_batch50_opus).
+#    (agentic_batch50_deepseek, _deepseek_max, _kimi, agentic_batch50_haiku, agentic_batch50,
+#    agentic_batch50_opus).
 # 1. The 10 category figures per model, staged in output/agentic_object_record/model_eval_figures/:
 #    the open-weight ones built by illustrations/agentic_results/ar_categories.py
 #    (--batch-root output/agentic_batch50_<x> --suffix _<x>), the Claude ones copied from the

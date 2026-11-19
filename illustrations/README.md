@@ -8,7 +8,8 @@ results** figures, which show what an LLM agent produced when it drove the FEM w
 from a one-line instruction.
 
 **The batch folders are archived.** `output/agentic_batch50` (Sonnet), `…_haiku`,
-`…_opus` and `output/showcase` are packed in `output/archives/<name>.tar.zst`. Every build
+`…_opus`, the open-weight `…_deepseek`, `…_deepseek_max` and `…_kimi`, and `output/showcase`
+are packed in `output/archives/<name>.tar.zst`. Every build
 below that renders runs reads them at their original paths, so extract the ones it needs
 first: `zstd -dc output/archives/<name>.tar.zst | tar -x -C output` (→ `output/<name>/`).
 
