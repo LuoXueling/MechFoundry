@@ -1777,7 +1777,19 @@ def prep_run(i, run, work, ctx):
 
     # 2. BC regions
     rz, rj = (os.path.join(s, "boundary_conditions", n) for n in ("resolved.npz", "resolved.json"))
+    # Masks over another face count were resolved on an earlier body: a session rewound to
+    # its geometry after the BCs (rewind leaves the later stages' files in place) and never
+    # resolved again, e.g. DeepSeek medium's road roller (2026-11-19), which ended at
+    # geometry_physics with a new physical.glb.  Its BCs are not drawn, as segmentation_of
+    # does for a segments.npz of another size, instead of failing the category's build.
+    stale = None
     if os.path.exists(rz) and os.path.exists(rj):
+        _z = np.load(rz)
+        sizes = sorted({len(_z[k]) for k in _z.files})
+        if any(n != len(F) for n in sizes):
+            stale = (f"BC regions not drawn: resolved.npz masks over {sizes} faces, physical.glb "
+                     f"has {len(F)} (resolved on an earlier body; the session was rewound)")
+    if os.path.exists(rz) and os.path.exists(rj) and stale is None:
         masks = np.load(rz)
         regions = json.load(open(rj)).get("regions", [])
         cat = {r["key"]: r["category"] for r in regions if "key" in r}
@@ -1954,7 +1966,7 @@ def prep_run(i, run, work, ctx):
         out["bc"] = rgb
     else:
         rec["bc"] = None
-        rec["notes"].append("no boundary_conditions/resolved.npz")
+        rec["notes"].append(stale or "no boundary_conditions/resolved.npz")
         out["bc"] = None
 
     if rec.get("bc") is None:

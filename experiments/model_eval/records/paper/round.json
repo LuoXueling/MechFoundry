@@ -1,0 +1,39 @@
+{
+ "name": "paper",
+ "description": "The paper round: the Claude Code operator batches (Sonnet, Haiku, Opus) graded by three Fable evaluators (Claude Code subagents, 2026-10-14) and three Astra evaluators (Codex CLI 0.163.0, 2026-10-19). Frozen: its mappings, prompts and tables are committed and must regenerate byte for byte.",
+ "objects": "experiments/agentic_batch/objects_50.txt",
+ "models": [
+  {"key": "sonnet", "display": "Sonnet", "root": "output/agentic_batch50", "suffix": ""},
+  {"key": "haiku", "display": "Haiku", "root": "output/agentic_batch50_haiku", "suffix": "_haiku"},
+  {"key": "opus", "display": "Opus", "root": "output/agentic_batch50_opus", "suffix": "_opus"}
+ ],
+ "evaluators": 3,
+ "label_seed": 1000,
+ "mappings": "experiments/model_eval/mappings",
+ "packets": "output/agentic_object_record/model_eval",
+ "packet_mode": "symlink",
+ "prompt_repo": "/home/xl2254/implicit_optimize",
+ "families": {
+  "fable": {
+   "display": "Fable", "title": "claude-fable-5-1, high effort",
+   "model": "claude-fable-5-1", "effort": "high",
+   "harness": "Claude Code subagents (general-purpose) of one coordinator session",
+   "prompts": "experiments/model_eval", "ratings": "experiments/model_eval",
+   "packet": "{packets}/packet_{k}",
+   "out": "output/agentic_object_record/model_eval/eval_{k}.json"
+  },
+  "astra": {
+   "display": "Astra", "title": "GPT-6-Astra, high effort",
+   "model": "gpt-6-astra", "effort": "high",
+   "harness": "Codex CLI 0.163.0 (codex exec) in bubblewrap, astra_high/run_evaluator.sh",
+   "prompts": "experiments/model_eval/astra_high", "ratings": "experiments/model_eval/astra_high",
+   "packet": "/home/xl2254/astra_eval_work/packet_{k}",
+   "out": "output/agentic_object_record/model_eval_astra/evaluator_{k}/eval_{k}.json",
+   "logs": "output/agentic_object_record/model_eval_astra/logs",
+   "home": "/home/xl2254/astra_eval_work/codex_home_{k}",
+   "hide": ["/home/xl2254/astra_eval_work"]
+  }
+ },
+ "agreement": {"families": ["fable", "astra"], "out": "experiments/model_eval/astra_high/agreement.md"},
+ "cost_note": "Cost: the coding agent's Claude session at API prices (CLI total_cost_usd); the FEM workflow's own API calls are excluded."
+}

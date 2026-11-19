@@ -23,8 +23,9 @@ follows.
 PER-CATEGORY BUILDS.  A category is built when every one of its instructions has a run.
 Each figure is ``illustrations/<prefix><slug><suffix>.{pdf,png}``, its slug the heading in
 lower case with non-letters as ``_`` ("Machines and tools" -> ``machines_and_tools``);
-``--suffix _haiku`` / ``_opus`` names one model's set.  Builds run one at a time (the target
-reuses ``agentic_results/_work``).  After each build the figure's record
+``--suffix _haiku`` / ``_opus`` names one model's set (``_deepseek`` / ``_kimi`` the open-weight
+Codex batches, whose runs carry the same metrics.json and are timed from their Codex
+rollout: ar_time.py).  Builds run one at a time (the target reuses ``agentic_results/_work``).  After each build the figure's record
 ``agentic_results/ar_stats.json`` is copied to ``agentic_results/ar_stats_<name>.json`` and the
 shared ``ar_stats.json`` is put back as it was, so a category build never replaces the
 record of the main figure.  ``--watch`` polls a running batch every minute and builds each
@@ -143,7 +144,7 @@ def main():
     ap.add_argument("--batch-root", required=True, help="e.g. output/agentic_batch50")
     ap.add_argument("--list", default=str(OBJECTS), help="the object list (default: %(default)s)")
     ap.add_argument("--prefix", default=DEFAULT_PREFIX, help="figure-name prefix (default: %(default)s)")
-    ap.add_argument("--suffix", default="", help="figure-name suffix, e.g. _haiku or _opus")
+    ap.add_argument("--suffix", default="", help="figure-name suffix, e.g. _haiku, _opus, _deepseek")
     ap.add_argument("--only", nargs="*", help="category slugs to build (default: all)")
     ap.add_argument("--dry-run", action="store_true", help="print the run lists, build nothing")
     ap.add_argument("--watch", action="store_true",

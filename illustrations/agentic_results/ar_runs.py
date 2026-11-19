@@ -4,7 +4,8 @@ A run is given in one of three forms:
 
   output/agentic_batch/<run_name>/      the batch script's layout: ``workflow/`` (a copy
                                         of the session folder, or a folder holding it),
-                                        ``claude_session/`` (the transcript, *.jsonl) and
+                                        ``claude_session/`` (the transcript, *.jsonl; a
+                                        Codex run has ``codex_home/`` instead, below) and
                                         ``metrics.json``
   output/fem_workflow_operator/<sid>/   a bare session folder (development)
   an entry of a runs JSON               ``{"session": ..., "instruction": ..., "transcript":
@@ -36,6 +37,14 @@ Token counts from a transcript are summed over its assistant messages, each
 message counted ONCE: Claude Code writes one line per content block, and every
 line of a message repeats that message's usage.  Wall clock from a transcript is
 its last timestamp minus its first.
+
+A Codex run (run_batch.sh --agent codex: metrics.json ``agent: "codex"``) has no
+``claude_session/``; its transcript is ``codex_home/sessions/**/rollout-*.jsonl``.
+Its metrics.json already holds the tokens in the Claude fields (the batch helper
+maps Codex's counts onto them), the wall clock and the model, so nothing here reads
+the rollout: only ar_time.split_run does, for the time bar.  A field the Codex
+metrics leave null stays unknown (the figure prints "n/a"), never filled from a
+Claude transcript.
 """
 
 import glob

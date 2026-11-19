@@ -1,0 +1,4 @@
+Batch note: this run is unattended and its CODEX_HOME has the rules below; where the skill and this note differ, this note wins.
+- drive.py and inspect_session.py: type each exactly as the skill writes it, `python3 -u src/agents_wrapper/fem_workflow/operator_skill/scripts/drive.py ...`, as one plain command from the repository root (no cd, &&, pipes, redirects or variables). Only that form runs with the GPU, the network and the session folders; any other command runs in a sandbox without them, so drive.py typed any other way fails.
+- A drive.py command can run for many minutes (an idle-GPU wait, generation, painting, a solve). When exec_command returns while the process is still running, keep waiting on that same process with write_stdin (empty chars, a long yield_time_ms) until it exits, and read its whole output. Never start a second drive.py command for the session while one is running.
+- Do not ask the user anything (rule 1): nobody answers in this run.

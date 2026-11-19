@@ -1,0 +1,9 @@
+Supplementary table. Token use per run of agentic_results (sources: agentic_results/ar_stats.json). Cached = input tokens read from the prompt cache (cache_read_input_tokens); tokens written to the cache (cache_creation_input_tokens) were processed in full and count as not cached, with the plain uncached input (input_tokens).  Input total = cached + not cached.  Codex runs (agent codex): metrics.json records Codex's counts in these fields (cache_read_input_tokens = cached_input_tokens, cache_creation_input_tokens = cache_write_input_tokens, input_tokens = the rest of the input).  The figure's cost bars are relative to the largest run: 11 M input tokens, 76 k output tokens, 15 min 52 s.
+
+| row | instruction | session_id | model | agent | input_tokens_total | input_tokens_cached | input_tokens_not_cached | of_which_written_to_cache | of_which_plain_uncached | output_tokens | wall_clock_s | status | displacement_scale |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | a school chair with a steel frame and a plastic seat | 9e50d7604a8d | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 1943865 | 1866240 | 77625 | 0 | 77625 | 29366 | 302.9 | ok | 300.0 |
+| 2 | a glass-top dining table | 7c9e52eb2703 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 3726551 | 3623168 | 103383 | 0 | 103383 | 54017 | 770.0 | ok | 500.0 |
+| 3 | a park bench | 54ac27bc6e33 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 10532644 | 10377600 | 155044 | 0 | 155044 | 76332 | 952.0 | ok | 2000.0 |
+| 4 | a bar stool | 92ade18d3696 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 2203310 | 2105344 | 97966 | 0 | 97966 | 43027 | 461.2 | ok | 500.0 |
+| 5 | a sofa | d73aa50eefa1 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 1385891 | 1317120 | 68771 | 0 | 68771 | 25315 | 299.0 | ok | 5000.0 |

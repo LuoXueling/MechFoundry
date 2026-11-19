@@ -7,6 +7,10 @@ Sources, all in the batch script's run folder (output/agentic_batch/<run>/):
   metrics.json                 the wall clock;
   claude_session/*.jsonl       when each of the agent's runner commands was issued and when its
                                result came back (every transcript line is timestamped);
+  codex_home/sessions/**/rollout-*.jsonl
+                               the same for a Codex run (run_batch.sh --agent codex), which has
+                               no claude_session/: read only when claude_session/ is absent
+                               (``_codex_commands``);
   workflow/<sid>/operator/driver_log.jsonl
                                the runner's own log: each card it answered, with the time it
                                finished and ``elapsed_s``, and each stop.
@@ -18,6 +22,16 @@ cards, and after the last card the stop's pictures and summaries -- except after
 it is the solver's fallbacks and cross-checks and the result summary, counted with the solve.
 The same accounting measured the five runs of 2026-10-08 to within 1 s of their wall clocks
 (output/agentic_batch/timing/).
+
+A Codex rollout times a command differently, and only that differs: ``exec_command`` returns
+after a few seconds with "Process running with session ID N" while a long runner step goes on,
+and the agent waits on it with ``write_stdin`` (session_id N) until an output says "Process
+exited with code C".  The command is the exec_command call and every write_stdin of its
+process: issued at the call, ended at the output that says it exited, its text all the outputs
+together, so the section accounting above applies unchanged.  A command that never exited (a
+run killed by the batch's timeout while the runner waited for an idle GPU) ends at the wall
+clock's end when the agent was still waiting on it, else at its last output (the agent had
+moved on; the process ran on unseen), and the split says so in its notes.
 """
 
 import glob
@@ -142,11 +156,118 @@ def _commands(transcript_files):
     return out
 
 
+# Codex's exec_command / write_stdin output header (codex-cli 0.163): read only above its
+# "Output:" line, so a command's own printout cannot fake a process state.
+CODEX_RUNNING = re.compile(r"Process running with session ID (\d+)")
+CODEX_EXITED = re.compile(r"Process exited with code (-?\d+)")
+
+
+def _codex_text(output):
+    """A function_call_output's ``output``: a string, or content items / a dict holding it."""
+    if isinstance(output, str):
+        return output
+    if isinstance(output, dict):
+        return _codex_text(output.get("output", output.get("content", "")))
+    if isinstance(output, list):
+        return "".join(x.get("text", "") if isinstance(x, dict) else str(x) for x in output)
+    return ""
+
+
+def codex_rollouts(run_dir, metrics):
+    """The run's Codex rollout(s): ``metrics.json`` ``transcript_source`` when it names a file
+    (the batch helper's own pick), else the rollouts named by ``codex_thread_id``, else all."""
+    src = metrics.get("transcript_source")
+    if src and os.path.isfile(os.path.join(run_dir, src)):
+        return [os.path.join(run_dir, src)]
+    hits = sorted(glob.glob(os.path.join(run_dir, "codex_home", "sessions", "**", "rollout-*.jsonl"),
+                            recursive=True))
+    thread = metrics.get("codex_thread_id")
+    return [h for h in hits if thread and thread in os.path.basename(h)] or hits
+
+
+def _codex_commands(rollout_files, end):
+    """``_commands`` for a Codex rollout: the same records ({t0, t1, script, sub, text}), a
+    runner command followed through the write_stdin calls on its process (module docstring).
+    ``end``: the wall clock's end (epoch s).  Returns (commands, notes)."""
+    calls, procs, out = {}, {}, []
+    for f in rollout_files:
+        for line in open(f, encoding="utf-8"):
+            try:
+                d = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            p = d.get("payload")
+            if d.get("type") != "response_item" or not isinstance(p, dict) or not d.get("timestamp"):
+                continue
+            t = _ts(d["timestamp"])
+            if p.get("type") == "function_call":
+                args = p.get("arguments")
+                try:
+                    args = json.loads(args) if isinstance(args, str) else (args or {})
+                except json.JSONDecodeError:
+                    args = {}
+                if not isinstance(args, dict):
+                    continue
+                if p.get("name") in ("exec_command", "shell"):
+                    cmd = args.get("cmd", args.get("command")) or ""
+                    m = RUNNER.search(" ".join(map(str, cmd)) if isinstance(cmd, list) else str(cmd))
+                    if m:
+                        c = {"t0": t, "t1": t, "script": m.group(1), "sub": m.group(2) or "",
+                             "text": "", "running": True, "waiting": True}
+                        calls[p.get("call_id")] = c
+                        out.append(c)
+                elif p.get("name") == "write_stdin" and str(args.get("session_id")) in procs:
+                    c = procs[str(args.get("session_id"))]
+                    c["waiting"] = True
+                    calls[p.get("call_id")] = c
+            elif p.get("type") == "function_call_output" and p.get("call_id") in calls:
+                c = calls.pop(p["call_id"])
+                text = _codex_text(p.get("output"))
+                head = text.split("\nOutput:", 1)[0]
+                c["t1"], c["text"], c["waiting"] = max(c["t1"], t), c["text"] + text, False
+                running = CODEX_RUNNING.search(head)
+                if running and not CODEX_EXITED.search(head):
+                    procs[running.group(1)] = c
+                else:                   # exited, or an error result: the command is over
+                    c["running"] = False
+                    procs = {k: v for k, v in procs.items() if v is not c}
+    notes = []
+    for c in out:
+        if c["running"]:
+            if c["waiting"]:
+                c["t1"] = max(c["t1"], end)
+            notes.append(f"{c['script']}.py {c['sub']} never exited: counted to "
+                         + ("the wall clock's end (the agent was still waiting on it)"
+                            if c["waiting"] else "its last output (the agent had moved on)"))
+    return out, notes
+
+
 def split_run(run_dir):
     metrics = json.load(open(os.path.join(run_dir, "metrics.json")))
     wall = float(metrics["wall_clock_s"])
     files = sorted(glob.glob(os.path.join(run_dir, "claude_session", "**", "*.jsonl"), recursive=True))
     files = [f for f in files if "/subagents/" not in f] or files
+    notes = []
+    if os.path.isdir(os.path.join(run_dir, "claude_session")) or \
+            not os.path.isdir(os.path.join(run_dir, "codex_home", "sessions")):
+        commands = _commands(files)
+    else:
+        rollouts = codex_rollouts(run_dir, metrics)
+        # the wall clock's end: the batch's own start (started_at, ISO with offset) + the wall
+        # clock; else the rollout's first timestamp + the wall clock
+        try:
+            start = _ts(metrics["started_at"])
+        except (KeyError, AttributeError, TypeError, ValueError):
+            start = 0.0
+            for line in (open(rollouts[0], encoding="utf-8") if rollouts else ()):
+                m = re.search(r'"timestamp":\s*"([^"]+)"', line)
+                if m:
+                    start = _ts(m.group(1))
+                    break
+        commands, notes = _codex_commands(rollouts, start + wall)
+        notes.insert(0, ("runner commands timed from the Codex rollout "
+                         + ", ".join(os.path.relpath(f, run_dir) for f in rollouts)) if rollouts else
+                     "Codex run without a rollout: every second counts as the agent's")
     logs = glob.glob(os.path.join(run_dir, "workflow", "**", "operator", "driver_log.jsonl"), recursive=True)
     dlog = []
     for p in logs:
@@ -154,8 +275,7 @@ def split_run(run_dir):
     cards = sorted((e for e in dlog if "kind" in e and isinstance(e.get("time"), (int, float))),
                    key=lambda e: e["time"])
     sec = dict.fromkeys(KEYS, 0.0)
-    notes = []
-    for c in _commands(files):
+    for c in commands:
         dur = max(0.0, c["t1"] - c["t0"])
         if c["script"] == "web_images":
             sec["geometry_built"] += dur

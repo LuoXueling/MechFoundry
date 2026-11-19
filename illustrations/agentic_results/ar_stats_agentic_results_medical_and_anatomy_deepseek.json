@@ -1,0 +1,5226 @@
+{
+ "E_log10_range_Pa": [
+  8.0,
+  11.5
+ ],
+ "view_dir_default": [
+  1.5,
+  1.25,
+  3.0
+ ],
+ "runs": [
+  {
+   "index": 0,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek/dental-crown-20261119-040345/workflow/9d069b762ac9",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "dental-crown-20261119-040345",
+    "instruction": "a dental crown",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "9d069b762ac9",
+    "session_ids": [
+     "9d069b762ac9"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f30c-356e-7e02-80f2-5a7b7464f750",
+    "input_tokens": 86383,
+    "cache_read_input_tokens": 2588416,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 44473,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 2674799,
+     "cached_input_tokens": 2588416,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 44473,
+     "reasoning_output_tokens": 34162
+    },
+    "thinking_tokens": 34162,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 49,
+     "view_image": 13,
+     "write_stdin": 1
+    },
+    "images_viewed": 13,
+    "cost_usd": 0.094813,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 556.851,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 14,
+     "blank": 1,
+     "judge": 2
+    },
+    "runner_runs": 14,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a dental crown",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-19T04:03:45-05:00",
+    "finished_at": "2026-11-19T04:13:02-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/19/rollout-2026-11-19T04-03-46-01a1f30c-356e-7e02-80f2-5a7b7464f750.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 70000000000.0,
+     "poisson_ratio": 0.22,
+     "density": 2400.0,
+     "held": [
+      {
+       "name": "socket_wall_lower",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "top_press",
+       "traction": [
+        0.0,
+        -5120025.212454286,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-19-04-11-24/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 367.4,
+      "geometry_drawing": 51.0,
+      "geometry_generation": 3.5,
+      "geometry_revision": 0.0,
+      "geometry_built": 7.8,
+      "setup_scale": 2.6,
+      "setup_segmentation": 9.8,
+      "setup_regions": 5.1,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 10.8,
+      "solve_after": 5.3,
+      "overhead_startup": 63.9,
+      "overhead_between": 3.0,
+      "overhead_stop": 21.0,
+      "overhead_commands": 5.4
+     },
+     "groups": {
+      "agent": 367.4,
+      "workflow": 80.1,
+      "solver": 16.1,
+      "overhead": 93.3
+     },
+     "wall_clock_s": 556.851,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/19/rollout-2026-11-19T04-03-46-01a1f30c-356e-7e02-80f2-5a7b7464f750.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Built (revolve)",
+   "surface": {
+    "vertices": 38781,
+    "faces": 77558
+   },
+   "extent": 0.009950249220452179,
+   "dims": [
+    0.009950249220452179,
+    0.0074336957186460495,
+    0.009950226900528492
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.802,
+     0.762,
+     0.692
+    ],
+    "rgb_spread": 0.03656343652379174,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "socket_wall_lower",
+      "category": "dirichlet",
+      "faces": 15672,
+      "mean_normal": [
+       0.03,
+       0.999,
+       -0.03
+      ],
+      "area": 8.988969024831045e-05,
+      "proj_area": 2.6605239224891748e-05,
+      "facing_camera": 0.5050688985890472
+     },
+     {
+      "key": "neumann_1",
+      "name": "top_press",
+      "category": "neumann",
+      "faces": 11970,
+      "mean_normal": [
+       0.0,
+       1.0,
+       -0.0
+      ],
+      "area": 6.528142396710228e-05,
+      "proj_area": 2.23564513925217e-05,
+      "facing_camera": 0.9070729680505952,
+      "unoccluded_facing": 0.8685461991062559
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 2.9032337494538123e-07,
+     "surface_watertight": true,
+     "density": 2400.0,
+     "mass": 0.000696776099868915,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.000696776099868915,
+     "weight_N": 0.006833039339779494,
+     "real_mass_kg": 0.0008,
+     "real_weight_N": 0.00784532,
+     "weight_over_real_weight": 0.8709701248361437,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.0001113837895680145,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "top_press",
+      "traction": [
+       0.0,
+       -5120025.212454286,
+       0.0
+      ],
+      "tail": [
+       0.0030141209962694002,
+       0.008754805307973783,
+       0.00765856168829506
+      ],
+      "tip": [
+       0.0030141209962694002,
+       0.0069637604482923905,
+       0.00765856168829506
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "top_press",
+      "traction": [
+       0.0,
+       -5120025.212454286,
+       0.0
+      ],
+      "tail": [
+       0.005011750704956751,
+       0.009123868551456474,
+       0.00716490231423865
+      ],
+      "tip": [
+       0.005011750704956751,
+       0.007332823691775083,
+       0.00716490231423865
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "top_press",
+      "traction": [
+       0.0,
+       -5120025.212454286,
+       0.0
+      ],
+      "tail": [
+       0.006710477890341987,
+       0.009138520898706686,
+       0.006204082955798788
+      ],
+      "tip": [
+       0.006710477890341987,
+       0.007347476039025295,
+       0.006204082955798788
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "top_press",
+      "traction": [
+       0.0,
+       -5120025.212454286,
+       0.0
+      ],
+      "tail": [
+       0.008197020422088851,
+       0.008829696584730241,
+       0.00516883144102833
+      ],
+      "tip": [
+       0.008197020422088851,
+       0.007038651725048849,
+       0.00516883144102833
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-19-04-11-24",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-19-04-11-24/vtu/solution_t0000.vtu",
+    "nodes": 117463,
+    "hexes": 92421,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 3.9747508192403134e-18,
+    "outside_points": 0,
+    "umax_surface": 1.1820042150005963e-06,
+    "umax_nodes": 1.1892359008159335e-06,
+    "umax_workflow_export": 1.1825516139651882e-06,
+    "ratio_to_workflow_export": 0.999537103532626,
+    "umax_surface_m": 1.1820042150005963e-06
+   },
+   "scale": {
+    "factor": 1000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 2536.8871553443364,
+     "reach": 0.3,
+     "physical_extent": 0.01,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.11879141806529357,
+    "standing_on_support": false,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0026550106691575867
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    70000000000.0,
+    70000000000.0
+   ],
+   "E_surface_Pa": [
+    70000000000.0,
+    70000000000.0
+   ],
+   "view": {
+    "dir": [
+     1.5,
+     1.25,
+     3.0
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -5120025.212454286,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 1.2688,
+    "visible_area_over_R2": 2.4643,
+    "panel_fill": 0.656,
+    "height_shown": 1.0,
+    "shows": 0.935,
+    "paper_view_shows": 0.935,
+    "turn_from_paper_deg": 0.0,
+    "why": "paper view; no candidate is predicted to pass the compose's print checks (96 tried): the first preferred view kept",
+    "worst_load_shown_fraction_of_its_best": 0.8065153363874704,
+    "print_check": {
+     "passes": false,
+     "candidates_checked": 96,
+     "rejected": [
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.994,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Built (revolve)' on the object (br/tr)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.82,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 83.05
+        },
+        "corners": {
+         "Built (revolve)": null,
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.95,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.63,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 97.44
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.993,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Built (revolve)' on the object (br/tr)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.78,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 84.16
+        },
+        "corners": {
+         "Built (revolve)": null,
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.989,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Built (revolve)' on the object (br/tr)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.82,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 83.21
+        },
+        "corners": {
+         "Built (revolve)": null,
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.957,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.68,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 96.67
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 20.4,
+       "shows_over_best": 1.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.97,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 81.32
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.993,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.97,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 80.66
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.99,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.97,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 81.01
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.991,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Built (revolve)' on the object (br/tr)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.82,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 83.28
+        },
+        "corners": {
+         "Built (revolve)": null,
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.979,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.97,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 81.16
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.983,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Built (revolve)' on the object (br/tr)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.82,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 83.23
+        },
+        "corners": {
+         "Built (revolve)": null,
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.99,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.97,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 80.35
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.985,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.97,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 80.68
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.985,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Built (revolve)' on the object (br/tr)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.82,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 83.13
+        },
+        "corners": {
+         "Built (revolve)": null,
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.95,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.68,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 96.49
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.949,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.92,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 114.87
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.948,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.82,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 117.69
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.947,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.68,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 96.54
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.946,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.54,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 98.63
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.943,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.73,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 119.62
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.941,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.63,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 97.56
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.94,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.73,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 119.31
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.938,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.68,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 98.45
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.937,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.63,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 99.52
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.905,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.73,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 123.06
+        },
+        "corners": {
+         "Built (revolve)": "tr",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.902,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.49,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 128.01
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.902,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.59,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 125.73
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.901,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.49,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 128.32
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.898,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.59,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 125.84
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.898,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.4,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 129.97
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.895,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.25,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 133.51
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.891,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.44,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 128.99
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.891,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.49,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 127.75
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.89,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.35,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 131.55
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.888,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.35,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 131.42
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.886,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.35,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 131.63
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.823,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.54,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 156.57
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.822,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.73,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 152.02
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.821,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.59,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 155.23
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.82,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.63,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 154.41
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.817,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.78,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 150.47
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.817,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.63,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 154.33
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.812,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.78,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 150.5
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.81,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.54,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 156.73
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.808,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.4,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 160.37
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.808,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.44,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 158.69
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.806,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.49,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 158.05
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.806,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)",
+        "label 'Body load 0.0068 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.49,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 158.88
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": null,
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.994,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.45,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 73.35
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.95,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.31,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 86.07
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.993,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.4,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 74.33
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.989,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.45,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 73.5
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.957,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.37,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 85.38
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 20.4,
+       "shows_over_best": 1.0,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.6,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 71.82
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.993,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.6,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 71.24
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.99,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.6,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 71.55
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.991,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.45,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 73.56
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.979,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.6,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 71.68
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.983,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.45,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 73.52
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.99,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.6,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 70.97
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.985,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.6,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 71.26
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.985,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.45,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 73.42
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.95,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.37,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 85.22
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.949,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.55,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 101.46
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.948,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.45,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 103.95
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.947,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.37,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 85.27
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.946,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.21,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 87.12
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.943,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.35,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 105.65
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.941,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.31,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 86.17
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.94,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.35,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 105.38
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.938,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.37,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 86.96
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.937,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.31,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 87.9
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.905,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.42,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 108.69
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.902,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.16,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 113.07
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.902,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.26,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 111.05
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.901,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.16,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 113.34
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.898,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.26,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 111.15
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.898,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.06,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 114.8
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.895,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.91,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 117.92
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.891,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.11,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 113.93
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.891,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.16,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 112.83
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.89,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.01,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 116.19
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.888,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.01,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 116.07
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.886,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.01,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 116.26
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.823,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.21,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 138.29
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.822,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.42,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 134.27
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.821,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.26,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 137.11
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.82,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.31,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 136.38
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.817,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.47,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 132.9
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.817,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.31,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 136.31
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 210,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.812,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.47,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 132.93
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.81,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.21,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 138.43
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.808,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.06,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 141.65
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.808,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.11,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 140.16
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.806,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.16,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 139.6
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.806,
+       "ink_room": 3.0,
+       "misses": [
+        "'socket_wall_lower' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.16,
+        "regions": {
+         "socket_wall_lower": 0.0,
+         "top_press": 140.33
+        },
+        "corners": {
+         "Built (revolve)": "br",
+         "2 mm": "bl",
+         "Body load 0.0068 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": null
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca dental crown\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -9.95024922045218e-07,
+    "key_light_ray": [
+     -0.2848,
+     -0.771,
+     -0.5697
+    ],
+    "grid": {
+     "cell": 0.002,
+     "rings": 11,
+     "reach": 0.022
+    }
+   },
+   "panels": [
+    "ar_0_arrows.vtk",
+    "ar_0_bc.vtk",
+    "ar_0_fit.vtk",
+    "ar_0_grid.vtk",
+    "ar_0_materials.vtk",
+    "ar_0_painted.vtk",
+    "ar_0_shadow.vtk",
+    "ar_0_shadow_def.vtk",
+    "ar_0_solve.vtk"
+   ]
+  },
+  {
+   "index": 1,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek/knee-implant-20261119-041303/workflow/27402b75ebc0",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "knee-implant-20261119-041303",
+    "instruction": "a knee implant",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "27402b75ebc0",
+    "session_ids": [
+     "27402b75ebc0"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f314-b6c0-7062-b2e3-8ea10d13985b",
+    "input_tokens": 126914,
+    "cache_read_input_tokens": 4138624,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 70490,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 4265538,
+     "cached_input_tokens": 4138624,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 70490,
+     "reasoning_output_tokens": 57893
+    },
+    "thinking_tokens": 57893,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 60,
+     "view_image": 13,
+     "write_stdin": 2
+    },
+    "images_viewed": 13,
+    "cost_usd": 0.147494,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 804.977,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 19,
+     "blank": 3,
+     "judge": 1
+    },
+    "runner_runs": 19,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a knee implant",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-19T04:13:03-05:00",
+    "finished_at": "2026-11-19T04:26:28-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/19/rollout-2026-11-19T04-13-03-01a1f314-b6c0-7062-b2e3-8ea10d13985b.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 110000000000.0,
+     "poisson_ratio": 0.34,
+     "density": 4430.0,
+     "held": [
+      {
+       "name": "plate_bottom",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "plate_top_load",
+       "traction": [
+        0.0,
+        -178862.05766105614,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": null,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-19-04-25-10/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 559.0,
+      "geometry_drawing": 25.5,
+      "geometry_generation": 19.2,
+      "geometry_revision": 0.0,
+      "geometry_built": 30.7,
+      "setup_scale": 4.1,
+      "setup_segmentation": 20.7,
+      "setup_regions": 12.4,
+      "setup_values_material": 0.3,
+      "paint": 28.3,
+      "solve": 12.9,
+      "solve_after": 3.3,
+      "overhead_startup": 41.8,
+      "overhead_between": 12.9,
+      "overhead_stop": 30.5,
+      "overhead_commands": 3.5
+     },
+     "groups": {
+      "agent": 559.0,
+      "workflow": 141.2,
+      "solver": 16.2,
+      "overhead": 88.6
+     },
+     "wall_clock_s": 804.977,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/19/rollout-2026-11-19T04-13-03-01a1f314-b6c0-7062-b2e3-8ea10d13985b.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [
+    "materials/texture/textured.glb: near-uniform colour (spread 0.013)"
+   ],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Built (bars)",
+   "surface": {
+    "vertices": 39478,
+    "faces": 78952
+   },
+   "extent": 0.0746268630027771,
+   "dims": [
+    0.0746268630027771,
+    0.04975124076008797,
+    0.05970148742198944
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.787,
+     0.783,
+     0.771
+    ],
+    "rgb_spread": 0.01331456306213043,
+    "near_uniform": true
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "plate_bottom",
+      "category": "dirichlet",
+      "faces": 25098,
+      "mean_normal": [
+       0.008,
+       -1.0,
+       -0.007
+      ],
+      "area": 0.004549445032036698,
+      "proj_area": 2.4562478087687447e-05,
+      "facing_camera": 0.010736882166093602,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.5511811023622047,
+       "gap": 0.0002985074520111084,
+       "tube_radius": 0.00044776117801666263,
+       "why": "faces the camera at 1.1% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "plate_top_load",
+      "category": "neumann",
+      "faces": 22114,
+      "mean_normal": [
+       0.0,
+       1.0,
+       0.0
+      ],
+      "area": 0.004112100462322597,
+      "proj_area": 0.0020560502311612982,
+      "facing_camera": 1.0,
+      "unoccluded_facing": 0.8762946980517576
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 5.662927063105076e-05,
+     "surface_watertight": true,
+     "density": 4430.0,
+     "mass": 0.2508676688955549,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.2508676688955549,
+     "weight_N": 2.460171425174593,
+     "real_mass_kg": 0.4,
+     "real_weight_N": 3.92266,
+     "weight_over_real_weight": 0.6271691722388871,
+     "projected_fraction": 0.8660254037844386
+    },
+    "surface_proj_area": 0.003716795207622459,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "plate_top_load",
+      "traction": [
+       0.0,
+       -178862.05766105614,
+       0.0
+      ],
+      "tail": [
+       0.06235699728131294,
+       0.02368159131705761,
+       0.021106307084361713
+      ],
+      "tip": [
+       0.06235699728131294,
+       0.010248755976557732,
+       0.021106307084361713
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "plate_top_load",
+      "traction": [
+       0.0,
+       -178862.05766105614,
+       0.0
+      ],
+      "tail": [
+       0.05362753321727117,
+       0.02368159131705761,
+       0.04466129963596662
+      ],
+      "tip": [
+       0.05362753321727117,
+       0.010248755976557732,
+       0.04466129963596662
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "plate_top_load",
+      "traction": [
+       0.0,
+       -178862.05766105614,
+       0.0
+      ],
+      "tail": [
+       0.018668288985888164,
+       0.02368159131705761,
+       0.015200471505522728
+      ],
+      "tip": [
+       0.018668288985888164,
+       0.010248755976557732,
+       0.015200471505522728
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "plate_top_load",
+      "traction": [
+       0.0,
+       -178862.05766105614,
+       0.0
+      ],
+      "tail": [
+       0.014114699947337309,
+       0.02368159131705761,
+       0.042285479605197906
+      ],
+      "tip": [
+       0.014114699947337309,
+       0.010248755976557732,
+       0.042285479605197906
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-19-04-25-10",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-19-04-25-10/vtu/solution_t0000.vtu",
+    "nodes": 59688,
+    "hexes": 48699,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 9.31322572880755e-10,
+    "outside_points": 0,
+    "umax_surface": 2.1080121819699763e-08,
+    "umax_nodes": 2.3167339731288274e-08,
+    "umax_workflow_export": 2.0382090681891896e-08,
+    "ratio_to_workflow_export": 1.0342472785889438,
+    "umax_surface_m": 2.1080121819699763e-08
+   },
+   "scale": {
+    "factor": 500000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 1103910.3078856245,
+     "reach": 0.3,
+     "physical_extent": 0.075,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.14123682124301076,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.001160020353935235
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    110000000000.0,
+    110000000000.0
+   ],
+   "E_surface_Pa": [
+    110000000000.0,
+    110000000000.0
+   ],
+   "view": {
+    "dir": [
+     0.3872983346207417,
+     0.49999999999999994,
+     0.7745966692414834
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 30.0,
+    "governing_load_dir": [
+     0.0,
+     -178862.05766105614,
+     0.0
+    ],
+    "line_of_sight_deg": 60.0,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 1.1884,
+    "visible_area_over_R2": 2.2127,
+    "panel_fill": 0.512,
+    "height_shown": 1.0,
+    "shows": 0.873,
+    "paper_view_shows": 0.852,
+    "turn_from_paper_deg": 9.6,
+    "why": "paper view preferred (shows 97% of the best); the view nearest it within 95% of the best; after 1 preferred view(s) predicted to fail the compose's print checks",
+    "worst_load_shown_fraction_of_its_best": 0.9607437868384056,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 2,
+     "rejected": [
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.968,
+       "misses": [
+        "label 'Body load 2.5 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.65,
+        "regions": {
+         "plate_bottom": 6.41,
+         "plate_top_load": 111.0
+        },
+        "corners": {
+         "Built (bars)": "tr",
+         "20 mm": "bl",
+         "Body load 2.5 N": null,
+         "\u00d7500,000": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": {
+      "preview_px_per_mm": 10.3,
+      "regions": {
+       "plate_bottom": 5.45,
+       "plate_top_load": 132.4
+      },
+      "corners": {
+       "Built (bars)": "tr",
+       "20 mm": "bl",
+       "Body load 2.5 N": "br",
+       "\u00d7500,000": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca knee implant\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.0003059701383113861,
+    "key_light_ray": [
+     -0.2236,
+     -0.866,
+     -0.4472
+    ],
+    "grid": {
+     "cell": 0.02,
+     "rings": 9,
+     "reach": 0.18
+    }
+   },
+   "panels": [
+    "ar_1_arrows.vtk",
+    "ar_1_bc.vtk",
+    "ar_1_fit.vtk",
+    "ar_1_grid.vtk",
+    "ar_1_materials.vtk",
+    "ar_1_painted.vtk",
+    "ar_1_shadow.vtk",
+    "ar_1_shadow_def.vtk",
+    "ar_1_solve.vtk",
+    "ar_1_support.vtk"
+   ]
+  },
+  {
+   "index": 2,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek/walking-cane-with-a-rubber-tip-20261119-042628/workflow/7496ab033876",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "walking-cane-with-a-rubber-tip-20261119-042628",
+    "instruction": "a walking cane with a rubber tip",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "7496ab033876",
+    "session_ids": [
+     "7496ab033876"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f321-0139-7022-b4da-812337845f4c",
+    "input_tokens": 131992,
+    "cache_read_input_tokens": 4269952,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 98333,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 4401944,
+     "cached_input_tokens": 4269952,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 98333,
+     "reasoning_output_tokens": 87815
+    },
+    "thinking_tokens": 87815,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 50,
+     "view_image": 13
+    },
+    "images_viewed": 13,
+    "cost_usd": 0.183217,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 840.375,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 13,
+     "judge": 1
+    },
+    "runner_runs": 13,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a walking cane with a rubber tip",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-19T04:26:28-05:00",
+    "finished_at": "2026-11-19T04:40:29-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/19/rollout-2026-11-19T04-26-28-01a1f321-0139-7022-b4da-812337845f4c.jsonl",
+    "case": {
+     "material_mode": "parts",
+     "parts": [
+      {
+       "density": 675.0,
+       "id": 0,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 13000000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 1,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 13000000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 2,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 13000000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 3,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 13000000000.0
+      },
+      {
+       "density": 675.0,
+       "id": 4,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 13000000000.0
+      },
+      {
+       "density": 1100.0,
+       "id": 5,
+       "poisson_ratio": 0.45,
+       "youngs_modulus": 130000000.0
+      }
+     ],
+     "youngs_modulus_range": [
+      130000000.0,
+      12999999488.0
+     ],
+     "youngs_modulus_contrast": 100.0,
+     "held": [
+      {
+       "name": "ground_contact",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      },
+      {
+       "name": "hand_grip",
+       "components": [
+        0,
+        1
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "end_load",
+       "traction": [
+        0.0,
+        0.0,
+        -268396.8810868098
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -0.0,
+       -9.80665
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "parts_montage": "materials/parts/montage.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-19-04-38-58/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 764.5,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 2.6,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.1,
+      "setup_segmentation": 5.1,
+      "setup_regions": 2.3,
+      "setup_values_material": 4.6,
+      "paint": 0.7,
+      "solve": 13.3,
+      "solve_after": 5.9,
+      "overhead_startup": 22.8,
+      "overhead_between": 6.2,
+      "overhead_stop": 7.1,
+      "overhead_commands": 3.0
+     },
+     "groups": {
+      "agent": 764.5,
+      "workflow": 17.4,
+      "solver": 19.2,
+      "overhead": 39.2
+     },
+     "wall_clock_s": 840.375,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/19/rollout-2026-11-19T04-26-28-01a1f321-0139-7022-b4da-812337845f4c.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 1590,
+    "faces": 3176
+   },
+   "extent": 0.9595959554426372,
+   "dims": [
+    0.03905177069827914,
+    0.040542516857385635,
+    0.9595959554426372
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.678,
+     0.448,
+     0.287
+    ],
+    "rgb_spread": 0.02770718999756635,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "ground_contact",
+      "category": "dirichlet",
+      "faces": 28,
+      "mean_normal": [
+       -0.013,
+       -0.126,
+       -0.992
+      ],
+      "area": 0.0004043637378377347,
+      "proj_area": 0.0,
+      "facing_camera": 0.0,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.8666666666666667,
+       "gap": 0.003838383821770549,
+       "tube_radius": 0.005757575732655823,
+       "why": "faces the camera at 0.0% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_1",
+      "name": "hand_grip",
+      "category": "dirichlet",
+      "faces": 611,
+      "mean_normal": [
+       0.074,
+       0.014,
+       -0.997
+      ],
+      "area": 0.013799439334540437,
+      "proj_area": 0.002732757642782,
+      "facing_camera": 0.4936388181225254,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.8709677419354839,
+       "gap": 0.003838383821770549,
+       "tube_radius": 0.005757575732655823,
+       "why": "faces the camera at 49.4% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_2",
+      "name": "end_load",
+      "category": "neumann",
+      "faces": 29,
+      "mean_normal": [
+       -0.009,
+       -0.002,
+       1.0
+      ],
+      "area": 0.0008104003659832942,
+      "proj_area": 0.0005385596533188965,
+      "facing_camera": 1.0,
+      "unoccluded_facing": 1.0
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -0.0,
+      -9.80665
+     ],
+     "dir": [
+      0.0,
+      -0.0,
+      -1.0
+     ],
+     "g": 1.0,
+     "volume": 0.0003946022359844303,
+     "surface_watertight": true,
+     "density": 699.8780517578125,
+     "mass": 0.2761734441400597,
+     "weight_method": "volume of geometry/physical.glb x mean density of the material field (materials/parts/field/manifest.json) x |loads.acceleration|",
+     "mass_kg": 0.2761734441400597,
+     "weight_N": 2.708336305976116,
+     "real_mass_kg": 0.4,
+     "real_weight_N": 3.92266,
+     "weight_over_real_weight": 0.6904336103501492,
+     "projected_fraction": 0.6233120462204417
+    },
+    "surface_proj_area": 0.01406456579250844,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "end_load",
+      "traction": [
+       0.0,
+       0.0,
+       -268396.8810868098
+      ],
+      "tail": [
+       0.011290541558242629,
+       0.017831683654668862,
+       1.1294174301376543
+      ],
+      "tip": [
+       0.011290541558242629,
+       0.017831683654668862,
+       0.9566901581579795
+      ],
+      "projected_fraction": 0.6233120462204417,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "parts",
+   "solve": {
+    "run": "api_fem_forward-2026-11-19-04-38-58",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-19-04-38-58/vtu/solution_t0000.vtu",
+    "nodes": 7848,
+    "hexes": 5661,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 2.221800888627857e-16,
+    "outside_points": 0,
+    "umax_surface": 0.0001038002377854612,
+    "umax_nodes": 0.00010389302873090854,
+    "umax_workflow_export": 0.00010379453306086361,
+    "ratio_to_workflow_export": 1.0000549617058756,
+    "umax_surface_m": 0.0001038002377854612
+   },
+   "scale": {
+    "factor": 1000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 2745.809356191044,
+     "reach": 0.3,
+     "physical_extent": 0.95,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.10817077458145474,
+    "standing_on_support": false,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0016643553545788068
+   },
+   "E_source": "solve VTU youngs_modulus",
+   "E_nodes": [
+    130000000.0,
+    12999999488.0
+   ],
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    129999999.99999997,
+    12999999488.000004
+   ],
+   "E_surface_Pa": [
+    129999999.99999997,
+    12999999488.000004
+   ],
+   "view": {
+    "dir": [
+     -0.5163009659600871,
+     0.3492151478847891,
+     0.7819732048072273
+    ],
+    "azimuth_deg": 300,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     0.0,
+     -268396.8810868098
+    ],
+    "line_of_sight_deg": 38.6,
+    "axis_off_deg": 33.4,
+    "silhouette_area_over_R2": 0.0605,
+    "visible_area_over_R2": 0.1463,
+    "panel_fill": 0.067,
+    "height_shown": 1.0,
+    "shows": 0.673,
+    "paper_view_shows": 0.664,
+    "turn_from_paper_deg": 55.9,
+    "why": "paper view excluded (within 35 deg of the governing load); a passing view at 88% of the best; after 15 preferred view(s) predicted to fail the compose's print checks",
+    "worst_load_shown_fraction_of_its_best": 1.0,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 16,
+     "rejected": [
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.988,
+       "misses": [
+        "'end_load' 0.12 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.33,
+        "regions": {
+         "ground_contact": 2.36,
+         "hand_grip": 6.19,
+         "end_load": 0.12
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tl"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.996,
+       "misses": [
+        "'end_load' 0.04 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.31,
+        "regions": {
+         "ground_contact": 2.42,
+         "hand_grip": 6.15,
+         "end_load": 0.04
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 30.0,
+       "shows_over_best": 1.0,
+       "misses": [
+        "'end_load' 0.01 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.77,
+        "regions": {
+         "ground_contact": 1.93,
+         "hand_grip": 5.58,
+         "end_load": 0.01
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "tr",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.947,
+       "misses": [
+        "'end_load' 0.07 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.28,
+        "regions": {
+         "ground_contact": 2.5,
+         "hand_grip": 6.32,
+         "end_load": 0.07
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.946,
+       "misses": [
+        "'end_load' 0.01 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.74,
+        "regions": {
+         "ground_contact": 1.98,
+         "hand_grip": 5.58,
+         "end_load": 0.01
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "tr",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "tr",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.943,
+       "misses": [
+        "'end_load' 0.01 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.28,
+        "regions": {
+         "ground_contact": 2.4,
+         "hand_grip": 6.22,
+         "end_load": 0.01
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 30,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.941,
+       "misses": [
+        "'end_load' 0.09 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.31,
+        "regions": {
+         "ground_contact": 2.37,
+         "hand_grip": 6.25,
+         "end_load": 0.09
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.932,
+       "misses": [
+        "'end_load' 0.21 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 7.52,
+        "regions": {
+         "ground_contact": 2.47,
+         "hand_grip": 7.46,
+         "end_load": 0.21
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "tr",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.929,
+       "misses": [
+        "'end_load' 0.28 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 6.76,
+        "regions": {
+         "ground_contact": 3.48,
+         "hand_grip": 9.14,
+         "end_load": 0.28
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tl"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.927,
+       "misses": [
+        "'end_load' 0.08 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 7.53,
+        "regions": {
+         "ground_contact": 2.44,
+         "hand_grip": 7.38,
+         "end_load": 0.08
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "tr",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.92,
+       "misses": [
+        "'end_load' 0.15 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 7.49,
+        "regions": {
+         "ground_contact": 2.38,
+         "hand_grip": 7.55,
+         "end_load": 0.15
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "tr",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.92,
+       "misses": [
+        "'end_load' 0.01 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.78,
+        "regions": {
+         "ground_contact": 1.9,
+         "hand_grip": 5.54,
+         "end_load": 0.01
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "tr",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 40.0,
+       "shows_over_best": 0.891,
+       "misses": [
+        "'end_load' 0.00 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.74,
+        "regions": {
+         "ground_contact": 1.9,
+         "hand_grip": 5.46,
+         "end_load": 0.0
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "tr",
+         "\u00d71000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 50.0,
+       "shows_over_best": 0.888,
+       "misses": [
+        "'end_load' 0.05 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.72,
+        "regions": {
+         "ground_contact": 1.7,
+         "hand_grip": 4.59,
+         "end_load": 0.05
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tl"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.884,
+       "misses": [
+        "'end_load' 0.32 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 6.74,
+        "regions": {
+         "ground_contact": 3.55,
+         "hand_grip": 9.0,
+         "end_load": 0.32
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 2.7 N": "br",
+         "\u00d71000": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": {
+      "preview_px_per_mm": 5.75,
+      "regions": {
+       "ground_contact": 4.16,
+       "hand_grip": 11.52,
+       "end_load": 0.67
+      },
+      "corners": {
+       "Text \u2192 TripoSG": "br",
+       "0.2 m": "bl",
+       "Body load 2.7 N": "tr",
+       "\u00d71000": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca walking cane",
+     "with a rubber tip\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.027963421230658873,
+    "key_light_ray": [
+     0.3509,
+     -0.771,
+     -0.5315
+    ],
+    "grid": {
+     "cell": 0.2,
+     "rings": 11,
+     "reach": 2.2
+    }
+   },
+   "panels": [
+    "ar_2_arrows.vtk",
+    "ar_2_bc.vtk",
+    "ar_2_fit.vtk",
+    "ar_2_grid.vtk",
+    "ar_2_materials.vtk",
+    "ar_2_painted.vtk",
+    "ar_2_shadow.vtk",
+    "ar_2_shadow_def.vtk",
+    "ar_2_solve.vtk",
+    "ar_2_support.vtk"
+   ]
+  },
+  {
+   "index": 3,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek/human-femur-20261119-044029/workflow/5c2cf66635c9",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "human-femur-20261119-044029",
+    "instruction": "a human femur",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "5c2cf66635c9",
+    "session_ids": [
+     "5c2cf66635c9"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f32d-d772-7ee0-aae5-d591daf9f0b5",
+    "input_tokens": 78538,
+    "cache_read_input_tokens": 1363968,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 37249,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 1442506,
+     "cached_input_tokens": 1363968,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 37249,
+     "reasoning_output_tokens": 29934
+    },
+    "thinking_tokens": 29934,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 39,
+     "view_image": 7
+    },
+    "images_viewed": 7,
+    "cost_usd": 0.076444,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 354.132,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 6,
+     "judge": 2
+    },
+    "runner_runs": 6,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a human femur",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-19T04:40:29-05:00",
+    "finished_at": "2026-11-19T04:46:23-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/19/rollout-2026-11-19T04-40-30-01a1f32d-d772-7ee0-aae5-d591daf9f0b5.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 18000000000.0,
+     "poisson_ratio": 0.3,
+     "density": 1900.0,
+     "held": [
+      {
+       "name": "distal_condyles_rest",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "femoral_head_superior",
+       "traction": [
+        0.0,
+        -4298518.78164049,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 1,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-19-04-44-31/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 295.1,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 4.4,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 1.9,
+      "setup_segmentation": 5.7,
+      "setup_regions": 1.7,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 8.8,
+      "solve_after": 1.8,
+      "overhead_startup": 9.3,
+      "overhead_between": 2.2,
+      "overhead_stop": 18.8,
+      "overhead_commands": 4.2
+     },
+     "groups": {
+      "agent": 295.1,
+      "workflow": 14.0,
+      "solver": 10.6,
+      "overhead": 34.4
+     },
+     "wall_clock_s": 354.132,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/19/rollout-2026-11-19T04-40-30-01a1f32d-d772-7ee0-aae5-d591daf9f0b5.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 3089,
+    "faces": 6174
+   },
+   "extent": 0.4545454438775778,
+   "dims": [
+    0.042450467590242624,
+    0.4545454438775778,
+    0.05523829103913158
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.819,
+     0.745,
+     0.618
+    ],
+    "rgb_spread": 0.09355753699654816,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "distal_condyles_rest",
+      "category": "dirichlet",
+      "faces": 1146,
+      "mean_normal": [
+       -0.007,
+       -0.954,
+       -0.3
+      ],
+      "area": 0.005303287736521636,
+      "proj_area": 0.0012217245331322159,
+      "facing_camera": 0.43599926622810753,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.7333333333333333,
+       "gap": 0.0018181817755103112,
+       "tube_radius": 0.0027272726632654666,
+       "why": "faces the camera at 43.6% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "femoral_head_superior",
+      "category": "neumann",
+      "faces": 83,
+      "mean_normal": [
+       0.086,
+       0.996,
+       -0.032
+      ],
+      "area": 0.0004573148116136388,
+      "proj_area": 0.0001752794357683533,
+      "facing_camera": 0.9666606369324627,
+      "unoccluded_facing": 0.9666606369324627
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 0.0001573416220603705,
+     "surface_watertight": true,
+     "density": 1900.0,
+     "mass": 0.29894908191470393,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.29894908191470393,
+     "weight_N": 2.931689014158831,
+     "real_mass_kg": 1.0,
+     "real_weight_N": 9.80665,
+     "weight_over_real_weight": 0.29894908191470393,
+     "projected_fraction": 0.8660254037844386
+    },
+    "surface_proj_area": 0.00862224706366261,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "femoral_head_superior",
+      "traction": [
+       0.0,
+       -4298518.78164049,
+       0.0
+      ],
+      "tail": [
+       0.021645241442538987,
+       0.5357458828500354,
+       0.018608313525309644
+      ],
+      "tip": [
+       0.021645241442538987,
+       0.45392770295207147,
+       0.018608313525309644
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-19-04-44-31",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-19-04-44-31/vtu/solution_t0000.vtu",
+    "nodes": 4079,
+    "hexes": 2824,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 1.119400808498433e-16,
+    "outside_points": 0,
+    "umax_surface": 0.057770870946867656,
+    "umax_nodes": 0.06319271957042208,
+    "umax_workflow_export": 0.057744644582271576,
+    "ratio_to_workflow_export": 1.0004541783014824,
+    "umax_surface_m": 0.057770870946867656
+   },
+   "scale": {
+    "factor": 1.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 2.3378791397297287,
+     "reach": 0.3,
+     "physical_extent": 0.45,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.12709591906596476,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 2.391311944211651e-12
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    18000000000.0,
+    18000000000.0
+   ],
+   "E_surface_Pa": [
+    18000000000.0,
+    18000000000.0
+   ],
+   "view": {
+    "dir": [
+     -0.6479627426415033,
+     0.49999999999999994,
+     0.5745818341615936
+    ],
+    "azimuth_deg": 285,
+    "elevation_deg": 30.0,
+    "governing_load_dir": [
+     0.0,
+     -4298518.78164049,
+     0.0
+    ],
+    "line_of_sight_deg": 60.0,
+    "axis_off_deg": 25.3,
+    "silhouette_area_over_R2": 0.1663,
+    "visible_area_over_R2": 0.2936,
+    "panel_fill": 0.038,
+    "height_shown": 1.0,
+    "shows": 0.827,
+    "paper_view_shows": 0.831,
+    "turn_from_paper_deg": 67.4,
+    "why": "paper view preferred (shows 96% of the best); the view nearest it within 95% of the best; after 2 preferred view(s) predicted to fail the compose's print checks",
+    "worst_load_shown_fraction_of_its_best": 0.8753108198616676,
+    "worst_support_shown_fraction_of_its_best": 0.8610168634051213,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 3,
+     "rejected": [
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.964,
+       "misses": [
+        "'femoral_head_superior' 0.17 mm2 (floor 0.25)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 14.64,
+        "regions": {
+         "distal_condyles_rest": 1.85,
+         "femoral_head_superior": 0.17
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.1 m": "bl",
+         "Body load 2.9 N": "br",
+         "\u00d71": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.969,
+       "misses": [
+        "'femoral_head_superior' 0.19 mm2 (floor 0.25)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 14.54,
+        "regions": {
+         "distal_condyles_rest": 1.82,
+         "femoral_head_superior": 0.19
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.1 m": "bl",
+         "Body load 2.9 N": "br",
+         "\u00d71": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": {
+      "preview_px_per_mm": 13.78,
+      "regions": {
+       "distal_condyles_rest": 1.9,
+       "femoral_head_superior": 0.26
+      },
+      "corners": {
+       "Text \u2192 TripoSG": "br",
+       "0.1 m": "bl",
+       "Body load 2.9 N": "br",
+       "\u00d71": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca human femur\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.015499552665995592,
+    "key_light_ray": [
+     0.3741,
+     -0.866,
+     -0.3317
+    ],
+    "grid": {
+     "cell": 0.1,
+     "rings": 10,
+     "reach": 1.0
+    }
+   },
+   "panels": [
+    "ar_3_arrows.vtk",
+    "ar_3_bc.vtk",
+    "ar_3_fit.vtk",
+    "ar_3_grid.vtk",
+    "ar_3_materials.vtk",
+    "ar_3_painted.vtk",
+    "ar_3_shadow.vtk",
+    "ar_3_shadow_def.vtk",
+    "ar_3_solve.vtk",
+    "ar_3_support.vtk"
+   ]
+  },
+  {
+   "index": 4,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek/lumbar-vertebra-20261119-044624/workflow/e66be1f0b63c",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "lumbar-vertebra-20261119-044624",
+    "instruction": "a lumbar vertebra",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "e66be1f0b63c",
+    "session_ids": [
+     "e66be1f0b63c"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f333-3ee6-7132-bb91-ceb8b9040fdc",
+    "input_tokens": 128350,
+    "cache_read_input_tokens": 3394048,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 55382,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 3522398,
+     "cached_input_tokens": 3394048,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 55382,
+     "reasoning_output_tokens": 42664
+    },
+    "thinking_tokens": 42664,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 59,
+     "view_image": 11,
+     "write_stdin": 1
+    },
+    "images_viewed": 11,
+    "cost_usd": 0.125328,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 688.601,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 16,
+     "judge": 2
+    },
+    "runner_runs": 16,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a lumbar vertebra",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-19T04:46:24-05:00",
+    "finished_at": "2026-11-19T04:57:52-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/19/rollout-2026-11-19T04-46-24-01a1f333-3ee6-7132-bb91-ceb8b9040fdc.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 500000000.0,
+     "poisson_ratio": 0.3,
+     "density": 1400.0,
+     "held": [
+      {
+       "name": "inferior_endplate",
+       "components": [
+        1
+       ]
+      },
+      {
+       "name": "left_facet",
+       "components": [
+        0,
+        2
+       ]
+      },
+      {
+       "name": "right_facet",
+       "components": [
+        0,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "superior_endplate",
+       "traction": [
+        0.0,
+        -939364.0994050759,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -1.70967,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 1,
+      "image": 0,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-19-04-56-06/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 467.6,
+      "geometry_drawing": 12.8,
+      "geometry_generation": 85.3,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.2,
+      "setup_segmentation": 8.2,
+      "setup_regions": 13.7,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 18.5,
+      "solve_after": 3.5,
+      "overhead_startup": 27.5,
+      "overhead_between": 3.5,
+      "overhead_stop": 41.1,
+      "overhead_commands": 4.4
+     },
+     "groups": {
+      "agent": 467.6,
+      "workflow": 122.5,
+      "solver": 22.0,
+      "overhead": 76.5
+     },
+     "wall_clock_s": 688.601,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/19/rollout-2026-11-19T04-46-24-01a1f333-3ee6-7132-bb91-ceb8b9040fdc.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "SDXL \u2192 Hunyuan3D",
+   "surface": {
+    "vertices": 19958,
+    "faces": 40000
+   },
+   "extent": 0.08080808361410163,
+   "dims": [
+    0.07565276240347885,
+    0.08080808361410163,
+    0.06024806384812109
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.642,
+     0.523,
+     0.392
+    ],
+    "rgb_spread": 0.1576419783662121,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "inferior_endplate",
+      "category": "dirichlet",
+      "faces": 218,
+      "mean_normal": [
+       -0.033,
+       -0.998,
+       0.044
+      ],
+      "area": 0.0001782806348064706,
+      "proj_area": 2.1823196404479393e-06,
+      "facing_camera": 0.024244457743039627,
+      "support_seen_through": true,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.24489795918367346,
+       "gap": 0.00032323233445640654,
+       "tube_radius": 0.00048484850168460983,
+       "why": "faces the camera at 2.4% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_1",
+      "name": "left_facet",
+      "category": "dirichlet",
+      "faces": 42,
+      "mean_normal": [
+       -0.988,
+       0.095,
+       -0.124
+      ],
+      "area": 2.1049756941001213e-05,
+      "proj_area": 0.0,
+      "facing_camera": 0.0,
+      "support_seen_through": true,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.0,
+       "gap": 0.00032323233445640654,
+       "tube_radius": 0.00048484850168460983,
+       "why": "faces the camera at 0.0% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_2",
+      "name": "right_facet",
+      "category": "dirichlet",
+      "faces": 165,
+      "mean_normal": [
+       0.822,
+       -0.446,
+       -0.355
+      ],
+      "area": 0.0001131453905928045,
+      "proj_area": 4.207447781392263e-05,
+      "facing_camera": 0.8667483227921159
+     },
+     {
+      "key": "neumann_3",
+      "name": "superior_endplate",
+      "category": "neumann",
+      "faces": 1390,
+      "mean_normal": [
+       -0.01,
+       1.0,
+       -0.014
+      ],
+      "area": 0.0011191944885380607,
+      "proj_area": 0.000499115304439558,
+      "facing_camera": 0.9792638963167632,
+      "unoccluded_facing": 0.9194590361024868
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -1.70967,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 0.17433782178419746,
+     "volume": 0.00010245627754883793,
+     "surface_watertight": true,
+     "density": 1400.0,
+     "mass": 0.1434387885683731,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.1434387885683731,
+     "weight_N": 0.24523299365169046,
+     "real_mass_kg": 0.025,
+     "real_weight_N": 0.24516625,
+     "weight_over_real_weight": 1.0002722383349685,
+     "projected_fraction": 0.8660254037844386
+    },
+    "surface_proj_area": 0.007413394341595464,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "superior_endplate",
+      "traction": [
+       0.0,
+       -939364.0994050759,
+       0.0
+      ],
+      "tail": [
+       0.03294890005483753,
+       0.08961578456646142,
+       0.03499195666786437
+      ],
+      "tip": [
+       0.03294890005483753,
+       0.07507032951592313,
+       0.03499195666786437
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "superior_endplate",
+      "traction": [
+       0.0,
+       -939364.0994050759,
+       0.0
+      ],
+      "tail": [
+       0.04683317620319456,
+       0.08411494412951774,
+       0.05001290425242718
+      ],
+      "tip": [
+       0.04683317620319456,
+       0.06956948907897945,
+       0.05001290425242718
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-19-04-56-06",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-19-04-56-06/vtu/solution_t0000.vtu",
+    "nodes": 97198,
+    "hexes": 80028,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 2.943923360032078e-17,
+    "outside_points": 0,
+    "umax_surface": 0.0026252632253270353,
+    "umax_nodes": 0.0028561373495671256,
+    "umax_workflow_export": 0.0026182110887020826,
+    "ratio_to_workflow_export": 1.0026934942928718,
+    "umax_surface_m": 0.0026252632253270353
+   },
+   "scale": {
+    "factor": 3.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 9.166564187113517,
+     "reach": 0.3,
+     "physical_extent": 0.08,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.09746289385591517,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    500000000.0,
+    500000000.0
+   ],
+   "E_surface_Pa": [
+    500000000.0,
+    500000000.0
+   ],
+   "view": {
+    "dir": [
+     0.7745966692414834,
+     0.49999999999999994,
+     -0.38729833462074165
+    ],
+    "azimuth_deg": 90,
+    "elevation_deg": 30.0,
+    "governing_load_dir": [
+     0.0,
+     -939364.0994050759,
+     0.0
+    ],
+    "line_of_sight_deg": 60.0,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 1.1194,
+    "visible_area_over_R2": 1.8874,
+    "panel_fill": 0.415,
+    "height_shown": 1.0,
+    "shows": 0.842,
+    "paper_view_shows": 0.91,
+    "turn_from_paper_deg": 79.9,
+    "why": "paper view preferred (shows 96% of the best); a passing view at 89% of the best; after 12 preferred view(s) predicted to fail the compose's print checks",
+    "worst_load_shown_fraction_of_its_best": 0.7836560673425665,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 13,
+     "rejected": [
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.962,
+       "misses": [
+        "label 'Body load 0.25 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.82,
+        "regions": {
+         "inferior_endplate": 3.23,
+         "left_facet": 1.39,
+         "right_facet": 1.48,
+         "superior_endplate": 12.55
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": "tr",
+         "20 mm": "bl",
+         "Body load 0.25 N": null,
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.984,
+       "misses": [
+        "'left_facet' 0.00 mm2 (floor 0.25)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.35,
+        "regions": {
+         "inferior_endplate": 3.04,
+         "left_facet": 0.0,
+         "right_facet": 3.48,
+         "superior_endplate": 15.06
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": "tr",
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.977,
+       "misses": [
+        "label 'SDXL \u2192 Hunyuan3D' on the object (br/tr)",
+        "label 'Body load 0.25 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 12.11,
+        "regions": {
+         "inferior_endplate": 0.78,
+         "left_facet": 1.14,
+         "right_facet": 1.06,
+         "superior_endplate": 8.46
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": null,
+         "20 mm": "bl",
+         "Body load 0.25 N": null,
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.956,
+       "misses": [
+        "'left_facet' 0.00 mm2 (floor 0.25)",
+        "label 'SDXL \u2192 Hunyuan3D' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.59,
+        "regions": {
+         "inferior_endplate": 0.81,
+         "left_facet": 0.0,
+         "right_facet": 2.25,
+         "superior_endplate": 12.41
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": null,
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 20.4,
+       "shows_over_best": 1.0,
+       "misses": [
+        "'left_facet' 0.00 mm2 (floor 0.25)",
+        "label 'SDXL \u2192 Hunyuan3D' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.68,
+        "regions": {
+         "inferior_endplate": 0.99,
+         "left_facet": 0.0,
+         "right_facet": 2.3,
+         "superior_endplate": 11.43
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": null,
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 180,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.943,
+       "misses": [
+        "'left_facet' 0.00 mm2 (floor 0.25)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.59,
+        "regions": {
+         "inferior_endplate": 0.89,
+         "left_facet": 0.0,
+         "right_facet": 2.34,
+         "superior_endplate": 17.07
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": "br",
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 270,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.942,
+       "misses": [
+        "'left_facet' 0.05 mm2 (floor 0.25)",
+        "label 'SDXL \u2192 Hunyuan3D' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.97,
+        "regions": {
+         "inferior_endplate": 3.17,
+         "left_facet": 0.05,
+         "right_facet": 3.65,
+         "superior_endplate": 16.98
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": null,
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.929,
+       "misses": [
+        "label 'SDXL \u2192 Hunyuan3D' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.92,
+        "regions": {
+         "inferior_endplate": 0.58,
+         "left_facet": 1.28,
+         "right_facet": 1.3,
+         "superior_endplate": 9.67
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": null,
+         "20 mm": "bl",
+         "Body load 0.25 N": "tr",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.919,
+       "misses": [
+        "'right_facet' 0.45 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 12.02,
+        "regions": {
+         "inferior_endplate": 0.72,
+         "left_facet": 1.11,
+         "right_facet": 0.45,
+         "superior_endplate": 13.16
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": "br",
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 285,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.913,
+       "misses": [
+        "'left_facet' 0.00 mm2 (floor 0.25)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.25,
+        "regions": {
+         "inferior_endplate": 3.08,
+         "left_facet": 0.0,
+         "right_facet": 3.59,
+         "superior_endplate": 23.4
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": "tr",
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.902,
+       "misses": [
+        "label 'Body load 0.25 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.01,
+        "regions": {
+         "inferior_endplate": 2.99,
+         "left_facet": 1.5,
+         "right_facet": 0.74,
+         "superior_endplate": 12.19
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": "tr",
+         "20 mm": "bl",
+         "Body load 0.25 N": null,
+         "\u00d73": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 195,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.9,
+       "misses": [
+        "'left_facet' 0.00 mm2 (floor 0.25)",
+        "label 'SDXL \u2192 Hunyuan3D' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.44,
+        "regions": {
+         "inferior_endplate": 0.73,
+         "left_facet": 0.0,
+         "right_facet": 2.5,
+         "superior_endplate": 18.31
+        },
+        "corners": {
+         "SDXL \u2192 Hunyuan3D": null,
+         "20 mm": "bl",
+         "Body load 0.25 N": "br",
+         "\u00d73": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": {
+      "preview_px_per_mm": 11.78,
+      "regions": {
+       "inferior_endplate": 3.0,
+       "left_facet": 1.24,
+       "right_facet": 0.86,
+       "superior_endplate": 14.85
+      },
+      "corners": {
+       "SDXL \u2192 Hunyuan3D": "br",
+       "20 mm": "bl",
+       "Body load 0.25 N": "br",
+       "\u00d73": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca lumbar vertebra\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.0004121212248312077,
+    "key_light_ray": [
+     -0.4472,
+     -0.866,
+     0.2236
+    ],
+    "grid": {
+     "cell": 0.02,
+     "rings": 9,
+     "reach": 0.18
+    }
+   },
+   "panels": [
+    "ar_4_arrows.vtk",
+    "ar_4_bc.vtk",
+    "ar_4_fit.vtk",
+    "ar_4_grid.vtk",
+    "ar_4_materials.vtk",
+    "ar_4_painted.vtk",
+    "ar_4_shadow.vtk",
+    "ar_4_shadow_def.vtk",
+    "ar_4_solve.vtk",
+    "ar_4_support_hidden.vtk"
+   ]
+  }
+ ]
+}

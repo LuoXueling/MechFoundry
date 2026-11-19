@@ -2,9 +2,9 @@
 
 You are an independent evaluator. Coding agents each received a one-line instruction naming an
 everyday object ("a hamburger", "a car brake disc", ...) and, by driving an FEM workflow, produced
-one linear-elastic simulation of it: a 3-D body, supports and loads, and materials. Three agents
-(labelled **A**, **B**, **C**; the labels are deliberately anonymous) each ran the same 50
-instructions, so there are 150 simulations. Rate each one on three categories:
+one linear-elastic simulation of it: a 3-D body, supports and loads, and materials. {N_AGENTS} agents
+(labelled {LABELS}; the labels are deliberately anonymous) each ran the same {N_OBJECTS}
+instructions, so there are {N_SIMULATIONS} simulations. Rate each one on three categories:
 **geometry**, **boundary conditions (BC)** and **material**, each **High**, **Moderate** or
 **Low**, with the rubric below.
 
@@ -156,6 +156,6 @@ Typical E, for calibration only:
     "geometry_note": "...", "bc_note": "...", "material_note": "..."}
    ```
    Use `object` exactly as written in `index.json`.
-4. Finish with all 150 entries in `{OUT}`. Your final reply should be short: the count of entries,
+4. Finish with all {N_SIMULATIONS} entries in `{OUT}`. Your final reply should be short: the count of entries,
    anything you could not judge and why, and any rubric case you found ambiguous and how you
    resolved it.

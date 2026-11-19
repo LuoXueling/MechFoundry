@@ -1,18 +1,29 @@
-"""The model comparison of the agentic results: one row per object, three agents side by side,
-on US-letter pages.
+"""The model comparison of the agentic results: one row per object, two or three agents side
+by side, on US-letter pages.
 
     python3 ar_compare.py plan    --haiku ROOT --sonnet ROOT --opus ROOT --work DIR [--only SLUG ...]
+    python3 ar_compare.py plan    --model KEY=ROOT --model KEY=ROOT [--model KEY=ROOT] --work DIR ...
     python3 ar_compare.py restrict DIR             # after ar_prep: render three panels, not four
     python3 ar_compare.py compose DIR [--out NAME] [--ground grid|shadow|none]
     python3 ar_compare.py compose DIR --stub-panels crops|synthetic [--stub-from ILLU]
 
 ``./build.sh agenticcompare`` runs plan -> ar_prep.py -> restrict -> render_ar.py -> compose.
 
-COLUMNS (13).  The instruction's prompt card, as tall as the row; then, for each model
-(Haiku, Sonnet, Opus, from left to right), four columns: the agent's cost (input tokens with
-their cached share, output tokens, wall clock split into agent / workflow / solver / runner
-overhead, as in agentic_results), the generated shape, the supports and loads, and Young's
-modulus.  There is no deformed-shape column.  A model-name header spans each group of four.
+MODELS.  The paper's pages are Claude Haiku, Sonnet and Opus (``--haiku/--sonnet/--opus``);
+``--model KEY=ROOT`` (repeated, left to right) takes any two or three batch roots instead, e.g.
+the open-weight Codex batches ``--model deepseek=ROOT --model kimi=ROOT``.  The plan keeps the
+order as the order of its ``roots``; the header names each model from its runs' metrics.json
+``model`` (``model_label``).  Two columns of one model (the same DeepSeek at high and at
+max reasoning effort) would share that name, so a name that two or more columns share gets
+each one's ``effort`` from its runs' metrics.json, or its key (``distinct_labels``).
+
+COLUMNS (1 + 4 per model: 13 for three).  The instruction's prompt card, as tall as the row;
+then, for each model, four columns: the agent's cost (input tokens with their cached share,
+output tokens, wall clock split into agent / workflow / solver / runner overhead, as in
+agentic_results), the generated shape, the supports and loads, and Young's modulus.  There is
+no deformed-shape column.  A model-name header spans each group of four.  The groups share the
+page width (``group_layout``): two models get wider image panels (22.2 mm, not 12.1); the row
+height, the cost column and every text size stay as set for three.
 
 PANELS.  Each image panel is as tall as the stack of the three cost bars beside it; every
 text size was chosen for that row height.  Under each image a label line carries what
@@ -20,7 +31,7 @@ agentic_results prints in the panel's corners: the body's route (Text -> TripoSG
 the shape, the body load under the supports and loads, and the grid-cell square under
 Young's modulus (the grid lies under all three panels; the narrow panels have no free corner
 for it).  The renders are agentic_results' own (ar_prep.py + render_ar.py), one camera per
-RUN as ar_prep.choose_view picks it: the three models' bodies of one object differ (each
+RUN as ar_prep.choose_view picks it: the models' bodies of one object differ (each
 agent generated its own), so a shared per-object camera would favour one of them.  Each run
 is cropped to the union ink box of its three panels.
 
@@ -63,7 +74,8 @@ import ar_style as A  # noqa: E402
 import ar_time  # noqa: E402
 from matplotlib.patches import FancyBboxPatch, Polygon, Rectangle  # noqa: E402
 
-MODELS = ("haiku", "sonnet", "opus")
+MODELS = ("haiku", "sonnet", "opus")    # the paper's trio: --haiku/--sonnet/--opus, in this order
+N_MODELS = (2, 3)                        # four would leave 7 mm panels: the labels do not fit
 SHOWN = ("painted", "bc", "materials")
 OK_STATUS = ("ok", "success", "succeeded", "complete", "completed", "finished", "done")
 
@@ -79,8 +91,17 @@ COL_GAP = 0.8                        # between columns of one group
 COST_W = 19.5
 X_CARD = ML + CAT_W
 GX0 = X_CARD + CARD_W + CARD_GAP
-GROUP_W = (PAGE_W - MR - GX0 - 2 * GROUP_GAP) / 3
-P = (GROUP_W - COST_W - 3 * COL_GAP) / 3          # image panel width
+
+
+def group_layout(n):
+    """(group width, image panel width) for n models side by side: the groups share the width
+    right of the prompt card, and in a group the cost column keeps its width, so the image
+    panels take what is left (n = 3: the paper's 58.2 / 12.1 mm; n = 2: 88.4 / 22.2 mm)."""
+    gw = (PAGE_W - MR - GX0 - (n - 1) * GROUP_GAP) / n
+    return gw, (gw - COST_W - 3 * COL_GAP) / 3
+
+
+GROUP_W, P = group_layout(len(MODELS))           # set again by compose for the plan's models
 HEAD_RULE = MT + 13.4
 ROWS0 = HEAD_RULE + 0.4
 FOOT = 11.5                          # key band under the bottom rule
@@ -120,25 +141,64 @@ def body_label(body):
     return f"Body load {fmt_force(f)}" if f else "Body load"
 
 
-def model_label(model_id, key):
-    """'claude-haiku-5-5' -> 'Claude Haiku 5.5'; the key when the id is unknown."""
+# The open-weight operators of run_batch.sh --agent codex (experiments/agentic_batch/
+# codex_models.json "label"), by every id their metrics.json ``model`` can hold: the Hugging
+# Face id (the rollout's turn_context model, which may carry the ":<route>" pin), the batch's
+# own short name, or the vendor's model id when the company's API served the run
+# (DeepSeek's is the unversioned "deepseek-flash").
+OPEN_MODELS = {
+    "DeepSeek V4.1 Flash": ("deepseek-ai/deepseek-v4.1-flash-1017", "deepseek-v4.1-flash-1017",
+                            "deepseek-v4.1-flash", "deepseek-flash"),
+    "Kimi K3.1 Pro": ("moonshotai/kimi-k3.1-pro", "kimi-k3.1-pro"),
+}
+ACRONYMS = {"glm", "gpt", "qwq", "llm"}
+
+
+def model_label(model_id, key, agent=None):
+    """'claude-haiku-5-5' -> 'Claude Haiku 5.5'; a known open model by its OPEN_MODELS label;
+    any other id made readable ('zai-org/glm-5.2:novita' -> 'GLM 5.2': no organisation, route
+    or date suffix, words capitalised unless the id already cases them); the key when there is
+    no id.  ``agent``: the run's harness (metrics.json ``agent``).  A Codex run's label says so
+    ('DeepSeek V4.1 Flash with Codex'): the model alone does not tell the reader which agent
+    harness drove it, and a Claude run (no ``agent``, or "claude") keeps its plain label."""
+    label = _model_name(model_id, key)
+    return f"{label} with Codex" if agent == "codex" else label
+
+
+def _model_name(model_id, key):
     p = (model_id or "").split("-")
     if len(p) >= 3 and p[0] == "claude":
         return f"Claude {p[1].capitalize()} {'.'.join(p[2:])}"
-    return key.capitalize()
+    if not model_id:
+        return key.capitalize()
+    mid = str(model_id).split(":", 1)[0].strip()
+    for label, ids in OPEN_MODELS.items():
+        if mid.lower() in ids:
+            return label
+    words = [w for w in mid.rsplit("/", 1)[-1].replace("_", "-").split("-") if w]
+    if len(words) > 1 and words[-1].isdigit() and len(words[-1]) >= 4:
+        words = words[:-1]                          # a release date: -1017, -20261017
+    words = [w.upper() if w.lower() in ACRONYMS else
+             w if any(ch.isupper() for ch in w) else
+             w[0].upper() + w[1:] for w in words]
+    return " ".join(words) or key.capitalize()
 
 
 # =========================================================================================
 # plan: which runs, in which order
 # =========================================================================================
 def make_plan(roots, only=None, list_path=CAT.OBJECTS, allow_missing=False):
+    """``roots``: {model key: batch root}, in the pages' left-to-right order (the plan's
+    ``roots`` keeps it: compose reads the models from there)."""
     cats = [c for c in CAT.categories(list_path) if not only or c[1] in only]
     assert cats, "no categories selected"
-    for m in MODELS:
+    models = list(roots)
+    assert len(models) in N_MODELS, f"{len(models)} models: the pages hold {N_MODELS}"
+    for m in models:
         if not os.path.isdir(os.path.join(roots[m], "_batches")):
             raise SystemExit(f"{m}: {roots[m]} is not a batch root (no _batches/)")
-    picks = {m: CAT.latest_runs(roots[m]) for m in MODELS}
-    missing = {m: [o for _, _, objs in cats for o in objs if o not in picks[m]] for m in MODELS}
+    picks = {m: CAT.latest_runs(roots[m]) for m in models}
+    missing = {m: [o for _, _, objs in cats for o in objs if o not in picks[m]] for m in models}
     if any(missing.values()) and not allow_missing:
         raise SystemExit("missing runs:\n" + "\n".join(
             f"  {m} ({roots[m]}): {len(v)} object(s): " + "; ".join(v)
@@ -147,19 +207,76 @@ def make_plan(roots, only=None, list_path=CAT.OBJECTS, allow_missing=False):
     for name, sl, objs in cats:
         for o in objs:
             runs = {}
-            for m in MODELS:
+            for m in models:
                 if o in picks[m]:
                     runs[m] = {"path": picks[m][o], "index": len(order)}
                     order.append(picks[m][o])
             objects.append({"instruction": o, "category": name, "slug": sl, "runs": runs})
-    labels = {}
-    for m in MODELS:
-        ids = [json.load(open(os.path.join(r["path"], "metrics.json"))).get("model")
-               for ob in objects for r in [ob["runs"].get(m)] if r and
-               os.path.exists(os.path.join(r["path"], "metrics.json"))]
-        labels[m] = model_label(ids[0] if ids else None, m)
-    return {"roots": {m: str(roots[m]) for m in MODELS}, "labels": labels,
+    labels, efforts = {}, {}
+    for m in models:
+        mets = [json.load(open(os.path.join(r["path"], "metrics.json")))
+                for ob in objects for r in [ob["runs"].get(m)] if r and
+                os.path.exists(os.path.join(r["path"], "metrics.json"))]
+        labels[m] = model_label(mets[0].get("model") if mets else None, m,
+                                mets[0].get("agent") if mets else None)
+        efforts[m] = batch_effort(mets)
+    return {"roots": {m: str(roots[m]) for m in models},
+            "labels": distinct_labels(labels, efforts),
             "objects": objects, "order": order}
+
+
+CODEX_MODELS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..",
+                            "experiments", "agentic_batch", "codex_models.json")
+
+
+def served_effort(model, effort):
+    """The effort the model's API applies to a requested one: codex_models.json's
+    ``effort_served`` for the model whose HF id or alias ``model`` is.  DeepSeek serves low and
+    medium as high (user, 2026-11-19), so its batch run with --effort medium is headed "high
+    effort"; metrics.json keeps the requested "medium".  Any other model or effort: unchanged."""
+    try:
+        cat = json.load(open(CODEX_MODELS))["models"]
+    except (OSError, ValueError, KeyError):
+        return effort
+    name = str(model or "").lower().split(":")[0]
+    for key, e in cat.items():
+        ids = {key, str(e.get("hf", "")).lower(), *map(str.lower, e.get("aliases", [])),
+               *map(str.lower, e.get("vendor", []))}
+        if name in ids:
+            return (e.get("effort_served") or {}).get(effort, effort)
+    return effort
+
+
+def batch_effort(mets):
+    """The one reasoning effort of a batch's runs as the model served it (metrics.json
+    ``effort``, run_batch.sh's --effort, through served_effort), or None when they are mixed
+    or any run lacks it: a heading that named one effort for a batch run at several would
+    misdescribe part of its column."""
+    vals = {served_effort(m.get("model"), str(m.get("effort") or "").strip()) for m in mets}
+    return vals.pop() if len(vals) == 1 and "" not in vals else None
+
+
+def distinct_labels(labels, efforts):
+    """``labels`` with every heading that two or more columns share told apart: the same
+    model run at two reasoning efforts (DeepSeek V4.1 Flash at high and at max) would
+    otherwise read alike over both groups.  Each such column gets ", <effort> effort"
+    ('DeepSeek V4.1 Flash with Codex, max effort'), or ", <key>" when its batch's effort is
+    mixed or missing, or when the efforts do not tell those columns apart either.  A label
+    no other column has stays as it was, so the Haiku / Sonnet / Opus pages and the
+    two-model open pages keep their headings (at 6 pt bold the longest, '..., medium
+    effort', is 48 mm, inside a three-model group's 58; DeepSeek's requested medium is
+    headed 'high effort', see served_effort)."""
+    out = dict(labels)
+    for lab in set(labels.values()):
+        same = [m for m in labels if labels[m] == lab]
+        if len(same) < 2:
+            continue
+        tags = {m: f"{efforts[m]} effort" if efforts.get(m) else m for m in same}
+        if len(set(tags.values())) < len(same):
+            tags = {m: m for m in same}
+        for m in same:
+            out[m] = f"{lab}, {tags[m]}"
+    return out
 
 
 # =========================================================================================
@@ -192,7 +309,15 @@ def light_record(i, run):
     rec["unit_system"], rec["m_per_length_unit"] = unit, units[1]
     rec["ground"] = {"grid": PR.ui_grid(V, float(V[:, 1].min()))[3]}
     rz, rj = (os.path.join(s, "boundary_conditions", n) for n in ("resolved.npz", "resolved.json"))
+    stale = False
     if os.path.exists(rz) and os.path.exists(rj):
+        # masks over another face count: resolved on an earlier body of a session rewound
+        # past its BCs (ar_prep.prep_run does not draw them either)
+        _z = np.load(rz)
+        stale = any(len(_z[k]) != len(mesh.faces) for k in _z.files)
+        if stale:
+            rec["notes"].append("BC regions resolved on an earlier body (session rewound): not reached")
+    if os.path.exists(rz) and os.path.exists(rj) and not stale:
         rec["_reached"].append("bc")
         regions = json.load(open(rj)).get("regions", [])
         cp = os.path.join(s, "case", "case.json")
@@ -270,9 +395,15 @@ def crop_window(boxes, w, h):
     return left, top, left + w * s, top + h * s, s
 
 
-def real_panels(work, rec, w, h, ground):
+def real_panels(work, rec, w, h, ground, render_edge_fade=False):
     """{panel: RGB uint8} for one run from render_ar's PNGs, composed as ar_figure composes
-    a row (ground layer faded at the edges, far-face loads laid over the BC panel)."""
+    a row (ground layer faded at the edges, far-face loads laid over the BC panel).
+
+    ``render_edge_fade``: fade the ground at the square render's own edges too, not only at
+    the window's.  The two-model panels (22.2 x 10.4 mm, about 2.1:1) take a window wider
+    than the square render whenever the body is tall, and the floor grid would stop there
+    in a hard vertical edge.  Off for the paper's three-model pages, so they compose exactly
+    as before (where their 1.16:1 window lies inside the render, the two fades agree)."""
     i = rec["index"]
     imgs = {p: F.load_rgba(os.path.join(work, f"ar_{i}_{p}.png")) for p in SHOWN}
     boxes = []
@@ -304,7 +435,12 @@ def real_panels(work, rec, w, h, ground):
                 gw = F.cut_rgba(g, x0, y0, x1, y1)
                 hh, ww = gw.shape[:2]
                 yy, xx = np.mgrid[0:hh, 0:ww]
-                d = np.minimum.reduce([xx, ww - 1 - xx, yy, hh - 1 - yy]) / (GROUND_FADE * s)
+                d = np.minimum.reduce([xx, ww - 1 - xx, yy, hh - 1 - yy])
+                if render_edge_fade:            # the render's edges, in window pixels
+                    ox, oy = int(round(x0)), int(round(y0))       # as cut_rgba rounds
+                    d = np.minimum.reduce([d, xx + ox, g.shape[1] - 1 - (xx + ox),
+                                           yy + oy, g.shape[0] - 1 - (yy + oy)])
+                d = d / (GROUND_FADE * s)
                 gw[..., 3] *= np.clip(d, 0, 1) ** 1.5
                 base = F.over(gw, None)
             else:
@@ -486,8 +622,12 @@ def group_x(g):
 
 
 def compose(work, out, ground, stub=None, stub_from=None, rows_max=ROWS_MAX):
+    global GROUP_W, P
     plan = json.load(open(os.path.join(work, "compare_plan.json")))
     objects = plan["objects"]
+    models = list(plan["roots"])                  # left to right (make_plan)
+    assert len(models) in N_MODELS, f"{len(models)} models: the pages hold {N_MODELS}"
+    GROUP_W, P = group_layout(len(models))
     if stub and stub != "crops":
         stats = light_stats(plan, work)
         write_synthetic_renders(work, stats)
@@ -504,7 +644,7 @@ def compose(work, out, ground, stub=None, stub_from=None, rows_max=ROWS_MAX):
             f"run {k}: ar_stats.json's session {sess} is not under the plan's {path}"
     lo, hi = stats["E_log10_range_Pa"]
     crops = CropSource(stub_from) if stub == "crops" else None
-    lacking = [ob["instruction"] for ob in objects if len(ob["runs"]) < len(MODELS)]
+    lacking = [ob["instruction"] for ob in objects if len(ob["runs"]) < len(models)]
     assert stub or not lacking, f"objects without a run of every model: {lacking}"
 
     pitch = (PAGE_H - MB - FOOT - ROWS0) / rows_max
@@ -529,7 +669,7 @@ def compose(work, out, ground, stub=None, stub_from=None, rows_max=ROWS_MAX):
             if not got and rec.get("_reached"):
                 got = {p: np.full((8, 8, 3), 235, np.uint8) for p in rec["_reached"]}
             return rec, got
-        return rec, real_panels(work, rec, P, HI, ground)
+        return rec, real_panels(work, rec, P, HI, ground, render_edge_fade=len(models) < 3)
 
     sizes = page_split(objects, rows_max)
     start = 0
@@ -556,7 +696,8 @@ def draw_page(name, rows, plan, panels_of, maxima, lo, hi, pitch, RH, HI, pitch_
     n = len(rows)
     row_tops = [ROWS0 + k * pitch for k in range(n)]
     table_bottom = row_tops[-1] + RH + ROW_GAP / 2
-    texts = {"head": [], "cost": [], "card": [], "label": [], "key": [], "cell": [], "cat": []}
+    texts = {"head": [], "cost": [], "card": [], "label": [], "key": [], "cell": [], "cat": [],
+             "group": []}
 
     # ---- rules ----------------------------------------------------------------------
     pg.line([ML, W - MR], [MT, MT], 0.6, F.INK)
@@ -573,11 +714,13 @@ def draw_page(name, rows, plan, panels_of, maxima, lo, hi, pitch, RH, HI, pitch_
     t1, t2 = MT + 10.4, MT + 12.3                 # the two title baselines
     pill_y = MT + 6.9
     texts["head"].append(pg.text(X_CARD, t2, "INSTRUCTION", HEAD_FS, weight="bold", color=F.GREY))
-    for g, m in enumerate(MODELS):
+    models = list(plan["roots"])
+    for g, m in enumerate(models):
         xs = group_x(g)
         gx0, gx1 = xs[0], xs[3] + P
         texts["head"].append(pg.text((gx0 + gx1) / 2, MT + 3.4, plan["labels"][m], GROUP_FS,
                                      weight="bold", ha="center"))
+        texts["group"].append((gx0, gx1, texts["head"][-1]))
         pg.line([gx0 + 0.3, gx1 - 0.3], [MT + 4.6, MT + 4.6], 0.35, F.INK)   # cmidrule
         for c, (l1, l2) in enumerate(TITLES):
             cx = xs[c] + (COST_W if c == 0 else P) / 2
@@ -641,7 +784,7 @@ def draw_page(name, rows, plan, panels_of, maxima, lo, hi, pitch, RH, HI, pitch_
                                   pg.text(X_CARD + CARD_W / 2, first + j * PROMPT_PITCH, line,
                                           PROMPT_FS, ha="center", style="italic")))
         itop = y0 + ROW_PAD
-        for g, m in enumerate(MODELS):
+        for g, m in enumerate(models):
             xs = group_x(g)
             rec, panels = panels_of(ob, m)
             if rec is not None:
@@ -733,15 +876,24 @@ def draw_page(name, rows, plan, panels_of, maxima, lo, hi, pitch, RH, HI, pitch_
         texts["key"].append(pg.text(x + 2.1, fy + 3.0, F.TIME_KEY[q], KEY_FS, color=F.GREY))
         x += 2.1 + pg.width(F.TIME_KEY[q], KEY_FS) + 2.4
     key_left_end = max(pg.box(t)[2] for t in texts["key"])
-    # supports & loads, centred on the page's middle group
-    xs_mid = group_x(1)
+    # Young's modulus under the last group's image columns (placed here, drawn below: the
+    # supports' key is centred against it when there is no middle group)
+    xs_r = group_x(len(models) - 1)
+    bx, bw, by, bh = xs_r[1] + 2.0, GROUP_W - COST_W - COL_GAP - 9.0, fy - 1.6, 1.0
+    e_left = bx - 1.2 - pg.width("Young’s modulus", KEY_FS)
+    # supports & loads, centred on the page's middle group (three models); with two, centred
+    # in the gap between the cost keys and the Young's-modulus key
+    xs_mid = group_x(len(models) // 2)
     has_arrows = any((r.get("bc") or {}).get("arrows") for r in page_recs)
     seen = any(gg.get("seen_through") for r in page_recs
                for gg in ((r.get("bc") or {}).get("regions") or []))
     load_glyph_w = 1.9 + (0.7 + 3.2 if has_arrows else 0.0)
     wds = [pg.width(s_, KEY_FS) for s_ in ("Support", "Load")]
     total = (1.9 + 0.8) + (load_glyph_w + 0.8) + sum(wds) + 3.0
-    x = xs_mid[0] + (GROUP_W - total) / 2
+    if len(models) % 2:
+        x = xs_mid[0] + (GROUP_W - total) / 2
+    else:
+        x = (key_left_end + e_left) / 2 - total / 2
     x = max(x, key_left_end + 4.0)
     pg.ax.add_patch(Rectangle((x, fy - 1.6), 1.9, 1.9, fc=A.DIRICHLET, ec=F.INK, lw=0.35, zorder=5))
     texts["key"].append(pg.text(x + 1.9 + 0.8, fy, "Support", KEY_FS))
@@ -771,8 +923,6 @@ def draw_page(name, rows, plan, panels_of, maxima, lo, hi, pitch, RH, HI, pitch_
                               zorder=5))
     texts["key"].append(pg.text(sx + sq + 0.8, yk, "Floor grid cell", KEY_FS, color=F.GREY))
     # Young's modulus: one log scale over every page
-    xs_r = group_x(2)
-    bx, bw, by, bh = xs_r[1] + 2.0, GROUP_W - COST_W - COL_GAP - 9.0, fy - 1.6, 1.0
     F.hbar(pg, bx, by, bw, bh, [(k_ / (len(A.E_RGB) - 1), c_) for k_, c_ in enumerate(A.E_RGB)])
     F.KEY_FS = KEY_FS                              # e_ticks measures its labels at KEY_FS
     for d, xt, s_ in F.e_ticks(pg, lo, hi, bx, bw, W - MR):
@@ -847,6 +997,11 @@ def check_page(pg, texts, row_tops, RH, HI, table_bottom):
         assert b[1] >= MT + 0.6 and b[3] <= HEAD_RULE - 0.4, f"head text crowds a rule: {t.get_text()!r}"
     for t in texts["key"]:
         assert pg.box(t)[1] >= table_bottom + 0.4, f"key crowds the bottom rule: {t.get_text()!r}"
+    for x0, x1, t in texts["group"]:        # a model name stays over its own rule (cmidrule)
+        b = pg.box(t)
+        assert b[0] >= x0 + 0.3 and b[2] <= x1 - 0.3, \
+            f"model name wider than its group ({b[2] - b[0]:.1f} of {x1 - x0 - 0.6:.1f} mm): " \
+            f"{t.get_text()!r}"
 
 
 def write_tables(out, plan, recs, maxima):
@@ -854,7 +1009,7 @@ def write_tables(out, plan, recs, maxima):
     (agentic_results' tables, one row per run)."""
     runs = []
     for ob in plan["objects"]:
-        for m in MODELS:
+        for m in plan["roots"]:
             r = ob["runs"].get(m)
             if r is not None:
                 rec = dict(recs[r["index"]])
@@ -870,7 +1025,10 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     a1 = sub.add_parser("plan")
     for m in MODELS:
-        a1.add_argument(f"--{m}", required=True, help=f"the {m} batch root")
+        a1.add_argument(f"--{m}", help=f"the {m} batch root (the paper's trio)")
+    a1.add_argument("--model", action="append", default=[], metavar="KEY=ROOT",
+                    help="a model's key and batch root, repeated left to right (2 or 3 in all), "
+                         "e.g. --model deepseek=output/agentic_batch50_deepseek")
     a1.add_argument("--work", required=True)
     a1.add_argument("--only", nargs="*", help="category slugs (default: all)")
     a1.add_argument("--list", default=str(CAT.OBJECTS))
@@ -890,9 +1048,21 @@ def main():
     a = ap.parse_args()
     if a.cmd == "plan":
         os.makedirs(a.work, exist_ok=True)
+        # the trio's flags first (haiku, sonnet, opus), then each --model in its order
+        given = [(m, getattr(a, m)) for m in MODELS if getattr(a, m)]
+        for spec in a.model:
+            key, sep, r = spec.partition("=")
+            if not (sep and key.strip() and r.strip()):
+                ap.error(f"--model {spec!r}: give KEY=ROOT")
+            given.append((key.strip(), r.strip()))
+        keys = [k for k, _ in given]
+        if len(set(keys)) != len(keys):
+            ap.error(f"a model key given twice: {keys}")
+        if len(given) not in N_MODELS:
+            ap.error(f"{len(given)} model(s) given ({keys or 'none'}): give 2 or 3, as "
+                     "--haiku/--sonnet/--opus or --model KEY=ROOT")
         roots = {}
-        for m in MODELS:      # relative roots: from here, else from the repository root
-            r = getattr(a, m)
+        for m, r in given:    # relative roots: from here, else from the repository root
             roots[m] = r if os.path.isabs(r) or os.path.isdir(r) else os.path.join(str(CAT.REPO), r)
         plan = make_plan(roots, a.only, a.list, a.allow_missing)
         json.dump(plan, open(os.path.join(a.work, "compare_plan.json"), "w"), indent=1)
@@ -910,7 +1080,7 @@ def main():
     else:
         if a.stub_panels:
             plan = json.load(open(os.path.join(a.work, "compare_plan.json")))
-            if any(len(ob["runs"]) < len(MODELS) for ob in plan["objects"]):
+            if any(len(ob["runs"]) < len(plan["roots"]) for ob in plan["objects"]):
                 print("stub: objects without a run of every model are drawn as 'no run yet'")
         compose(a.work, a.out, a.ground, a.stub_panels, a.stub_from, a.rows)
 

@@ -8,9 +8,20 @@ results** figures, which show what an LLM agent produced when it drove the FEM w
 from a one-line instruction.
 
 **The batch folders are archived.** `output/agentic_batch50` (Sonnet), `…_haiku`,
-`…_opus` and `output/showcase` are packed in `output/archives/<name>.tar.zst`. Every build
+`…_opus`, the open-weight `…_deepseek`, `…_deepseek_max` and `…_kimi`, and `output/showcase`
+are packed in `output/archives/<name>.tar.zst`. Every build
 below that renders runs reads them at their original paths, so extract the ones it needs
 first: `zstd -dc output/archives/<name>.tar.zst | tar -x -C output` (→ `output/<name>/`).
+
+**Open-weight (Codex) batches.** `run_batch.sh --agent codex` runs the same fifty objects
+with an open-weight model under the Codex CLI (`experiments/agentic_batch/README.md`, "Codex
+runs"): DeepSeek V4.1 Flash into `output/agentic_batch50_deepseek` (high effort) and
+`output/agentic_batch50_deepseek_max` (max effort), and Kimi K3.1 Pro into
+`output/agentic_batch50_kimi`. Their run folders have the same layout and `metrics.json`
+fields (plus `agent: "codex"`), with the transcript in
+`codex_home/sessions/…/rollout-*.jsonl` instead of `claude_session/`; every figure below
+builds from them unchanged (per-category figures `_deepseek` / `_deepseek_max` / `_kimi`, §4;
+the three side by side, `agentic_results_compare_open_p<k>`, §5).
 
 ---
 
@@ -136,13 +147,27 @@ to the largest run in it:
    values and material, painting), **Solver** (the FEM solves, and the solver fallbacks
    and cross-checks after them) and **Runner overhead** (process start, GPU choice and
    idle-GPU waits, stop pictures, bookkeeping commands). The sections are measured from
-   the Claude transcript's timestamps and the runner's `operator/driver_log.jsonl` and add
-   up to the wall clock exactly. A run whose `status` is not ok gets ` · <status>` after
-   its time.
+   the agent transcript's timestamps (Claude: `claude_session/`; Codex: the rollout, see
+   below) and the runner's `operator/driver_log.jsonl` and add up to the wall clock
+   exactly. A run whose `status` is not ok gets ` · <status>` after its time.
 
 Token counts come from `metrics.json` first; a field it lacks is summed from the Claude
 transcript(s) in `claude_session/`, each assistant message counted once (`ar_runs.py`
-records which source every value came from).
+records which source every value came from). A Codex run's `metrics.json` already holds
+them in the same fields (the batch helper maps Codex's `cached_input_tokens` to
+`cache_read_input_tokens`, `cache_write_input_tokens` to `cache_creation_input_tokens`, the
+rest of the input to `input_tokens`); nothing is read from its rollout for tokens, and the
+token table's note says so when a run is a Codex run.
+
+**Time split of a Codex run** (`ar_time.py`, chosen by the run folder: `claude_session/`
+if present, else `codex_home/sessions/`). The rollout's `exec_command` calls are the
+commands; one that runs past Codex's yield returns "Process running with session ID N", and
+the agent's `write_stdin` calls on session N continue it until an output says "Process exited
+with code C" (its end; the text is all outputs together). The section accounting is then the
+Claude one. A command that never exited (a run killed at the batch timeout) ends at the wall
+clock's end when the agent was still waiting on it, else at its last output, and the split's
+`notes` say which. Checked by turning fifteen Opus transcripts into synthetic rollouts with
+the same timestamps: the Codex split equals the Claude split of every one.
 
 ### Labels in the panels
 
@@ -194,11 +219,11 @@ ends and to at least one decade.
 | Step | Script | Env | Does |
 |---|---|---|---|
 | 0 | `ar_style.py` | python3 | Gate: the look (colours, light kit, E ramp, solve recipe) equals Figure 1's source (`overview/ov_style.py`, `render_ov_solve.py`), except the key light's angles: `KEY_LIGHT` puts it on the view axis at elevation 30° (Figure 1: 35° to the camera's left at 45°), so the faces looking at the viewer are lit whichever side each row's camera stands on (2026-10-22). `render_ar.py` renders with `AR_SURF_VIEW` / `AR_SOLVE_VIEW`; the gallery keeps Figure 1's kit |
-| 1 | `ar_runs.py` | (imported) | Loads each run: `metrics.json` > Claude transcript, the session folder under `workflow/`, and `ar_time.split_run` |
+| 1 | `ar_runs.py` | (imported) | Loads each run: `metrics.json` > Claude transcript (a Codex run: `metrics.json` only), the session folder under `workflow/`, and `ar_time.split_run` |
 | 2 | `ar_prep.py` | `mechfoundry-warp117`, small GPU use | Per run: the surface, colours, BC masks and arrows, the camera (`choose_view`), the surface interpolation of u and E, the ×N factor, ground and grid; writes `_work/ar_<i>_*.vtk` and `_work/ar_stats.json`. Calls `ar_ui_scale.py` in `mechfoundry-agents` for the UI's own deformation scale (kept for reference) |
 | 3 | `render_ar.py` | `pvbatch` (EGL GPU) | One PNG per panel (`ar_<i>_<panel>.png`), the ground alone (`…_g.png`), the BC id pass and the see-through layers |
 | 4 | `ar_figure.py` | `mechfoundry-warp117` | Crops, composes and checks the page; writes `NAME.{pdf,png}`, `NAME_tokens.{csv,md}`, `NAME_time.csv` |
-| – | `ar_time.py` | (imported) | The wall-clock split (sections and the four bar groups) |
+| – | `ar_time.py` | (imported) | The wall-clock split (sections and the four bar groups), from a Claude transcript or a Codex rollout |
 | – | `ar_categories.py` | python3 | Picks runs and builds one figure per category (§4) |
 | – | `ar_compare.py` | python3 / `mechfoundry-warp117` | The model-comparison pages (§5) |
 
@@ -216,7 +241,7 @@ or a region whose rendered colour is more than ΔE00 10 from its legend chip.
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `AR_RUNS` | – | Space-separated run folders (`output/<batch>/<run>/` with `workflow/`, `claude_session/`, `metrics.json`; or bare session folders), relative to the repo root or absolute |
+| `AR_RUNS` | – | Space-separated run folders (`output/<batch>/<run>/` with `workflow/`, `claude_session/` or a Codex run's `codex_home/`, `metrics.json`; or bare session folders), relative to the repo root or absolute |
 | `AR_RUNS_JSON` | `ar_dev_runs.json` | A runs JSON, used when `AR_RUNS` is unset (entries may give `instruction`, `transcript`, `model`, `label`, `view_dir`, `draw_scale`, `prompt_max_lines`) |
 | `AR_NAME` | `agentic_results` | Output name |
 | `AR_GPU` | `1` | GPU for the prep and pvbatch |
@@ -235,8 +260,9 @@ The target copies `_work/ar_stats.json` to `agentic_results/ar_stats.json`.
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `ARC_HAIKU`, `ARC_SONNET`, `ARC_OPUS` | required | The three batch roots (absolute, or relative to the repo root) |
-| `ARC_NAME` | `agentic_results_compare` | Output name: `NAME_p<k>.{pdf,png}` |
+| `ARC_HAIKU`, `ARC_SONNET`, `ARC_OPUS` | required unless `ARC_MODELS` | The paper's three batch roots (absolute, or relative to the repo root) |
+| `ARC_MODELS` | – | Instead of the three: `"KEY=ROOT KEY=ROOT [KEY=ROOT]"`, any two or three batch roots, left to right, e.g. `"deepseek=output/agentic_batch50_deepseek kimi=output/agentic_batch50_kimi"` |
+| `ARC_NAME` | `agentic_results_compare` | Output name: `NAME_p<k>.{pdf,png}` (give the open-weight pages their own, e.g. `agentic_results_compare_open`) |
 | `ARC_ONLY` | all | Category slugs to include, e.g. `"household_items furniture"` |
 | `ARC_ROWS` | `17` | Rows per page at most |
 | `ARC_GPU` | `1` | GPU for the prep and pvbatch |
@@ -249,9 +275,10 @@ The target copies `_work/ar_stats.json` to `agentic_results/ar_stats.json`.
 ## 4. Run picking and per-category builds
 
 `experiments/agentic_batch/objects_50.txt` lists fifty instructions under ten
-`# <Category>` headings of five each. A batch root (`output/agentic_batch50`, and one per
-model, `…_haiku`, `…_opus`) has one folder per run and `_batches/<id>/summary.csv` per
-batch launch, with the columns `instruction`, `path`, `status` and the run's metrics.
+`# <Category>` headings of five each. A batch root (`output/agentic_batch50`, and one per model,
+`…_haiku`, `…_opus`, and the Codex batches `…_deepseek`, `…_deepseek_max`, `…_kimi`) has one folder
+per run and `_batches/<id>/summary.csv` per batch launch, with the columns `instruction`, `path`,
+`status` and the run's metrics.
 
 **Picking** (`ar_categories.latest_runs`): batches are read in id (timestamp) order and,
 for each instruction, the last row whose run folder exists wins, so an object rerun in a
@@ -267,6 +294,9 @@ python3 ar_categories.py --batch-root output/agentic_batch50 --dry-run    # the 
 python3 ar_categories.py --batch-root output/agentic_batch50                # Sonnet
 python3 ar_categories.py --batch-root output/agentic_batch50_haiku --suffix _haiku
 python3 ar_categories.py --batch-root output/agentic_batch50_opus  --suffix _opus --segmentation
+python3 ar_categories.py --batch-root output/agentic_batch50_deepseek --suffix _deepseek   # Codex
+python3 ar_categories.py --batch-root output/agentic_batch50_deepseek_max --suffix _deepseek_max
+python3 ar_categories.py --batch-root output/agentic_batch50_kimi     --suffix _kimi       # Codex
 ```
 
 `--segmentation` (`AR_SEGMENTATION=1`) gives the figures the segmentation column (§1); the
@@ -290,20 +320,62 @@ shared `ar_stats.json` is restored. Logs go to `agentic_results/_logs/<name>.log
 object of the list, in list order, one row each, the three models side by side, on US
 letter pages (8.5 × 11 in, portrait) for the supplementary information.
 
+**Two or three models.** The paper's pages are Claude Haiku, Sonnet and Opus
+(`ARC_HAIKU/SONNET/OPUS`, `plan --haiku --sonnet --opus`). `ARC_MODELS="KEY=ROOT …"`
+(`plan --model KEY=ROOT`, repeated, left to right) takes any two or three batch roots
+instead, e.g. the three Codex batches (`agentic_results_compare_open_p1-3`):
+
+```shell
+cd illustrations && ARC_MODELS="deepseek=output/agentic_batch50_deepseek \
+    deepseek_max=output/agentic_batch50_deepseek_max kimi=output/agentic_batch50_kimi" \
+    ARC_NAME=agentic_results_compare_open ./build.sh agenticcompare
+```
+
+The plan keeps the order in its `roots`, and compose reads the models from there. The
+header names each model from its runs' `metrics.json` `model` (`ar_compare.model_label`):
+`claude-<name>-<version>` → "Claude Opus 5.5"; the open models by their label ("DeepSeek
+V4.1 Flash" from `deepseek-ai/DeepSeek-V4.1-Flash-1017`, `deepseek-v4.1-flash` or the
+vendor's `deepseek-flash`; "Kimi K3.1 Pro" from `moonshotai/Kimi-K3.1-Pro` or
+`kimi-k3.1-pro`; a `:<route>` pin is ignored); any other id made readable (no
+organisation, route or date suffix: `zai-org/glm-5.2` → "GLM 5.2"). A run whose
+`metrics.json` `agent` is `"codex"` gets " with Codex" after its model's name ("DeepSeek
+V4.1 Flash with Codex", "Kimi K3.1 Pro with Codex"; read from the harness, not the model
+id); a Claude run keeps the plain name ("Claude Opus 5.5"). A name two or more columns share
+(the same model run at two reasoning efforts) gets each column's `metrics.json` `effort`
+as the model served it ("DeepSeek V4.1 Flash with Codex, high effort" / "…, max effort": the
+`deepseek` batch was run with `--effort medium`, which DeepSeek serves as high,
+`ar_compare.served_effort` and `codex_models.json` `effort_served`; 48 mm at 6 pt, inside a
+three-model group), or its key when a batch's efforts are mixed or missing
+(`ar_compare.distinct_labels`); a name no other column has is left as it is. The tables follow
+suit (`ar_figure.write_table`, `write_time_table`): the token table gains an `effort` column when
+its runs were not all run at one effort, and when a table holds more than one set each time-table
+column names its model as well as the object (and the effort, when efforts differ); a one-set
+table keeps its columns. The compose asserts that each
+model name fits over its group's rule (with two models the longest, 33 mm of 88; with three,
+of 58). With a Codex run in it, the token table also gets an `agent` column after `model`
+(an all-Claude table keeps its columns). The groups share the
+width right of the prompt card (`group_layout`): with two, each image panel is 22.2 mm wide
+instead of 12.1; the row height, the cost column and every text size stay as below, and the
+Support / Load key is centred between the cost keys and the Young's-modulus key, which spans
+the last group's image columns. With two models the ground also fades at the square
+render's own edges (a tall body's 2.1 : 1 window is wider than the render; the three-model
+pages are composed exactly as before). The tables get one row (tokens) or column (time) per
+run, as for three.
+
 **Columns (13).** The prompt card, as tall as the row; then for each model (Claude Haiku,
 Sonnet, Opus, left to right, the version read from the runs' `metrics.json`) four columns:
 TOKENS & TIME (the three cost bars of §1), GENERATED SHAPE, SUPPORTS & LOADS and YOUNG'S
 MODULUS, each panel head with its AGENT pill. A model-name header with a rule under it
 spans each group. There is no deformed-shape column.
 
-**Rows.** Each image panel (12.1 × 10.4 mm) is exactly as tall as the stack of three cost
+**Rows.** Each image panel (12.1 × 10.4 mm; 22.2 × 10.4 with two models) is exactly as tall as the stack of three cost
 bars beside it; the text sizes (prompt 5.4 pt, cost 4.6 pt, labels 4.2 pt, keys 5 pt) were
 set for that row. The panel corner labels of §1 move to a label line under the images:
 the route under the shape, the body load under the supports and loads (past 999 kN in MN
 and GN), the grid-cell square under Young's modulus. A label wider than its column is set
 smaller (down to 3.8 pt for `SDXL → Hunyuan3D`) and the build lists it.
 
-**Scales.** One prep over all runs of all three models, so the E colours share one scale
+**Scales.** One prep over all runs of all the models, so the E colours share one scale
 on every page; the cost bars share one scale too (the largest input, output and wall
 clock over all runs).
 
@@ -343,6 +415,8 @@ cd illustrations/agentic_results
 python3 ar_compare.py plan --haiku ROOT_H --sonnet ROOT_S --opus ROOT_O --work /tmp/cmp \
     --only household_items furniture
 python3 ar_compare.py compose /tmp/cmp --out /tmp/cmp/test --stub-panels crops --stub-from ..
+python3 ar_compare.py plan --model deepseek=ROOT_D --model kimi=ROOT_K --work /tmp/cmp2 \
+    --only household_items furniture          # two models
 ```
 
 ---
@@ -572,7 +646,10 @@ Each sweep row's authoring prompt (the one call that wrote its 9 cases), as sent
 `experiments/agentic_batch/showcase_authoring_prompt_{material,bc}.txt`; `build.sh showcase`
 refreshes them after each build with `sc_record.py`.
 
-## 9. The three-model evaluation
+## 9. The model evaluation
 
-Moved to [`experiments/model_eval/`](../experiments/model_eval/README.md): the rubric, the evaluator
-prompts, the three evaluators' ratings and the voted table (`evaluation_table.{md,xlsx}`).
+Moved to [`experiments/model_eval/`](../experiments/model_eval/README.md): the rubric and the
+blinded grading of all six operator sets (DeepSeek high and max, Kimi, Haiku, Sonnet, Opus) by
+Fable and GPT-6-Astra evaluators, with its prompts, ratings and voted tables in `results/`. The
+paper's grading of Haiku, Sonnet and Opus is kept in `records/paper/`. The grading reads the
+category figures of §4 (`ar_categories.py`), staged per model.

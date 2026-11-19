@@ -99,11 +99,17 @@ from src.ui.telemetry import (
     gd_lr_auto_note,
 )
 from src.agents_wrapper.fem_workflow.runtime_files import RENAMED_ENVIRONMENTS
+from src.ui import operators as OPS
 from src.ui.agent_session import (
     CLAUDE_MODELS,
+    CODEX_EFFORTS,
     EFFORTS,
+    OPERATORS,
     AgentHub,
-    agent_status,
+    AgentStatus,
+    codex_operators,
+    operator_label,
+    operator_status,
     session_signature,
 )
 from src.ui.controller import (
@@ -1911,22 +1917,75 @@ def render_setup_widget() -> None:
 def render_start_agent(
     provider: str, model: str, compute_env: str, vision_model: str, vision_provider: str,
 ) -> None:
-    """The other way to begin: Claude Code drives the workflow with these same choices.
+    """The other way to begin: an AI operator drives the workflow with these same choices.
 
-    Offered only where it can work: the Claude Agent SDK in this environment and a
-    ``claude`` command to run (``agent_status``); otherwise the button stays disabled and
-    says why.
+    The operator is Claude Code (the Claude Agent SDK and a ``claude`` command) or Codex (a
+    ``codex`` command) on an open-weight model, through Hugging Face or its company's own API, or
+    on an OpenAI model with the user's own Codex login (``operators.py`` lists them and their
+    keys). Each is offered only where it can work; one that cannot stays in the choice, so the
+    user sees it exists, with its controls disabled and the reason given.
     """
-    status = agent_status()
-    st.markdown("**Or let an agent drive it.** Claude Code follows the operator skill: it "
+    codex_ops = codex_operators()
+    usable = [o for o in codex_ops if o["available"]]
+    statuses = {name: operator_status(name) for name in OPERATORS}
+    # Codex is ready when any of its models can run here (an HF token, a company key or a Codex
+    # login); otherwise the reasons of each.
+    statuses["codex"] = (AgentStatus(True, f"{len(usable)} Codex models", statuses["codex"].cli) if usable else
+                         AgentStatus(False, statuses["codex"].summary if not codex_ops else "; ".join(
+                             sorted({o["unavailable"] for o in codex_ops if o["unavailable"]})), statuses["codex"].cli))
+    st.markdown("**Or let an agent drive it.** The AI operator follows the operator skill: it "
                 "decides the case, runs every step and checks every picture, while the "
                 "visualization updates here. You can send it further prompts or stop it.")
+    # The first operator that can run is preselected, so a machine with only Codex set up
+    # does not open on a disabled choice.
+    ready = [name for name in OPERATORS if statuses[name].ready]
+    operator = st.radio(
+        "Operator", list(OPERATORS), horizontal=True, key="agent_operator",
+        index=list(OPERATORS).index(ready[0]) if ready else 0,
+        format_func=lambda name: OPERATORS[name] + ("" if statuses[name].ready else " (not set up)"),
+    )
+    status = statuses[operator]
     columns = st.columns(2)
-    claude_model = columns[0].selectbox(
-        "Agent model", CLAUDE_MODELS, key="agent_claude_model", disabled=not status.ready)
-    effort = columns[1].selectbox(
-        "Agent effort", EFFORTS, index=EFFORTS.index("high"), key="agent_effort",
-        disabled=not status.ready)
+    codex_model = claude_model = ""
+    codex_provider = "hf"
+    if operator == "codex":
+        by_id = {o["id"]: o for o in usable}
+        op_id = columns[0].selectbox(
+            "Agent model", list(by_id) or [""], key="agent_codex_operator", disabled=not status.ready,
+            format_func=lambda i: (by_id[i]["label"] + (" · OpenAI" if by_id[i]["provider"] == "openai" else ""))
+            if i in by_id else "none available")
+        chosen = by_id.get(op_id) or {}
+        codex_model, codex_provider = chosen.get("model", ""), chosen.get("provider") or "hf"
+        # The effort default is the model's own (codex_models.json, or the Codex catalog for an
+        # OpenAI model), so the widget is keyed by the model: switching brings back its default.
+        efforts = chosen.get("efforts") or list(CODEX_EFFORTS)
+        default = chosen.get("default_effort") or "medium"
+        effort = columns[1].selectbox(
+            "Agent effort", efforts,
+            index=efforts.index(default) if default in efforts else min(1, len(efforts) - 1),
+            key=f"agent_codex_effort_{op_id}", disabled=not status.ready)
+        missing = [o for o in codex_ops if not o["available"]]
+        if missing:
+            st.caption(":material/info: Not available here: " + "; ".join(
+                f"{o['label']} ({o['unavailable']})" for o in missing) + ".")
+        if status.ready:
+            st.caption(":material/info: Codex asks no approvals: the runner's commands run with "
+                       "the GPU and the network, anything else in Codex's sandbox (no network, "
+                       "writes only in the repository and the session folders).")
+    else:
+        # The current Claude models of the user's login, as Claude Code lists them, each with the
+        # effort levels it takes (operators.claude_models); the built-in list if it cannot be asked.
+        claude_ops = {o["id"]: o for o in OPS.operators() if o["agent"] == "claude"} or {
+            m: {"label": m, "efforts": list(EFFORTS), "default_effort": "high"} for m in CLAUDE_MODELS}
+        claude_model = columns[0].selectbox(
+            "Agent model", list(claude_ops), key="agent_claude_model", disabled=not status.ready,
+            format_func=lambda m: claude_ops[m]["label"])
+        efforts = claude_ops[claude_model]["efforts"] or [""]
+        default = claude_ops[claude_model]["default_effort"]
+        effort = columns[1].selectbox(
+            "Agent effort", efforts, index=efforts.index(default) if default in efforts else 0,
+            key=f"agent_effort_{claude_model}", disabled=not status.ready or efforts == [""],
+            format_func=lambda e: e or "not adjustable")
     started = st.button(
         "Start agent session",
         icon=":material/smart_toy:",
@@ -1934,13 +1993,13 @@ def render_start_agent(
         help=None if status.ready else f"Unavailable: {status.summary}",
     )
     if not status.ready:
-        st.caption(f":material/block: Agent sessions are unavailable: {status.summary}.")
+        st.caption(f":material/block: {OPERATORS[operator]} is unavailable: {status.summary}.")
     if not started:
         return
     conversation = agent_hub().create(
         provider=provider, model=model, vision_provider=vision_provider or provider,
         vision_model=vision_model, compute_env=compute_env, claude_model=claude_model,
-        effort=effort,
+        effort=effort, operator=operator, codex_model=codex_model, codex_provider=codex_provider,
     )
     enter_agent(conversation.id)
     st.rerun(scope="app")
@@ -1980,7 +2039,8 @@ def _tool_summary(name: str, tool_input: dict) -> str:
     tool_input = tool_input or {}
     if name == "Bash":
         return _short_command(str(tool_input.get("command", "")))
-    if name in ("Read", "Write", "Edit"):
+    if name in ("Read", "Write", "Edit", "view_image", "apply_patch"):
+        # view_image and apply_patch are Codex's (agent_session.CodexConversation).
         return "/".join(str(tool_input.get("file_path", "")).split("/")[-3:])
     if name in ("Glob", "Grep"):
         return str(tool_input.get("pattern", ""))
@@ -2015,6 +2075,7 @@ def render_agent_chat(conversation_id: str) -> None:
     events = snap["events"]
     results = {e["tool_use_id"]: e for e in events if e["type"] == "tool_result"}
     decided = {e["id"]: e for e in events if e["type"] == "permission_done"}
+    st.caption(f":material/smart_toy: {operator_label(snap['meta'])}")
     if not events and not snap["busy"]:
         with st.chat_message("assistant"):
             st.markdown(
@@ -2067,7 +2128,9 @@ def render_agent_chat(conversation_id: str) -> None:
         elif kind == "result":
             ended = "stopped" if str(ev.get("reason") or "").startswith("aborted") else (
                 "ended with an error" if ev.get("is_error") else "done")
-            cost = f" · ${ev['cost_usd']:.2f}" if ev.get("cost_usd") is not None else ""
+            # An open-weight turn can cost a tenth of a cent; two decimals would show it as $0.00.
+            cost = ev.get("cost_usd")
+            cost = "" if cost is None else f" · ${cost:.2f}" if cost >= 0.01 else f" · ${cost:.4f}"
             st.caption(f"{ended} · {(ev.get('duration_ms') or 0) / 1000:.0f} s{cost}")
         elif kind == "error":
             st.error(ev["message"])
@@ -2100,9 +2163,10 @@ def render_agent_composer(conversation_id: str) -> None:
     busy = agent.snapshot()["busy"]
     if busy:
         if st.button("Stop", type="primary", icon=":material/stop:", key="agent_interrupt",
-                     help="Stop Claude's reply (a running solve keeps running: use Stop FEA)"):
+                     help="Stop the agent's reply (a running solve keeps running: use Stop FEA)"):
             agent.interrupt()
-        st.caption("Claude is working. Stop it to send a new prompt.")
+        name = "Codex" if agent.operator == "codex" else "Claude"
+        st.caption(f"{name} is working. Stop it to send a new prompt.")
         return
     prompt = st.chat_input(
         "Tell the agent what to do…", accept_file="multiple",

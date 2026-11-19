@@ -319,7 +319,7 @@ def collect(out: Path, recomputed: dict, batch: Path):
 
 
 # The object names and their order are those of the model-evaluation table
-# (experiments/model_eval/evaluation_table.md, built by
+# (experiments/model_eval/records/paper/evaluation_table.md, built by
 # combine.py): the instruction verbatim, grouped by the category headings of the
 # batch's object list, in its order.  Each session's slug is ab_helper.slug of
 # its instruction (the batch's run-folder naming), so the map is exact.
@@ -329,7 +329,7 @@ _CATALOGUE = {}
 
 def categories(path=OBJECT_LIST):
     """[(category heading, [instruction, ...])], parsed as
-    experiments/model_eval/build_packets.categories() parses the same file."""
+    experiments/model_eval/scripts/config.py categories() parses the same file."""
     cats, cur = [], None
     for line in path.read_text().splitlines():
         s = line.strip()

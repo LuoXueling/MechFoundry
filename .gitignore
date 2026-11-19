@@ -166,6 +166,8 @@ Thumbs.db
 # Project specific
 outputs/
 results/
+# the model evaluation's prompts, ratings and tables are records, kept in git
+!experiments/model_eval/results/
 *.xdmf
 *.h5
 *.pvd

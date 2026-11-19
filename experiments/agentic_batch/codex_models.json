@@ -1,0 +1,79 @@
+{
+ "_comment": [
+  "The open-weight operators run_batch.sh --agent codex knows (ab_helper.py codex_model).",
+  "hf: the model's id on Hugging Face Inference Providers, and route: the provider each request is pinned to",
+  "(the id is sent as '<id>:<route>'). Without a pin the router picks a provider per request, and providers",
+  "differ in price and may differ in quantization, so a batch would mix servings. Kimi is pinned to its own",
+  "company's endpoint (moonshotai serves it through HF); DeepSeek has no first-party provider on HF, so it is",
+  "pinned to deepinfra, which serves both models.",
+  "vendor: [provider, model id] on the company's own Responses endpoint (--provider vendor).",
+  "price: USD per million tokens, the accounting price of the model whichever provider served it (the",
+  "user's choice, 2026-11-17: each company's own API price; DeepSeek at its peak-hour rate). input = a cache",
+  "miss, cached_input = a cache hit, cache_write = input written to the provider's prompt cache (default: input),",
+  "output. ab_helper.codex_cost prices a run's tokens with it; metrics.json records it as cost_basis.",
+  "route_listing: what the pinned HF route listed (https://router.huggingface.co/v1/models, 2026-11-17), for",
+  "reference only; the listing gives no cached-input price.",
+  "effort: the reasoning effort a run sends when run_batch.sh gets no --effort (Codex's model_reasoning_effort -> reasoning_effort). 'medium', as the Claude batches ran (user, 2026-11-17). DeepSeek on its deepinfra route accepts low, medium, high, xhigh and max (2026-11-18, two calls per level on one bending problem): low to xhigh, and no effort at all, reasoned alike (about 1 400-2 100 reasoning tokens), and only max reasoned longer (2 600-6 300), so max is its highest effort (--effort max; output/agentic_batch50_deepseek_max). A single call per level the day before had suggested no effort reasoned longest (1306 vs about 520 tokens); two calls per level vary as much as that. Kimi accepts low/medium/high through HF (2026-11-17); higher levels were not tried. DeepSeek's own API takes medium too.",
+  "effort_served: the effort a model's API actually applies to a requested one, where it differs. DeepSeek serves low and medium as high (user, 2026-11-19; it matches the 2026-11-18 calls above, where low to xhigh reasoned alike), so a DeepSeek run with --effort medium is a high-effort run: output/agentic_batch50_deepseek is labelled 'high effort (medium requested)', while its metrics.json keep the requested 'medium'."
+ ],
+ "models": {
+  "deepseek-v4.1-flash": {
+   "label": "DeepSeek V4.1 Flash",
+   "hf": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+   "route": "deepinfra",
+   "vendor": [
+    "deepseek",
+    "deepseek-flash"
+   ],
+   "aliases": [
+    "deepseek",
+    "deepseek-v4.1-flash-1017"
+   ],
+   "effort": "medium",
+   "price": {
+    "input": 0.3,
+    "cached_input": 0.006,
+    "output": 1.2,
+    "date": "2026-11-17",
+    "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+   },
+   "route_listing": {
+    "deepinfra": {
+     "input": 0.098,
+     "output": 0.294
+    }
+   },
+   "effort_served": {
+    "low": "high",
+    "medium": "high"
+   }
+  },
+  "kimi-k3.1-pro": {
+   "label": "Kimi K3.1 Pro",
+   "hf": "moonshotai/Kimi-K3.1-Pro",
+   "route": "moonshotai",
+   "vendor": [
+    "moonshot",
+    "kimi-k3.1-pro"
+   ],
+   "aliases": [
+    "kimi"
+   ],
+   "effort": "medium",
+   "price": {
+    "input": 2.0,
+    "cached_input": 0.2,
+    "cache_write": 2.0,
+    "output": 10.0,
+    "date": "2026-11-17",
+    "source": "Moonshot API price (input 2, cached input 0.2, cache write at the default 5-min TTL 2, output 10 USD per M)"
+   },
+   "route_listing": {
+    "moonshotai": {
+     "input": 2.0,
+     "output": 10.0
+    }
+   }
+  }
+ }
+}

@@ -9327,16 +9327,18 @@ def _shown_path(session: Path) -> Path:
 
 
 # What a new agent on a resumed session is shown whole once again: the advice printed "as before"
-# was printed to another agent's context.  The agent is the Claude Code session that runs
+# was printed to another agent's context.  The agent is the Claude Code or Codex session that runs
 # the command (its environment), recorded in shown.json.
 AGENT_FORGETS = ("notes", "boiler", "resolution", "coverage", "body_once", "selectors")
 
 
 def agent_session() -> str:
-    """The agent running this command: its Claude Code session id ("" when unknown).  Subagents
-    started in one Claude Code process share that id and its CLAUDE_PID, so they are not told apart
-    (a review); a batch run is its own session (run_batch.sh gives each a fresh --session-id)."""
-    return os.environ.get("CLAUDE_CODE_SESSION_ID") or ""
+    """The agent running this command: its Claude Code session id, or under Codex its thread id
+    (`codex exec` puts CODEX_THREAD_ID in every command's environment; run_batch.sh --agent codex),
+    "" when unknown.  Subagents started in one Claude Code process share that id and its CLAUDE_PID,
+    so they are not told apart (a review); a batch run is its own session (run_batch.sh gives each a
+    fresh --session-id, or a fresh Codex thread)."""
+    return os.environ.get("CLAUDE_CODE_SESSION_ID") or os.environ.get("CODEX_THREAD_ID") or ""
 
 
 def _round(value: Any, exact: bool = False) -> Any:
