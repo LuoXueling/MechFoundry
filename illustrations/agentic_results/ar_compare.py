@@ -13,7 +13,7 @@ MODELS.  The paper's pages are Claude Haiku, Sonnet and Opus (``--haiku/--sonnet
 ``--model KEY=ROOT`` (repeated, left to right) takes any two or three batch roots instead, e.g.
 the open-weight Codex batches ``--model deepseek=ROOT --model kimi=ROOT``.  The plan keeps the
 order as the order of its ``roots``; the header names each model from its runs' metrics.json
-``model`` (``model_label``).  Two columns of one model (the same DeepSeek at medium and at
+``model`` (``model_label``).  Two columns of one model (the same DeepSeek at high and at
 max reasoning effort) would share that name, so a name that two or more columns share gets
 each one's ``effort`` from its runs' metrics.json, or its key (``distinct_labels``).
 
@@ -225,23 +225,47 @@ def make_plan(roots, only=None, list_path=CAT.OBJECTS, allow_missing=False):
             "objects": objects, "order": order}
 
 
+CODEX_MODELS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..",
+                            "experiments", "agentic_batch", "codex_models.json")
+
+
+def served_effort(model, effort):
+    """The effort the model's API applies to a requested one: codex_models.json's
+    ``effort_served`` for the model whose HF id or alias ``model`` is.  DeepSeek serves low and
+    medium as high (user, 2026-11-19), so its batch run with --effort medium is headed "high
+    effort"; metrics.json keeps the requested "medium".  Any other model or effort: unchanged."""
+    try:
+        cat = json.load(open(CODEX_MODELS))["models"]
+    except (OSError, ValueError, KeyError):
+        return effort
+    name = str(model or "").lower().split(":")[0]
+    for key, e in cat.items():
+        ids = {key, str(e.get("hf", "")).lower(), *map(str.lower, e.get("aliases", [])),
+               *map(str.lower, e.get("vendor", []))}
+        if name in ids:
+            return (e.get("effort_served") or {}).get(effort, effort)
+    return effort
+
+
 def batch_effort(mets):
-    """The one reasoning effort of a batch's runs (metrics.json ``effort``, run_batch.sh's
-    --effort), or None when they are mixed or any run lacks it: a heading that named one
-    effort for a batch run at several would misdescribe part of its column."""
-    vals = {str(m.get("effort") or "").strip() for m in mets}
+    """The one reasoning effort of a batch's runs as the model served it (metrics.json
+    ``effort``, run_batch.sh's --effort, through served_effort), or None when they are mixed
+    or any run lacks it: a heading that named one effort for a batch run at several would
+    misdescribe part of its column."""
+    vals = {served_effort(m.get("model"), str(m.get("effort") or "").strip()) for m in mets}
     return vals.pop() if len(vals) == 1 and "" not in vals else None
 
 
 def distinct_labels(labels, efforts):
     """``labels`` with every heading that two or more columns share told apart: the same
-    model run at two reasoning efforts (DeepSeek V4.1 Flash at medium and at max) would
+    model run at two reasoning efforts (DeepSeek V4.1 Flash at high and at max) would
     otherwise read alike over both groups.  Each such column gets ", <effort> effort"
     ('DeepSeek V4.1 Flash with Codex, max effort'), or ", <key>" when its batch's effort is
     mixed or missing, or when the efforts do not tell those columns apart either.  A label
     no other column has stays as it was, so the Haiku / Sonnet / Opus pages and the
     two-model open pages keep their headings (at 6 pt bold the longest, '..., medium
-    effort', is 48 mm, inside a three-model group's 58)."""
+    effort', is 48 mm, inside a three-model group's 58; DeepSeek's requested medium is
+    headed 'high effort', see served_effort)."""
     out = dict(labels)
     for lab in set(labels.values()):
         same = [m for m in labels if labels[m] == lab]
@@ -285,7 +309,15 @@ def light_record(i, run):
     rec["unit_system"], rec["m_per_length_unit"] = unit, units[1]
     rec["ground"] = {"grid": PR.ui_grid(V, float(V[:, 1].min()))[3]}
     rz, rj = (os.path.join(s, "boundary_conditions", n) for n in ("resolved.npz", "resolved.json"))
+    stale = False
     if os.path.exists(rz) and os.path.exists(rj):
+        # masks over another face count: resolved on an earlier body of a session rewound
+        # past its BCs (ar_prep.prep_run does not draw them either)
+        _z = np.load(rz)
+        stale = any(len(_z[k]) != len(mesh.faces) for k in _z.files)
+        if stale:
+            rec["notes"].append("BC regions resolved on an earlier body (session rewound): not reached")
+    if os.path.exists(rz) and os.path.exists(rj) and not stale:
         rec["_reached"].append("bc")
         regions = json.load(open(rj)).get("regions", [])
         cp = os.path.join(s, "case", "case.json")

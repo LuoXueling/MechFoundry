@@ -1,0 +1,8 @@
+{
+ "deepseek": "B",
+ "deepseek_max": "C",
+ "kimi": "D",
+ "haiku": "A",
+ "sonnet": "E",
+ "opus": "F"
+}

@@ -1,158 +1,152 @@
-# The three-model evaluation
+# Grading the six operator sets
 
-Moved from `illustrations/agentic_results/model_eval/` (2026-10-17). The evaluator prompts
-`prompt_<k>.md` are kept exactly as sent.
+The 50 objects of `experiments/agentic_batch/objects_50.txt`, each run by six operator sets, are
+graded together so that they can be ranked in one table:
 
-The 50 objects of `experiments/agentic_batch/objects_50.txt`, each run by Haiku, Sonnet and Opus
-(`output/agentic_batch50_haiku`, `output/agentic_batch50`, `output/agentic_batch50_opus`), are
-rated by three independent evaluator agents on geometry, boundary conditions and material, each
-High / Moderate / Low, with the rubric in `evaluator_prompt.md` (eleven criteria scored met /
-partial / failed; the category rating follows mechanically).
+| Key | Operator | Harness | Batch |
+|---|---|---|---|
+| `deepseek` | DeepSeek-V4.1-Flash-1017, high effort (medium requested: DeepSeek serves low and medium as high) | Codex CLI | `output/agentic_batch50_deepseek` |
+| `deepseek_max` | DeepSeek-V4.1-Flash-1017, max effort | Codex CLI | `output/agentic_batch50_deepseek_max` |
+| `kimi` | Kimi-K3.1-Pro | Codex CLI | `output/agentic_batch50_kimi` |
+| `haiku` | Claude Haiku 5.5 | Claude Code | `output/agentic_batch50_haiku` |
+| `sonnet` | Claude Sonnet 5.5 | Claude Code | `output/agentic_batch50` |
+| `opus` | Claude Opus 5.5 | Claude Code | `output/agentic_batch50_opus` |
 
-All three batch roots are archived in `output/archives/` (`agentic_batch50_haiku`,
-`agentic_batch50`, `agentic_batch50_opus`, `.tar.zst`). Rebuilding the packets or
-re-running `combine.py` without `--runs-fallback` needs them extracted at their original
-paths: `zstd -dc output/archives/<name>.tar.zst | tar -x -C output`.
+Labels A-F, 300 simulations per evaluator. Two evaluator families each run three evaluators on
+the same blinded packets: **Fable** (Claude Code's `fable` alias, the current Fable, effort high, headless Claude Code) and
+**Astra** (`gpt-6-astra`, effort high, Codex CLI). Each rates every simulation on geometry,
+boundary conditions and material, High / Moderate / Low, with the rubric in
+`evaluator_prompt.md` (eleven criteria scored met / partial / failed; the category rating follows
+mechanically). The three Claude batches are the ones the paper graded, with the exact category
+figures its evaluators saw; `records/` holds that grading.
 
-1. `build_packets.py` writes one blinded packet per evaluator to
-   `output/agentic_object_record/model_eval/packet_<k>/` (git-ignored): the 30 category figures, the
-   agents' replies and links to their sessions, under labels A/B/C drawn at random per evaluator.
-   The label mapping is `mappings/mapping_<k>.json`. `prompt_<k>.md` is the prompt evaluator k got;
-   `make_prompts.py --check` shows it is still exactly what the template renders for this round.
-2. Each evaluator writes `eval_<k>.json`: one entry per simulation, the criteria, the three ratings
-   and a short note per category.
-3. `combine.py` (a Python with openpyxl) maps the labels back and writes `evaluation_table.md` and
-   `evaluation_table.xlsx`: one row per object, per model the three ratings as "evaluator 1/2/3 →
-   majority vote" (all three different: the median, marked *) and the coding agent's cost (the CLI's
-   `total_cost_usd`, the workflow's own API calls excluded), then a row of High/Moderate/Low counts
-   with each model's total cost and a row of each model's total wall-clock time over the 50 runs.
+```
+README.md            this file
+RUN.md               notes of this grading (packets, blinding, versions, runs, validation, results)
+grading.json         the config: models in order, seed, figures, packets, packet_edits, families
+evaluator_prompt.md  the rubric and instructions every evaluator gets (placeholders filled per evaluator)
+scripts/             config.py build_packets.py leak_check.py make_prompts.py run_fable.sh
+                     run_astra.sh isolate.sh validate.py combine.py agreement.py drift.py
+results/             mappings/, fable/ and astra/ (prompt_<k>.md, eval_<k>.json,
+                     evaluation_table.{md,xlsx}), agreement.md, drift.md
+records/             the paper's grading, frozen (records/README.md)
+```
 
-`combine.py --evals DIR --out DIR --runs-fallback DIR` reads another round's ratings, writes its
-tables elsewhere, and reads archived batch roots from an extract. With no arguments it behaves as
-before while the three batch roots are live. If a root has been archived (Haiku and Sonnet since
-2026-10-14, Opus since 2026-10-20, so all three now), it stops with a message naming the archive and the two folders to extract, where
-before it raised a traceback.
+The fields of `grading.json` are documented in `scripts/config.py`. Packets, evaluator outputs,
+logs and CLI homes live under `output/agentic_object_record/model_eval_round3/` (git-ignored);
+the staged category figures under `output/agentic_object_record/model_eval_figures/`.
 
-## Second round: GPT-6-Astra via Codex (`astra_high/`, 2026-10-19)
+## Running it
 
-The same three-evaluator grading, repeated with **GPT-6-Astra** (`gpt-6-astra`) at **high**
-reasoning effort in the **Codex CLI 0.163.0** (`codex exec`). Evaluator k got Fable evaluator k's
-packet content, labels and rubric text, so only the evaluator model changed. The prompts differ
-from `prompt_<k>.md` only in the packet path and the output path. `astra_high/RUN.md` has the
-command lines, isolation, run times, tokens and validation. `astra_high/agreement.md` compares the
-two rounds.
-
-Procedural differences, none of which change what the evaluator could read:
-- the packets are self-contained copies at `/home/xl2254/astra_eval_work/packet_<k>`
-  (`astra_high/copy_packets.py`). The Haiku and Sonnet run folders were archived, so their replies
-  and session files were extracted from the archives. Files are hard links, not symlinks into the
-  batch folders, and the large solver and history data (VTU, `versions/`, PartField features,
-  checkpoints) was left out for all three models;
-- each Codex job ran in a bubblewrap namespace where the repo, `~/.claude`, the other packets and
-  other Codex sessions were invisible, and its only lasting writable place was its own output dir;
-- sub-agents were disabled (`--disable multi_agent`).
-
-Headline: Astra is much stricter than Fable. The two rounds' majority votes match exactly on
-52 % (geometry), 59 % (BC) and 48 % (material) of the 150 simulations, and lie within one step on
-98 / 95 / 85 %. Where they differ, Fable is almost always the higher. Astra marks M1 (part
-mapping) failed in 146 of 450 ratings, against 4 for Fable. Under both evaluators Haiku comes
-last on all three categories. Fable puts Opus ahead of Sonnet on all three; Astra has them level
-on geometry and material and Sonnet ahead on BC.
-
-## Rounds: grading another set of batches (2026-11-17)
-
-**Grader versions.** Fable is pinned: `claude-fable-5-1` is a fixed model ID. Astra is pinned by
-name only: `gpt-6-astra` has no dated snapshot through the ChatGPT login, so a later round may be
-served a different model under the same name. Neither CLI (`claude`, `codex`) is pinned. Each
-round's `RUN.md` records the versions it used (`open_models/RUN.md`, "Versions").
-
-The scripts above now take a **round**: a small JSON config in `rounds/`, whose fields are
-documented in `round_config.py`. It lists the graded models in order (key, display name, batch
-root, figure suffix, leak-check terms), the number of evaluators and the label seed. It also says
-where the mappings, packets, prompts and ratings live for each evaluator family (`fable`,
-`astra`), and which blinding redactions the packets get (`packet_edits`: per model and object, the
-reply or a session file, an exact old and new text and why). Every script but one defaults to
-`rounds/paper.json`, the round above, so the commands above still behave as they did. The
-exception is `astra_high/validate.py`: without a round it keeps its old form, `validate.py FILE
-INDEX_JSON` (one ratings file against one packet index), so the paper round's families are checked
-with `--round paper --family fable|astra`. The scripts give
-the same mappings, the same packets, the same six prompts byte for byte, and the same `evaluation_table.{md,xlsx}` and `agreement.md` from the committed
-ratings. This was checked on 2026-11-17 against the code before the change; the xlsx files differ
-only in their creation timestamp.
-
-Two things did change for every round:
-- The repo root is now wherever the scripts sit, instead of the hard-coded
-  `/home/xl2254/implicit_optimize`. The paper round keeps that old path as its `prompt_repo`,
-  because its prompts name it.
-- `evaluator_prompt.md` has four more placeholders (`{N_AGENTS}`, `{LABELS}`, `{N_OBJECTS}`,
-  `{N_SIMULATIONS}`) beside `{PACKET}` and `{OUT}`. The rubric and the instructions are unchanged.
-
-| Script | Use in a round |
-|---|---|
-| `round_config.py` | loads a config; `show --round R` prints a round, and `runner-env` gives the runners their paths |
-| `build_packets.py --round R` | writes the mappings and packets. A new round uses `packet_mode: copy`: self-contained real files (hard links where possible) with the `copy_packets.py` exclusions. It then applies the round's `packet_edits`, each to a new file (the hard link to the batch is broken, so the run's own file stays as it was; an `old` text that does not occur exactly once stops the build), and ends with the blinding check |
-| `leak_check.py --round R` | runs the blinding check on its own. It fails if any text in a packet (paths, text files, PNG text chunks) names an operator model, a harness, an evaluator or a batch folder. Its docstring says what counts, and why a bare "deepseek" does not |
-| `make_prompts.py --round R [--check]` | writes (or checks) each family's `prompt_<k>.md` from `evaluator_prompt.md` |
-| `run_fable.sh --round R K start` | runs Fable evaluator k in headless Claude Code (`claude -p --model claude-fable-5-1 --effort high`), isolated by bubblewrap and `dontAsk` permissions |
-| `astra_high/run_evaluator.sh --round R K start` | runs Astra evaluator k in Codex (`gpt-6-astra`, effort high), isolated by bubblewrap and Codex's sandbox. It is the paper round's script, generalized |
-| `isolate.sh` | the bubblewrap layer both runners share: `$HOME`, the repo and `/tmp` emptied, the packet read-only, the output dir writable, a clean environment |
-| `astra_high/validate.py --round R --family F [--live]` | checks every `eval_<k>.json` of a family against its packet |
-| `combine.py --round R --family F` | writes the family's table: N models, cost `n/p` where a run has no price, and a wall-clock row |
-| `astra_high/agreement.py --round R` | compares Fable and Astra for the round and writes to the round's `agreement.out` |
-
-### Running a round end to end
-
-This example is the open-weight round in `rounds/open_models.json`: three sets of runs made under
-the Codex CLI, DeepSeek-V4.1-Flash-1017 at medium and at max reasoning effort and Kimi-K3.1-Pro, so
-labels A/B/C and 150 simulations. Its notes, including a stopped first version that graded the
-paper round's Sonnet batch as an anchor, are in `open_models/RUN.md`. Run it from the **main
-checkout**, because the prompts and packets name the repo path they were made in. `combine.py`
-needs a Python with openpyxl (the base conda env); any `python3` runs the rest.
+Run it from the **main checkout**, because the prompts and packets name the repo path they were
+made in. `combine.py` needs a Python with openpyxl (the base conda env); any `python3` runs the
+rest. The scripts find every path from their own location, so the cwd does not matter; the
+commands below are from `experiments/model_eval`.
 
 ```shell
 cd experiments/model_eval
-# 0. The batches have finished: output/agentic_batch50_deepseek,
-#    output/agentic_batch50_deepseek_max, output/agentic_batch50_kimi (_batches/ + runs).
-# 1. Build the 10 category figures per model (env mechfoundry-warp117) and copy them into the
-#    round's figures folder (output/agentic_object_record/model_eval_round2_figures/):
-#      illustrations/agentic_results/ar_categories.py --batch-root output/agentic_batch50_deepseek --suffix _deepseek
-#      illustrations/agentic_results/ar_categories.py --batch-root output/agentic_batch50_deepseek_max --suffix _deepseek_max
-#      illustrations/agentic_results/ar_categories.py --batch-root output/agentic_batch50_kimi --suffix _kimi
-# 2. Write the mappings and the self-contained packets
-#    (output/agentic_object_record/model_eval_round2/packet_<k>), with the round's packet_edits
-#    applied. The build ends with the blinding check, and a hit fails it: read the hit, then add a
-#    packet_edit or a reviewed leak_allow to the round config and rebuild (never edit a packet
-#    by hand: a rebuild would lose it).
-python3 build_packets.py --round open_models
-python3 leak_check.py --round open_models          # the same check again, on its own
+# 0. All six batch roots in output/. The Claude ones are archived:
+#      zstd -dc ../../output/archives/<name>.tar.zst | tar -x -C ../../output
+#    (agentic_batch50_haiku, agentic_batch50, agentic_batch50_opus).
+# 1. The 10 category figures per model, staged in output/agentic_object_record/model_eval_figures/:
+#    the open-weight ones built by illustrations/agentic_results/ar_categories.py
+#    (--batch-root output/agentic_batch50_<x> --suffix _<x>), the Claude ones copied from the
+#    paper's packets (output/agentic_object_record/model_eval/packet_k/figures).
+# 2. Mappings (results/mappings/) and the self-contained packets, with the packet_edits applied.
+#    The build ends with the blinding check, and a hit fails it: read the hit, then add a
+#    packet_edit or a reviewed leak_allow to grading.json and rebuild (never edit a packet by
+#    hand: a rebuild would lose it).
+python3 scripts/build_packets.py
+python3 scripts/leak_check.py                 # the same check again, on its own
 # 3. Write the six prompts and commit them as sent.
-python3 make_prompts.py --round open_models
-python3 make_prompts.py --round open_models --check
+python3 scripts/make_prompts.py
+python3 scripts/make_prompts.py --check
 # 4. Run 3 Fable + 3 Astra evaluators, each in its own namespace (in sequence or in parallel).
-for k in 1 2 3; do bash run_fable.sh --round open_models $k start & done
-for k in 1 2 3; do bash astra_high/run_evaluator.sh --round open_models $k start & done; wait
-#    To continue an evaluator that stopped early:
-#      bash run_fable.sh --round open_models K resume "Continue ..."
+for k in 1 2 3; do bash scripts/run_fable.sh $k start & done
+for k in 1 2 3; do bash scripts/run_astra.sh $k start & done; wait
 # 5. Validate the files the evaluators wrote, then commit copies beside the prompts.
-python3 astra_high/validate.py --round open_models --family fable --live
-python3 astra_high/validate.py --round open_models --family astra --live
+python3 scripts/validate.py --family fable --live
+python3 scripts/validate.py --family astra --live
 for f in fable astra; do for k in 1 2 3; do
-  cp ../../output/agentic_object_record/model_eval_round2/$f/evaluator_$k/eval_$k.json open_models/$f/
+  cp ../../output/agentic_object_record/model_eval_round3/$f/evaluator_$k/eval_$k.json results/$f/
 done; done
-python3 astra_high/validate.py --round open_models --family fable     # the committed copies
-python3 astra_high/validate.py --round open_models --family astra
-# 6. Write the tables and the agreement report.
-python combine.py --round open_models --family fable
-python combine.py --round open_models --family astra
-python3 astra_high/agreement.py --round open_models
+python3 scripts/validate.py --family fable    # the committed copies
+python3 scripts/validate.py --family astra
+# 6. The tables, Fable against Astra, and the Claude sets against the paper's grading.
+python scripts/combine.py --family fable
+python scripts/combine.py --family astra
+python3 scripts/agreement.py
+python3 scripts/drift.py
 ```
 
-A smoke test uses a stand-in packet and a short isolation prompt, and costs a few cents:
-`SMOKE_PACKET=DIR bash run_fable.sh --round R 1 smoke "TEXT"`, and the same for
-`astra_high/run_evaluator.sh`. Its logs go to `<family logs>/smoke/`.
+| Script | Does |
+|---|---|
+| `config.py` | loads `grading.json`; `show` prints it, `runner-env` gives the runners their paths |
+| `build_packets.py` | writes the mappings and packets: real files (hard links where possible) without the bulky solver data, then the `packet_edits`, each to a new file (the hard link to the batch is broken, so the run's own file stays as it was; an `old` text that does not occur exactly once stops the build), then the blinding check |
+| `leak_check.py [DIR ...]` | the blinding check on its own. It fails if any text in a packet (paths, text files, PNG text chunks) names an operator model, a harness, an evaluator or a batch folder. Its docstring says what counts, and why a bare "deepseek" does not |
+| `make_prompts.py [--check]` | writes (or checks) each family's `prompt_<k>.md` from `evaluator_prompt.md` |
+| `run_fable.sh K start` | Fable evaluator k in headless Claude Code (`claude -p --model fable --effort high`), isolated by bubblewrap and `dontAsk` permissions |
+| `run_astra.sh K start` | Astra evaluator k in Codex (`gpt-6-astra`, effort high), isolated by bubblewrap and Codex's sandbox |
+| `isolate.sh` | the bubblewrap layer both runners share |
+| `validate.py --family F [--live]` | checks every `eval_<k>.json` of a family against its packet |
+| `combine.py --family F` | the family's table: six models, cost `n/p` where a run has no price, and a wall-clock row |
+| `agreement.py` | Fable against Astra, `results/agreement.md` |
+| `drift.py` | Haiku, Sonnet and Opus against the paper's votes for the same runs, per family and category, `results/drift.md` |
 
-A new round is a new `rounds/<name>.json`; copy `open_models.json` to start one. Give it:
-- new mappings, packet and output folders;
-- a label seed whose draws differ across the evaluators;
-- a packet folder name that does not reveal the models. The packet path is in every `index.json`
-  entry and in the prompt, so the leak check sees it.
+## How isolation works
+
+Both runners share layer 1 (`scripts/isolate.sh`, bubblewrap): the whole filesystem read-only;
+`$HOME`, the repo and `/tmp` emptied; the packet's `index.json`, `figures/` and `runs/` bound
+read-only into a throwaway cwd; the output dir the one writable place that survives; a clean
+environment. Each runner then binds in its own login (the real `~/.claude/.credentials.json` or
+`~/.codex/auth.json` into a private CLI home) and adds layer 2: for Fable, `--permission-mode
+dontAsk` with an allowlist (Read/Glob/Grep on the packet, Write/Edit on the output dir, Bash for
+a fixed set of read-and-script commands, no Agent tool, no MCP servers, auto-memory off); for
+Astra, Codex's `workspace-write` sandbox with no network for commands, approvals never asked,
+sub-agents and memories off. `run_fable.sh` refuses to start with less than 3 h left on the
+login token, so that no token refresh happens through the bind mount. Both refuse a prompt that
+is not exactly what `make_prompts.py` renders. The details and the known difference between the
+families (a Fable python3 command can reach the network) are in `RUN.md`, "Isolation".
+
+A smoke test uses a stand-in packet and a short isolation prompt, and costs a few cents:
+`SMOKE_PACKET=DIR bash scripts/run_fable.sh 1 smoke "TEXT"`, and the same for `run_astra.sh`.
+Its output and logs go to `<family logs>/smoke/`.
+
+A Fable evaluator stopped by the claude.ai 5-hour limit ("You've hit your 5-hour limit") is
+resumed after the reset with `bash scripts/run_fable.sh K resume "TEXT"` (the same Claude
+session); its entries so far stay in its output file. A text that worked: "Your previous turn
+was cut off by a usage limit. Continue the task where you left off: keep the entries already in
+your output file, grade the simulations not yet in it, and finish with all 300 entries as the
+instructions say." `run_astra.sh K resume "TEXT"` does the same for Codex.
+
+## Blinding between harnesses
+
+Blinding must hold between the two harnesses, not only between models. Replies saying a Bash
+`cat` was refused and the Read tool used instead name Claude Code, as `sed`/`cat` per an
+environment note or `apply_patch` name Codex, and so does a `path:line` citation, a Codex output
+habit. No leak term matches these, so they were found by reading the replies, and each is a
+`packet_edit` in `grading.json` (36, listed by reason in `RUN.md`).
+
+## Seed
+
+Evaluator k shuffles the labels with `random.Random(2198 + k)`. 2198 is the first seed from 2026
+on that gives every model one early (A/B), one middle (C/D) and one late (E/F) label over the
+three evaluators (deepseek B/E/C, deepseek_max C/B/E, kimi D/F/A, haiku A/D/F, sonnet E/A/D,
+opus F/C/B for k = 1, 2, 3). Evaluators grade in label order and a usage-limit stop falls late
+in a packet, so no model is always graded when an evaluator is freshest or most tired.
+
+## Grader versions
+
+Neither grader is pinned. Fable runs Claude Code's `fable` alias, the current Fable
+(`claude-fable-5-2` on 2026-11-19; the paper's evaluators ran `claude-fable-5-1`), by the user's
+choice (2026-11-19). Astra is pinned by name only: `gpt-6-astra` has no dated snapshot through
+the ChatGPT login, so it may be served a different model under the same name than in the paper's
+grading. So `scripts/drift.py`'s Fable section measures the change of Fable model as well as of
+the grading. Neither CLI (`claude`, `codex`) is
+pinned. `RUN.md`, "Versions", records what this grading used.
+
+## Records
+
+`records/paper/` is the paper's grading of Haiku, Sonnet and Opus (Fable 2026-10-14, Astra
+2026-10-19), kept as committed; `records/README.md` says what is there and at which commit the
+code that rebuilt it lives. Only `drift.py` reads it.

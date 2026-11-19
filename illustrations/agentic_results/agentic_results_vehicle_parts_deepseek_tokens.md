@@ -1,0 +1,9 @@
+Supplementary table. Token use per run of agentic_results (sources: agentic_results/ar_stats.json). Cached = input tokens read from the prompt cache (cache_read_input_tokens); tokens written to the cache (cache_creation_input_tokens) were processed in full and count as not cached, with the plain uncached input (input_tokens).  Input total = cached + not cached.  Codex runs (agent codex): metrics.json records Codex's counts in these fields (cache_read_input_tokens = cached_input_tokens, cache_creation_input_tokens = cache_write_input_tokens, input_tokens = the rest of the input).  The figure's cost bars are relative to the largest run: 4.8 M input tokens, 64 k output tokens, 12 min 26 s.
+
+| row | instruction | session_id | model | agent | input_tokens_total | input_tokens_cached | input_tokens_not_cached | of_which_written_to_cache | of_which_plain_uncached | output_tokens | wall_clock_s | status | displacement_scale |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | a car suspension control arm with rubber bushings | e7dc01e7a3f4 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 4417454 | 4310144 | 107310 | 0 | 107310 | 48317 | 561.6 | ok | 10.0 |
+| 2 | a truck leaf spring | 7b9c26c86f8e | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 4769290 | 4669568 | 99722 | 0 | 99722 | 62030 | 686.7 | ok | 100.0 |
+| 3 | a car wheel with its rubber tyre | d41f540d2e41 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 1973242 | 1902592 | 70650 | 0 | 70650 | 29029 | 326.3 | ok | 2000.0 |
+| 4 | a car brake disc | 9f88d348f190 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 4106248 | 4008960 | 97288 | 0 | 97288 | 55352 | 526.7 | ok | 2000.0 |
+| 5 | a crankshaft | b33df010e457 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 4683987 | 4567168 | 116819 | 0 | 116819 | 63506 | 746.4 | ok | 5000.0 |

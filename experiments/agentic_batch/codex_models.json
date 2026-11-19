@@ -13,7 +13,8 @@
   "output. ab_helper.codex_cost prices a run's tokens with it; metrics.json records it as cost_basis.",
   "route_listing: what the pinned HF route listed (https://router.huggingface.co/v1/models, 2026-11-17), for",
   "reference only; the listing gives no cached-input price.",
-  "effort: the reasoning effort a run sends when run_batch.sh gets no --effort (Codex's model_reasoning_effort -> reasoning_effort). 'medium', as the Claude batches ran (user, 2026-11-17). DeepSeek on its deepinfra route accepts low, medium, high, xhigh and max (2026-11-18, two calls per level on one bending problem): low to xhigh, and no effort at all, reasoned alike (about 1 400-2 100 reasoning tokens), and only max reasoned longer (2 600-6 300), so max is its highest effort (--effort max; output/agentic_batch50_deepseek_max). A single call per level the day before had suggested no effort reasoned longest (1306 vs about 520 tokens); two calls per level vary as much as that. Kimi accepts low/medium/high through HF (2026-11-17); higher levels were not tried. DeepSeek's own API takes medium too."
+  "effort: the reasoning effort a run sends when run_batch.sh gets no --effort (Codex's model_reasoning_effort -> reasoning_effort). 'medium', as the Claude batches ran (user, 2026-11-17). DeepSeek on its deepinfra route accepts low, medium, high, xhigh and max (2026-11-18, two calls per level on one bending problem): low to xhigh, and no effort at all, reasoned alike (about 1 400-2 100 reasoning tokens), and only max reasoned longer (2 600-6 300), so max is its highest effort (--effort max; output/agentic_batch50_deepseek_max). A single call per level the day before had suggested no effort reasoned longest (1306 vs about 520 tokens); two calls per level vary as much as that. Kimi accepts low/medium/high through HF (2026-11-17); higher levels were not tried. DeepSeek's own API takes medium too.",
+  "effort_served: the effort a model's API actually applies to a requested one, where it differs. DeepSeek serves low and medium as high (user, 2026-11-19; it matches the 2026-11-18 calls above, where low to xhigh reasoned alike), so a DeepSeek run with --effort medium is a high-effort run: output/agentic_batch50_deepseek is labelled 'high effort (medium requested)', while its metrics.json keep the requested 'medium'."
  ],
  "models": {
   "deepseek-v4.1-flash": {
@@ -41,6 +42,10 @@
      "input": 0.098,
      "output": 0.294
     }
+   },
+   "effort_served": {
+    "low": "high",
+    "medium": "high"
    }
   },
   "kimi-k3.1-pro": {

@@ -170,6 +170,9 @@ Moonshot). Codex speaks only the Responses API to a custom provider, and all of 
 offer it.
 
 - **Models, routes and accounting prices:** `codex_models.json`.
+- **The three open-weight 50-object batches** (how they were run, provider speed, reruns):
+  `open_weight_batches.md`; `codex_model_latency.py` and `codex_call_rate.py` measure a batch's
+  model time and decode rate from its Codex rollouts.
 - **Endpoints and what was verified:** `ab_helper.py` (`CODEX_PROVIDERS`).
 - **User-facing summary:** the top-level README ("Headless batch with Codex and open-weight models").
 - **Hugging Face goes through a local translator, `hf_relay.py`.** The router's own Responses
@@ -203,7 +206,7 @@ The prompt is `prompt_template.txt`, the same as for Claude. What differs:
 | reads outside the two folders | refused by deny rules | possible (Codex reads with shell commands), so the skill's rule 3 holds by instruction only |
 | writes | `Write`/`Edit` on `operator/**` only | `apply_patch`, anywhere the sandbox allows; the note confines it to `operator/` |
 | long runner steps | `BASH_DEFAULT_TIMEOUT_MS` 20 min | `exec_command` returns while the process keeps running; the note tells the agent to wait on it with `write_stdin` |
-| effort | `--effort` (default `medium`) | `model_reasoning_effort`: `--effort`, else the model's `effort` in `codex_models.json` (`medium`) |
+| effort | `--effort` (default `medium`) | `model_reasoning_effort`: `--effort`, else the model's `effort` in `codex_models.json` (`medium`). DeepSeek serves `low` and `medium` as `high` (`effort_served`), so a DeepSeek run at `medium` is a high-effort run; `metrics.json` records the effort requested |
 | record | `claude_session/`, `claude_stream.jsonl`, `claude_result.json` | `codex_home/sessions/…/rollout-*.jsonl`, `codex_stream.jsonl`, `codex_stderr.log`, `codex_model.json` |
 
 `codex_tools.txt` maps the tools the skill names to Codex's own: Read → `sed -n 'a,bp'`/`cat`,

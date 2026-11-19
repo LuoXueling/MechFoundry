@@ -811,6 +811,38 @@ run by `run_realizations.sh`, `run_material_sweep.sh` and `run_bc_sweep.sh`; see
 
 </details>
 
+<details>
+<summary>
+Batch commands for DeepSeek and Kimi (Codex instead of Claude Code)
+</summary>
+
+The same 50 objects, run by open-weight models under the Codex CLI with `--agent codex`
+([Headless batch with Codex](#headless-batch-with-codex-and-open-weight-models)). The runs
+below used codex-cli 0.163.0 on 2026-11-18/19, through Hugging Face Inference Providers
+(DeepSeek-V4.1-Flash-1017 on `deepinfra`, Kimi-K3.1-Pro on `moonshotai`), on the same skill,
+workflow and solver code as the Claude batches, so that only the model and the harness differ.
+Kimi ran at effort `medium`; DeepSeek at `medium` and at `max`. DeepSeek serves low and
+medium as high, so its `medium` batch is a high-effort batch (`codex_models.json`,
+`effort_served`). How they were run (provider speed, probes, reruns):
+[`open_weight_batches.md`](experiments/agentic_batch/open_weight_batches.md).
+
+```shell
+OUT=output LIST=experiments/agentic_batch/objects_50.txt
+experiments/agentic_batch/codex_preflight.sh --model deepseek-v4.1-flash     # ALL PASS before a batch
+experiments/agentic_batch/codex_preflight.sh --model kimi-k3.1-pro
+# one run at a time per batch, each on its own idle GPU
+experiments/agentic_batch/run_batch.sh --agent codex --model kimi-k3.1-pro -j 1 --gpus 1 --out $OUT/agentic_batch50_kimi $LIST
+experiments/agentic_batch/run_batch.sh --agent codex --model deepseek-v4.1-flash --effort medium -j 1 --gpus 0 --out $OUT/agentic_batch50_deepseek $LIST
+experiments/agentic_batch/run_batch.sh --agent codex --model deepseek-v4.1-flash --effort max -j 1 --gpus 1 --out $OUT/agentic_batch50_deepseek_max $LIST
+```
+
+A DeepSeek run takes about 8 minutes at medium (served as high) and 12 at max, Kimi about 10,
+most of it the model's own time. Each run's `cost_usd` is priced from its tokens at the model's API
+price (`codex_models.json`), not billed. The open-weight batches are graded beside the Claude ones
+in [`experiments/model_eval/`](experiments/model_eval/README.md).
+
+</details>
+
 ### Experiments
 
 `experiments/` holds the studies behind the paper, each with a README; extract the
@@ -833,14 +865,17 @@ showcase sweeps. Outputs go to `--out` under `output/`.
 
 <details>
 <summary>
-<code>model_eval/</code>: three-evaluator grading of the batches
+<code>model_eval/</code>: blinded grading of the six operator sets
 </summary>
 
-In [`experiments/model_eval/`](experiments/model_eval/README.md), three blinded evaluator
-agents grade the Haiku, Sonnet and Opus batches on geometry, boundary conditions and
-material. The Fable round is at the top level and the GPT-6-Astra round in `astra_high/`
-(`agreement.md` compares them); `combine.py` writes `evaluation_table.{md,xlsx}`. Needs
-the three batch archives.
+In [`experiments/model_eval/`](experiments/model_eval/README.md), three Fable and three
+GPT-6-Astra evaluator agents grade the six operator sets together (DeepSeek-V4.1-Flash-1017 at
+high effort (requested as medium, which DeepSeek serves as high) and at max effort,
+Kimi-K3.1-Pro, Haiku, Sonnet, Opus) on geometry, boundary conditions and material, from blinded
+packets; `scripts/combine.py` writes each family's `results/<family>/evaluation_table.{md,xlsx}`
+(graded 2026-11-19; notes and headline numbers in `RUN.md`). The paper's grading of the Haiku,
+Sonnet and Opus batches is kept in `records/paper/`. Needs the three Claude batch archives and the
+three open-weight batch folders.
 
 </details>
 

@@ -1,0 +1,2357 @@
+{
+ "E_log10_range_Pa": [
+  9.0,
+  11.5
+ ],
+ "view_dir_default": [
+  1.5,
+  1.25,
+  3.0
+ ],
+ "runs": [
+  {
+   "index": 0,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek_max/tv-remote-control-20261118-213257/workflow/dca76f0519f4",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "tv-remote-control-20261118-213257",
+    "instruction": "a TV remote control",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "dca76f0519f4",
+    "session_ids": [
+     "dca76f0519f4"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f1a6-6bf1-7373-9cdd-29717bc71182",
+    "input_tokens": 86605,
+    "cache_read_input_tokens": 2297088,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 43563,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 2383693,
+     "cached_input_tokens": 2297088,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 43563,
+     "reasoning_output_tokens": 24951
+    },
+    "thinking_tokens": 24951,
+    "effort": "max",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 55,
+     "view_image": 12
+    },
+    "images_viewed": 12,
+    "cost_usd": 0.09204,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 463.796,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 9,
+     "judge": 1
+    },
+    "runner_runs": 9,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a TV remote control",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T21:32:57-05:00",
+    "finished_at": "2026-11-18T21:40:41-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T21-32-58-01a1f1a6-6bf1-7373-9cdd-29717bc71182.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 2500000000.0,
+     "poisson_ratio": 0.35,
+     "density": 1100.0,
+     "held": [
+      {
+       "name": "grip_fix",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "button_traction",
+       "traction": [
+        0.0,
+        0.0,
+        -42178.08342341687
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -0.0,
+       -9.80665
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": 0,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-21-39-05/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 369.2,
+      "geometry_drawing": 12.8,
+      "geometry_generation": 15.6,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.1,
+      "setup_segmentation": 10.2,
+      "setup_regions": 2.9,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 8.1,
+      "solve_after": 2.0,
+      "overhead_startup": 15.9,
+      "overhead_between": 2.5,
+      "overhead_stop": 18.4,
+      "overhead_commands": 3.7
+     },
+     "groups": {
+      "agent": 369.2,
+      "workflow": 43.9,
+      "solver": 10.1,
+      "overhead": 40.6
+     },
+     "wall_clock_s": 463.796,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T21-32-58-01a1f1a6-6bf1-7373-9cdd-29717bc71182.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "SDXL \u2192 TripoSG",
+   "surface": {
+    "vertices": 10908,
+    "faces": 21812
+   },
+   "extent": 0.18181818642187864,
+   "dims": [
+    0.03448567714076489,
+    0.18181818642187864,
+    0.06369462836300954
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.03,
+     0.022,
+     0.018
+    ],
+    "rgb_spread": 0.10708078818067264,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "grip_fix",
+      "category": "dirichlet",
+      "faces": 10658,
+      "mean_normal": [
+       -0.0,
+       -1.0,
+       -0.0
+      ],
+      "area": 0.008625741344852498,
+      "proj_area": 0.00239884133038935,
+      "facing_camera": 0.46230668968062477,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.5769230769230769,
+       "gap": 0.0007272727456875146,
+       "tube_radius": 0.0010909091185312718,
+       "why": "faces the camera at 46.2% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "button_traction",
+      "category": "neumann",
+      "faces": 171,
+      "mean_normal": [
+       0.024,
+       0.2,
+       0.98
+      ],
+      "area": 0.0001355267467415676,
+      "proj_area": 9.158136278754076e-05,
+      "facing_camera": 1.0,
+      "unoccluded_facing": 1.0
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -0.0,
+      -9.80665
+     ],
+     "dir": [
+      0.0,
+      -0.0,
+      -1.0
+     ],
+     "g": 1.0,
+     "volume": 0.00010111635165544348,
+     "surface_watertight": true,
+     "density": 1100.0,
+     "mass": 0.11122798682098782,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.11122798682098782,
+     "weight_N": 1.09077393695804,
+     "real_mass_kg": 0.12,
+     "real_weight_N": 1.1767979999999998,
+     "weight_over_real_weight": 0.9268998901748985,
+     "projected_fraction": 0.8194457900344777
+    },
+    "surface_proj_area": 0.005268245395927426,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "button_traction",
+      "traction": [
+       0.0,
+       0.0,
+       -42178.08342341687
+      ],
+      "tail": [
+       0.01741111607223718,
+       0.151817312734989,
+       0.05901069077467459
+      ],
+      "tip": [
+       0.01741111607223718,
+       0.151817312734989,
+       0.026283417218736446
+      ],
+      "projected_fraction": 0.8194457900344777,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-21-39-05",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-21-39-05/vtu/solution_t0000.vtu",
+    "nodes": 13723,
+    "hexes": 10537,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 5.605063087764203e-17,
+    "outside_points": 0,
+    "umax_surface": 1.652494888451389e-05,
+    "umax_nodes": 1.876269661429064e-05,
+    "umax_workflow_export": 1.6520081771886908e-05,
+    "ratio_to_workflow_export": 1.0002946179500918,
+    "umax_surface_m": 1.652494888451389e-05
+   },
+   "scale": {
+    "factor": 1000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 3268.7489532827035,
+     "reach": 0.3,
+     "physical_extent": 0.18,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.09088721656353185,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    2500000000.0,
+    2500000000.0
+   ],
+   "E_surface_Pa": [
+    2500000000.0,
+    2500000000.0
+   ],
+   "view": {
+    "dir": [
+     0.5082474708630575,
+     0.6427876096865393,
+     0.5731566951495644
+    ],
+    "azimuth_deg": 15,
+    "elevation_deg": 40.0,
+    "governing_load_dir": [
+     0.0,
+     0.0,
+     -42178.08342341687
+    ],
+    "line_of_sight_deg": 55.0,
+    "axis_off_deg": 41.6,
+    "silhouette_area_over_R2": 0.5491,
+    "visible_area_over_R2": 0.9322,
+    "panel_fill": 0.132,
+    "height_shown": 1.0,
+    "shows": 0.841,
+    "paper_view_shows": 0.703,
+    "turn_from_paper_deg": 23.4,
+    "why": "paper view excluded (within 35 deg of the governing load); the view nearest it within 95% of the best",
+    "worst_load_shown_fraction_of_its_best": 1.0,
+    "worst_support_shown_fraction_of_its_best": 0.7876557706400084,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 1,
+     "rejected": [],
+     "predicted": {
+      "preview_px_per_mm": 13.78,
+      "regions": {
+       "grip_fix": 30.82,
+       "button_traction": 1.35
+      },
+      "corners": {
+       "SDXL \u2192 TripoSG": "br",
+       "50 mm": "bl",
+       "Body load 1.1 N": "br",
+       "\u00d71000": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca TV remote control\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.0017859352900045518,
+    "key_light_ray": [
+     -0.2269,
+     -0.9397,
+     -0.2559
+    ],
+    "grid": {
+     "cell": 0.05,
+     "rings": 9,
+     "reach": 0.45
+    }
+   },
+   "panels": [
+    "ar_0_arrows.vtk",
+    "ar_0_bc.vtk",
+    "ar_0_fit.vtk",
+    "ar_0_grid.vtk",
+    "ar_0_materials.vtk",
+    "ar_0_painted.vtk",
+    "ar_0_shadow.vtk",
+    "ar_0_shadow_def.vtk",
+    "ar_0_solve.vtk",
+    "ar_0_support.vtk"
+   ]
+  },
+  {
+   "index": 1,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek_max/usb-stick-20261118-214041/workflow/d49e5afc145f",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "usb-stick-20261118-214041",
+    "instruction": "a USB stick",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "d49e5afc145f",
+    "session_ids": [
+     "d49e5afc145f"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f1ad-8157-72d0-ac7a-6eb510068076",
+    "input_tokens": 274729,
+    "cache_read_input_tokens": 3189376,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 95195,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 3464105,
+     "cached_input_tokens": 3189376,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 95195,
+     "reasoning_output_tokens": 80454
+    },
+    "thinking_tokens": 80454,
+    "effort": "max",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 62,
+     "view_image": 9
+    },
+    "images_viewed": 9,
+    "cost_usd": 0.215789,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 752.831,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 11,
+     "judge": 1
+    },
+    "runner_runs": 11,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a USB stick",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T21:40:41-05:00",
+    "finished_at": "2026-11-18T21:53:14-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T21-40-42-01a1f1ad-8157-72d0-ac7a-6eb510068076.jsonl",
+    "case": {
+     "material_mode": "parts",
+     "parts": [
+      {
+       "density": 1150.0,
+       "id": 0,
+       "poisson_ratio": 0.37,
+       "youngs_modulus": 2400000000.0
+      },
+      {
+       "density": 7925.0,
+       "id": 1,
+       "poisson_ratio": 0.285,
+       "youngs_modulus": 200000000000.0
+      },
+      {
+       "density": 1150.0,
+       "id": 2,
+       "poisson_ratio": 0.37,
+       "youngs_modulus": 2400000000.0
+      },
+      {
+       "density": 1150.0,
+       "id": 3,
+       "poisson_ratio": 0.37,
+       "youngs_modulus": 2400000000.0
+      },
+      {
+       "density": 1150.0,
+       "id": 4,
+       "poisson_ratio": 0.37,
+       "youngs_modulus": 2400000000.0
+      }
+     ],
+     "youngs_modulus_range": [
+      2400000000.0,
+      199999995904.0
+     ],
+     "youngs_modulus_contrast": 83.333,
+     "held": [
+      {
+       "name": "plug_fix",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "housing_left_x",
+       "traction": [
+        626118.3720528211,
+        0.0,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": null
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "parts_montage": "materials/parts/montage.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-21-50-16/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 676.8,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 2.8,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.2,
+      "setup_segmentation": 10.2,
+      "setup_regions": 7.7,
+      "setup_values_material": 3.9,
+      "paint": 1.1,
+      "solve": 5.7,
+      "solve_after": 4.2,
+      "overhead_startup": 19.3,
+      "overhead_between": 4.2,
+      "overhead_stop": 8.8,
+      "overhead_commands": 5.9
+     },
+     "groups": {
+      "agent": 676.8,
+      "workflow": 27.9,
+      "solver": 9.9,
+      "overhead": 38.3
+     },
+     "wall_clock_s": 752.831,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T21-40-42-01a1f1ad-8157-72d0-ac7a-6eb510068076.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 12498,
+    "faces": 24996
+   },
+   "extent": 0.0606060616846662,
+   "dims": [
+    0.018025808694801526,
+    0.006627695955103263,
+    0.0606060616846662
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.694,
+     0.694,
+     0.697
+    ],
+    "rgb_spread": 0.058009330174351885,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "plug_fix",
+      "category": "dirichlet",
+      "faces": 5282,
+      "mean_normal": [
+       0.0,
+       -0.0,
+       1.0
+      ],
+      "area": 0.0006296274964597779,
+      "proj_area": 0.00017140947037930395,
+      "facing_camera": 0.5507184652337168
+     },
+     {
+      "key": "neumann_1",
+      "name": "housing_left_x",
+      "category": "neumann",
+      "faces": 408,
+      "mean_normal": [
+       -0.997,
+       -0.001,
+       -0.079
+      ],
+      "area": 4.136879319509272e-05,
+      "proj_area": 1.673238765065815e-05,
+      "facing_camera": 0.9989790726039355,
+      "unoccluded_facing": 1.0123102004020559
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 5.55525156739898e-06,
+     "surface_watertight": true,
+     "density": 2063.452880859375,
+     "mass": 0.011462999850647984,
+     "weight_method": "volume of geometry/physical.glb x mean density of the material field (materials/parts/field/manifest.json) x |loads.acceleration|",
+     "mass_kg": 0.011462999850647984,
+     "weight_N": 0.11241362748535705,
+     "real_mass_kg": 0.012,
+     "real_weight_N": 0.1176798,
+     "weight_over_real_weight": 0.9552499875539986,
+     "projected_fraction": 0.8660254037844386
+    },
+    "surface_proj_area": 0.0007021681977561878,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "housing_left_x",
+      "traction": [
+       626118.3720528211,
+       0.0,
+       0.0
+      ],
+      "tail": [
+       -0.011065787380488256,
+       0.003967504560326536,
+       0.008472127927910895
+      ],
+      "tip": [
+       -0.00015669627724833947,
+       0.003967504560326536,
+       0.008472127927910895
+      ],
+      "projected_fraction": 0.8788103442355077,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "parts",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-21-50-16",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-21-50-16/vtu/solution_t0000.vtu",
+    "nodes": 16414,
+    "hexes": 13119,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 1.431146867680866e-17,
+    "outside_points": 0,
+    "umax_surface": 9.607769459090248e-05,
+    "umax_nodes": 0.00010352324002679136,
+    "umax_workflow_export": 9.607621905161068e-05,
+    "ratio_to_workflow_export": 1.00001535800749,
+    "umax_surface_m": 9.607769459090248e-05
+   },
+   "scale": {
+    "factor": 100.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 187.3512527624622,
+     "reach": 0.3,
+     "physical_extent": 0.06,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.15852819325366405,
+    "standing_on_support": false,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0009288958485309274
+   },
+   "E_source": "solve VTU youngs_modulus",
+   "E_nodes": [
+    2400000000.0,
+    199999995904.0
+   ],
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    2399999999.999999,
+    199999995904.00006
+   ],
+   "E_surface_Pa": [
+    2399999999.999999,
+    199999995904.00006
+   ],
+   "view": {
+    "dir": [
+     -0.47717122593956607,
+     0.49999999999999994,
+     0.7227085312457102
+    ],
+    "azimuth_deg": 300,
+    "elevation_deg": 30.0,
+    "governing_load_dir": [
+     626118.3720528211,
+     0.0,
+     0.0
+    ],
+    "line_of_sight_deg": 61.5,
+    "axis_off_deg": 33.4,
+    "silhouette_area_over_R2": 0.6306,
+    "visible_area_over_R2": 1.2684,
+    "panel_fill": 0.45,
+    "height_shown": 1.0,
+    "shows": 0.831,
+    "paper_view_shows": 0.805,
+    "turn_from_paper_deg": 54.5,
+    "why": "paper view excluded (shows a load region at < 50 % of its best); the view nearest it within 95% of the best",
+    "worst_load_shown_fraction_of_its_best": 0.9760710699039312,
+    "worst_support_shown_fraction_of_its_best": 0.9235044249918499,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 1,
+     "rejected": [],
+     "predicted": {
+      "preview_px_per_mm": 7.56,
+      "regions": {
+       "plug_fix": 56.81,
+       "housing_left_x": 3.94
+      },
+      "corners": {
+       "Text \u2192 TripoSG": "tr",
+       "10 mm": "bl",
+       "Body load 0.11 N": "tr",
+       "\u00d7100": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca USB stick\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": 0.00024676707566541155,
+    "key_light_ray": [
+     0.2755,
+     -0.866,
+     -0.4173
+    ],
+    "grid": {
+     "cell": 0.01,
+     "rings": 14,
+     "reach": 0.14
+    }
+   },
+   "panels": [
+    "ar_1_arrows.vtk",
+    "ar_1_bc.vtk",
+    "ar_1_fit.vtk",
+    "ar_1_grid.vtk",
+    "ar_1_materials.vtk",
+    "ar_1_painted.vtk",
+    "ar_1_shadow.vtk",
+    "ar_1_shadow_def.vtk",
+    "ar_1_solve.vtk"
+   ]
+  },
+  {
+   "index": 2,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek_max/electric-toothbrush-20261118-215315/workflow/34294d1829a4",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "electric-toothbrush-20261118-215315",
+    "instruction": "an electric toothbrush",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "34294d1829a4",
+    "session_ids": [
+     "34294d1829a4"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f1b8-ff67-70d3-a11c-04442092b337",
+    "input_tokens": 196064,
+    "cache_read_input_tokens": 2069888,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 67491,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 2265952,
+     "cached_input_tokens": 2069888,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 67491,
+     "reasoning_output_tokens": 55705
+    },
+    "thinking_tokens": 55705,
+    "effort": "max",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 50,
+     "view_image": 11
+    },
+    "images_viewed": 11,
+    "cost_usd": 0.152228,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 592.3,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 11,
+     "judge": 1
+    },
+    "runner_runs": 11,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "an electric toothbrush",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T21:53:15-05:00",
+    "finished_at": "2026-11-18T22:03:07-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T21-53-15-01a1f1b8-ff67-70d3-a11c-04442092b337.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 2400000000.0,
+     "poisson_ratio": 0.35,
+     "density": 1100.0,
+     "held": [
+      {
+       "name": "grip_fix",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "head_pull",
+       "traction": [
+        12783.677583626708,
+        0.0,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": 0,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-22-00-35/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 490.5,
+      "geometry_drawing": 12.8,
+      "geometry_generation": 15.4,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.3,
+      "setup_segmentation": 9.7,
+      "setup_regions": 4.5,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 9.6,
+      "solve_after": 2.0,
+      "overhead_startup": 20.2,
+      "overhead_between": 1.9,
+      "overhead_stop": 17.8,
+      "overhead_commands": 5.3
+     },
+     "groups": {
+      "agent": 490.5,
+      "workflow": 45.0,
+      "solver": 11.6,
+      "overhead": 45.2
+     },
+     "wall_clock_s": 592.3,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T21-53-15-01a1f1b8-ff67-70d3-a11c-04442092b337.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "SDXL \u2192 TripoSG",
+   "surface": {
+    "vertices": 4470,
+    "faces": 8936
+   },
+   "extent": 0.24242424801923335,
+   "dims": [
+    0.020430400618351996,
+    0.24242424801923335,
+    0.035425436653895304
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.667,
+     0.722,
+     0.749
+    ],
+    "rgb_spread": 0.20715693342854824,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "grip_fix",
+      "category": "dirichlet",
+      "faces": 2902,
+      "mean_normal": [
+       0.999,
+       -0.054,
+       -0.006
+      ],
+      "area": 0.004425072666177794,
+      "proj_area": 0.00041574828027512843,
+      "facing_camera": 0.19684709662610814,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.49411764705882355,
+       "gap": 0.0009696969920769334,
+       "tube_radius": 0.0014545454881154001,
+       "why": "faces the camera at 19.7% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "head_pull",
+      "category": "neumann",
+      "faces": 240,
+      "mean_normal": [
+       -1.0,
+       -0.027,
+       -0.016
+      ],
+      "area": 0.0004681995085259956,
+      "proj_area": 0.000170897809855276,
+      "facing_camera": 0.973544785810212,
+      "unoccluded_facing": 0.97217359363216
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 5.420995662818264e-05,
+     "surface_watertight": true,
+     "density": 1100.0,
+     "mass": 0.059630952291000905,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.059630952291000905,
+     "weight_N": 0.584779878284544,
+     "real_mass_kg": 0.13,
+     "real_weight_N": 1.2748645,
+     "weight_over_real_weight": 0.4586996330076992,
+     "projected_fraction": 0.8660254037844386
+    },
+    "surface_proj_area": 0.003074607852206679,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "head_pull",
+      "traction": [
+       12783.677583626708,
+       0.0,
+       0.0
+      ],
+      "tail": [
+       -0.043010168262962445,
+       0.23232173945430684,
+       0.018905565048488965
+      ],
+      "tip": [
+       0.00062619638049956,
+       0.23232173945430684,
+       0.018905565048488965
+      ],
+      "projected_fraction": 0.9219544457292888,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-22-00-35",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-22-00-35/vtu/solution_t0000.vtu",
+    "nodes": 23049,
+    "hexes": 17774,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 5.594315114139762e-17,
+    "outside_points": 0,
+    "umax_surface": 0.004394742418174389,
+    "umax_nodes": 0.004727013520176461,
+    "umax_workflow_export": 0.00437001371756196,
+    "ratio_to_workflow_export": 1.0056587237960033,
+    "umax_surface_m": 0.004394742418174389
+   },
+   "scale": {
+    "factor": 5.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 16.475920821632787,
+     "reach": 0.3,
+     "physical_extent": 0.24,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.09064156028289962,
+    "standing_on_support": false,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 1.0162743084862913e-10
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    2400000000.0,
+    2400000000.0
+   ],
+   "E_surface_Pa": [
+    2400000000.0,
+    2400000000.0
+   ],
+   "view": {
+    "dir": [
+     -0.3872983346207416,
+     0.49999999999999994,
+     -0.7745966692414835
+    ],
+    "azimuth_deg": 180,
+    "elevation_deg": 30.0,
+    "governing_load_dir": [
+     12783.677583626708,
+     0.0,
+     0.0
+    ],
+    "line_of_sight_deg": 67.2,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 0.2023,
+    "visible_area_over_R2": 0.4295,
+    "panel_fill": 0.048,
+    "height_shown": 1.0,
+    "shows": 1.0,
+    "paper_view_shows": 1.022,
+    "turn_from_paper_deg": 129.6,
+    "why": "paper view excluded (shows a load region at < 50 % of its best); the view nearest it within 95% of the best",
+    "worst_load_shown_fraction_of_its_best": 0.9164852769530102,
+    "worst_support_shown_fraction_of_its_best": 0.25996148870578994,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 1,
+     "rejected": [],
+     "predicted": {
+      "preview_px_per_mm": 13.54,
+      "regions": {
+       "grip_fix": 3.85,
+       "head_pull": 1.88
+      },
+      "corners": {
+       "SDXL \u2192 TripoSG": "br",
+       "50 mm": "bl",
+       "Body load 0.58 N": "br",
+       "\u00d75": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201can electric",
+     "toothbrush\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.0023941253986442465,
+    "key_light_ray": [
+     0.2236,
+     -0.866,
+     0.4472
+    ],
+    "grid": {
+     "cell": 0.05,
+     "rings": 11,
+     "reach": 0.55
+    }
+   },
+   "panels": [
+    "ar_2_arrows.vtk",
+    "ar_2_bc.vtk",
+    "ar_2_fit.vtk",
+    "ar_2_grid.vtk",
+    "ar_2_materials.vtk",
+    "ar_2_painted.vtk",
+    "ar_2_shadow.vtk",
+    "ar_2_shadow_def.vtk",
+    "ar_2_solve.vtk",
+    "ar_2_support.vtk"
+   ]
+  },
+  {
+   "index": 3,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek_max/coffee-mug-20261118-220307/workflow/ce53e61c7cbc",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "coffee-mug-20261118-220307",
+    "instruction": "a coffee mug",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "ce53e61c7cbc",
+    "session_ids": [
+     "ce53e61c7cbc"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f1c2-0a82-7a62-8d89-a403d6f3e9d2",
+    "input_tokens": 187591,
+    "cache_read_input_tokens": 816000,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 41358,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 1003591,
+     "cached_input_tokens": 816000,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 41358,
+     "reasoning_output_tokens": 34083
+    },
+    "thinking_tokens": 34083,
+    "effort": "max",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 36,
+     "view_image": 7
+    },
+    "images_viewed": 7,
+    "cost_usd": 0.110803,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 336.742,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 4,
+     "judge": 1
+    },
+    "runner_runs": 4,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a coffee mug",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T22:03:07-05:00",
+    "finished_at": "2026-11-18T22:08:44-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T22-03-08-01a1f1c2-0a82-7a62-8d89-a403d6f3e9d2.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 70000000000.0,
+     "poisson_ratio": 0.22,
+     "density": 2400.0,
+     "held": [
+      {
+       "name": "handle_grip",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "base_inside_load",
+       "traction": [
+        0.0,
+        -755.3419361139684,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-22-07-04/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 275.2,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 3.9,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.1,
+      "setup_segmentation": 14.3,
+      "setup_regions": 2.5,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 10.5,
+      "solve_after": 4.1,
+      "overhead_startup": 6.8,
+      "overhead_between": 3.1,
+      "overhead_stop": 10.2,
+      "overhead_commands": 3.7
+     },
+     "groups": {
+      "agent": 275.2,
+      "workflow": 23.1,
+      "solver": 14.6,
+      "overhead": 23.8
+     },
+     "wall_clock_s": 336.742,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T22-03-08-01a1f1c2-0a82-7a62-8d89-a403d6f3e9d2.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 77934,
+    "faces": 155868
+   },
+   "extent": 0.11299434740794823,
+   "dims": [
+    0.11299434740794823,
+    0.10020095633808523,
+    0.07299443997908384
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.782,
+     0.753,
+     0.705
+    ],
+    "rgb_spread": 0.03835974372257318,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "handle_grip",
+      "category": "dirichlet",
+      "faces": 13262,
+      "mean_normal": [
+       1.0,
+       -0.001,
+       -0.005
+      ],
+      "area": 0.004025051454471685,
+      "proj_area": 0.0009994642448353471,
+      "facing_camera": 0.44526958821394413,
+      "support_seen_through": true,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.0,
+       "gap": 0.0004519773896317929,
+       "tube_radius": 0.0006779660844476894,
+       "why": "faces the camera at 44.5% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "base_inside_load",
+      "category": "neumann",
+      "faces": 7659,
+      "mean_normal": [
+       -0.003,
+       1.0,
+       -0.001
+      ],
+      "area": 0.003278759990208772,
+      "proj_area": 0.0016320579340216791,
+      "facing_camera": 0.9983858393914826,
+      "unoccluded_facing": 0.011786983628437721,
+      "seen_through": true
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 0.0001459558534420773,
+     "surface_watertight": true,
+     "density": 2400.0,
+     "mass": 0.35029404826098554,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.35029404826098554,
+     "weight_N": 3.4352111283785938,
+     "real_mass_kg": 0.35,
+     "real_weight_N": 3.4323274999999995,
+     "weight_over_real_weight": 1.0008401378885303,
+     "projected_fraction": 0.8660254037844386
+    },
+    "surface_proj_area": 0.014689853533555558,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "base_inside_load",
+      "traction": [
+       0.0,
+       -755.3419361139684,
+       0.0
+      ],
+      "tail": [
+       0.038640892753998436,
+       0.02933646294334903,
+       0.03975832213958105
+      ],
+      "tip": [
+       0.038640892753998436,
+       0.008997480409918353,
+       0.03975832213958105
+      ],
+      "projected_fraction": 0.8660254037844386,
+      "seen_through": true
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-22-07-04",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-22-07-04/vtu/solution_t0000.vtu",
+    "nodes": 84225,
+    "hexes": 70477,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 4.443059973708341e-17,
+    "outside_points": 0,
+    "umax_surface": 1.4444331215935804e-07,
+    "umax_nodes": 1.5474159518629525e-07,
+    "umax_workflow_export": 1.4437190998251026e-07,
+    "ratio_to_workflow_export": 1.0004945711174453,
+    "umax_surface_m": 1.4444331215935804e-07
+   },
+   "scale": {
+    "factor": 100000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 207796.65520553346,
+     "reach": 0.3,
+     "physical_extent": 0.1,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.12783233451304277,
+    "standing_on_support": false,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.07204146403461288
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    70000000000.0,
+    70000000000.0
+   ],
+   "E_surface_Pa": [
+    70000000000.0,
+    70000000000.0
+   ],
+   "view": {
+    "dir": [
+     -0.3872983346207416,
+     0.49999999999999994,
+     -0.7745966692414835
+    ],
+    "azimuth_deg": 180,
+    "elevation_deg": 30.0,
+    "governing_load_dir": [
+     0.0,
+     -755.3419361139684,
+     0.0
+    ],
+    "line_of_sight_deg": 60.0,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 1.3495,
+    "visible_area_over_R2": 2.4169,
+    "panel_fill": 0.458,
+    "height_shown": 1.0,
+    "shows": 0.911,
+    "paper_view_shows": 0.926,
+    "turn_from_paper_deg": 129.6,
+    "why": "paper view excluded (shows a load region at < 50 % of its best); the view nearest it within 95% of the best",
+    "worst_load_shown_fraction_of_its_best": 0.6696855738008131,
+    "worst_support_shown_fraction_of_its_best": 0.7643993416979756,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 1,
+     "rejected": [],
+     "predicted": {
+      "preview_px_per_mm": 11.25,
+      "regions": {
+       "handle_grip": 3.09,
+       "base_inside_load": 45.05
+      },
+      "corners": {
+       "Text \u2192 TripoSG": "br",
+       "20 mm": "bl",
+       "Body load 3.4 N": "br",
+       "\u00d7100,000": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca coffee mug\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": 0.0006272771389514674,
+    "key_light_ray": [
+     0.2236,
+     -0.866,
+     0.4472
+    ],
+    "grid": {
+     "cell": 0.02,
+     "rings": 13,
+     "reach": 0.26
+    }
+   },
+   "panels": [
+    "ar_3_arrows_hidden.vtk",
+    "ar_3_bc.vtk",
+    "ar_3_bc_hidden.vtk",
+    "ar_3_fit.vtk",
+    "ar_3_grid.vtk",
+    "ar_3_materials.vtk",
+    "ar_3_painted.vtk",
+    "ar_3_shadow.vtk",
+    "ar_3_shadow_def.vtk",
+    "ar_3_solve.vtk",
+    "ar_3_support_hidden.vtk"
+   ]
+  },
+  {
+   "index": 4,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_deepseek_max/computer-mouse-20261118-220844/workflow/1af18cb3a58b",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "computer-mouse-20261118-220844",
+    "instruction": "a computer mouse",
+    "agent": "codex",
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "model_label": "DeepSeek V4.1 Flash",
+    "model_requested": "deepseek-v4.1-flash",
+    "provider": "hf",
+    "route": "deepinfra",
+    "session_id": "1af18cb3a58b",
+    "session_ids": [
+     "1af18cb3a58b"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1f1c7-2fb8-77b3-a42a-52db2ae47a00",
+    "input_tokens": 238609,
+    "cache_read_input_tokens": 1163648,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 55848,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 1402257,
+     "cached_input_tokens": 1163648,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 55848,
+     "reasoning_output_tokens": 46912
+    },
+    "thinking_tokens": 46912,
+    "effort": "max",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 43,
+     "view_image": 7
+    },
+    "images_viewed": 7,
+    "cost_usd": 0.145582,
+    "cost_basis": {
+     "input": 0.3,
+     "cached_input": 0.006,
+     "output": 1.2,
+     "date": "2026-11-17",
+     "source": "DeepSeek API, peak-hour price (cache miss 0.3, cache hit 0.006, output 1.2 USD per M)"
+    },
+    "wall_clock_s": 454.84,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 6,
+     "judge": 1
+    },
+    "runner_runs": 6,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a computer mouse",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T22:08:45-05:00",
+    "finished_at": "2026-11-18T22:16:19-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T22-08-45-01a1f1c7-2fb8-77b3-a42a-52db2ae47a00.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 2400000000.0,
+     "poisson_ratio": 0.35,
+     "density": 1100.0,
+     "held": [
+      {
+       "name": "bottom_faces",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "front_top_traction",
+       "traction": [
+        0.0,
+        -2648.5891116917073,
+        0.0
+       ]
+      },
+      {
+       "name": "rear_top_traction",
+       "traction": [
+        0.0,
+        -1064.1242326672993,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -4.84944,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-22-13-52/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 397.2,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 3.0,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.1,
+      "setup_segmentation": 8.1,
+      "setup_regions": 6.6,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 12.2,
+      "solve_after": 3.3,
+      "overhead_startup": 8.6,
+      "overhead_between": 3.2,
+      "overhead_stop": 6.9,
+      "overhead_commands": 3.4
+     },
+     "groups": {
+      "agent": 397.2,
+      "workflow": 20.1,
+      "solver": 15.5,
+      "overhead": 22.0
+     },
+     "wall_clock_s": 454.84,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T22-08-45-01a1f1c7-2fb8-77b3-a42a-52db2ae47a00.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 26000,
+    "faces": 52000
+   },
+   "extent": 0.1161616140161641,
+   "dims": [
+    0.07059056486468762,
+    0.035086531745037064,
+    0.1161616140161641
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.667,
+     0.646,
+     0.618
+    ],
+    "rgb_spread": 0.09748716311923059,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "bottom_faces",
+      "category": "dirichlet",
+      "faces": 12912,
+      "mean_normal": [
+       0.0,
+       -1.0,
+       0.001
+      ],
+      "area": 0.005733327647282646,
+      "proj_area": 4.504081888711918e-06,
+      "facing_camera": 0.0022549788455724236,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.4320652173913043,
+       "gap": 0.0004646464560646564,
+       "tube_radius": 0.0006969696840969845,
+       "why": "faces the camera at 0.2% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "front_top_traction",
+      "category": "neumann",
+      "faces": 6520,
+      "mean_normal": [
+       0.013,
+       0.943,
+       0.334
+      ],
+      "area": 0.0021463235517618223,
+      "proj_area": 0.0012771102761111911,
+      "facing_camera": 0.9988758121703214,
+      "unoccluded_facing": 0.9958382426118264
+     },
+     {
+      "key": "neumann_2",
+      "name": "rear_top_traction",
+      "category": "neumann",
+      "faces": 8550,
+      "mean_normal": [
+       0.005,
+       0.981,
+       -0.192
+      ],
+      "area": 0.0029504797804323236,
+      "proj_area": 0.0006404719920844035,
+      "facing_camera": 0.8281142496280227,
+      "unoccluded_facing": 0.852147864332086
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -4.84944,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 0.4945052591863685,
+     "volume": 0.00016549875579174235,
+     "surface_watertight": true,
+     "density": 1100.0,
+     "mass": 0.1820486313709166,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 0.1820486313709166,
+     "weight_N": 0.8828339149153779,
+     "real_mass_kg": 0.09,
+     "real_weight_N": 0.8825985,
+     "weight_over_real_weight": 1.0002667293399863,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.003796906766199868,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "front_top_traction",
+      "traction": [
+       0.0,
+       -2648.5891116917073,
+       0.0
+      ],
+      "tail": [
+       0.05177325850935596,
+       0.04739863490325487,
+       0.08757092850784216
+      ],
+      "tip": [
+       0.05177325850935596,
+       0.026489544380345332,
+       0.08757092850784216
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "front_top_traction",
+      "traction": [
+       0.0,
+       -2648.5891116917073,
+       0.0
+      ],
+      "tail": [
+       0.047092224812397936,
+       0.04153149223267917,
+       0.10538919001847505
+      ],
+      "tip": [
+       0.047092224812397936,
+       0.02062240170976963,
+       0.10538919001847505
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "front_top_traction",
+      "traction": [
+       0.0,
+       -2648.5891116917073,
+       0.0
+      ],
+      "tail": [
+       0.019801309360314243,
+       0.042497356858600746,
+       0.10226611303675212
+      ],
+      "tip": [
+       0.019801309360314243,
+       0.021588266335691213,
+       0.10226611303675212
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "rear_top_traction",
+      "traction": [
+       0.0,
+       -1064.1242326672993,
+       0.0
+      ],
+      "tail": [
+       0.057753841920948706,
+       0.05251495332057983,
+       0.04723004314465152
+      ],
+      "tip": [
+       0.057753841920948706,
+       0.031605862797670296,
+       0.04723004314465152
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 104,
+      "region": "rear_top_traction",
+      "traction": [
+       0.0,
+       -1064.1242326672993,
+       0.0
+      ],
+      "tail": [
+       0.043887444495450637,
+       0.05546147982605369,
+       0.04756661543547418
+      ],
+      "tip": [
+       0.043887444495450637,
+       0.03455238930314416,
+       0.04756661543547418
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 105,
+      "region": "rear_top_traction",
+      "traction": [
+       0.0,
+       -1064.1242326672993,
+       0.0
+      ],
+      "tail": [
+       0.030303756693719028,
+       0.055899712852565814,
+       0.05045700146989189
+      ],
+      "tip": [
+       0.030303756693719028,
+       0.034990622329656274,
+       0.05045700146989189
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 106,
+      "region": "rear_top_traction",
+      "traction": [
+       0.0,
+       -1064.1242326672993,
+       0.0
+      ],
+      "tail": [
+       0.015165261869835144,
+       0.05309715618869869,
+       0.05497166101601708
+      ],
+      "tip": [
+       0.015165261869835144,
+       0.03218806566578915,
+       0.05497166101601708
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-22-13-52",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-22-13-52/vtu/solution_t0000.vtu",
+    "nodes": 36836,
+    "hexes": 29086,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 4.1786676446990356e-17,
+    "outside_points": 0,
+    "umax_surface": 6.302575113629087e-08,
+    "umax_nodes": 8.70474453480846e-08,
+    "umax_workflow_export": 7.063267304374676e-08,
+    "ratio_to_workflow_export": 0.8923030719403114,
+    "umax_surface_m": 6.302575113629087e-08
+   },
+   "scale": {
+    "factor": 200000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 488442.50844976836,
+     "reach": 0.3,
+     "physical_extent": 0.115,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.10851390396059876,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0034934693196787894
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    2400000000.0,
+    2400000000.0
+   ],
+   "E_surface_Pa": [
+    2400000000.0,
+    2400000000.0
+   ],
+   "view": {
+    "dir": [
+     1.5,
+     1.25,
+     3.0
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -2648.5891116917073,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 26.5,
+    "silhouette_area_over_R2": 0.7644,
+    "visible_area_over_R2": 1.7658,
+    "panel_fill": 0.699,
+    "height_shown": 1.0,
+    "shows": 0.821,
+    "paper_view_shows": 0.821,
+    "turn_from_paper_deg": 0.0,
+    "why": "paper view",
+    "worst_load_shown_fraction_of_its_best": 0.7709336729233295,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 1,
+     "rejected": [],
+     "predicted": {
+      "preview_px_per_mm": 8.57,
+      "regions": {
+       "bottom_faces": 5.56,
+       "front_top_traction": 89.85,
+       "rear_top_traction": 32.41
+      },
+      "corners": {
+       "Text \u2192 TripoSG": "br",
+       "20 mm": "bl",
+       "Body load 0.88 N": "br",
+       "\u00d7200,000": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca computer mouse\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.0007906031658232678,
+    "key_light_ray": [
+     -0.2848,
+     -0.771,
+     -0.5697
+    ],
+    "grid": {
+     "cell": 0.02,
+     "rings": 13,
+     "reach": 0.26
+    }
+   },
+   "panels": [
+    "ar_4_arrows.vtk",
+    "ar_4_bc.vtk",
+    "ar_4_fit.vtk",
+    "ar_4_grid.vtk",
+    "ar_4_materials.vtk",
+    "ar_4_painted.vtk",
+    "ar_4_shadow.vtk",
+    "ar_4_shadow_def.vtk",
+    "ar_4_solve.vtk",
+    "ar_4_support.vtk"
+   ]
+  }
+ ]
+}

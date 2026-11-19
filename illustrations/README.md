@@ -14,12 +14,13 @@ first: `zstd -dc output/archives/<name>.tar.zst | tar -x -C output` (→ `output
 
 **Open-weight (Codex) batches.** `run_batch.sh --agent codex` runs the same fifty objects
 with an open-weight model under the Codex CLI (`experiments/agentic_batch/README.md`, "Codex
-runs"): DeepSeek V4.1 Flash into `output/agentic_batch50_deepseek` and Kimi K3.1 Pro into
+runs"): DeepSeek V4.1 Flash into `output/agentic_batch50_deepseek` (high effort) and
+`output/agentic_batch50_deepseek_max` (max effort), and Kimi K3.1 Pro into
 `output/agentic_batch50_kimi`. Their run folders have the same layout and `metrics.json`
 fields (plus `agent: "codex"`), with the transcript in
 `codex_home/sessions/…/rollout-*.jsonl` instead of `claude_session/`; every figure below
-builds from them unchanged (per-category figures `_deepseek` / `_kimi`, §4; a two-model
-comparison, §5).
+builds from them unchanged (per-category figures `_deepseek` / `_deepseek_max` / `_kimi`, §4;
+the three side by side, `agentic_results_compare_open_p<k>`, §5).
 
 ---
 
@@ -273,9 +274,10 @@ The target copies `_work/ar_stats.json` to `agentic_results/ar_stats.json`.
 ## 4. Run picking and per-category builds
 
 `experiments/agentic_batch/objects_50.txt` lists fifty instructions under ten
-`# <Category>` headings of five each. A batch root (`output/agentic_batch50`, and one per
-model, `…_haiku`, `…_opus`, and the Codex batches `…_deepseek`, `…_kimi`) has one folder per run and `_batches/<id>/summary.csv` per
-batch launch, with the columns `instruction`, `path`, `status` and the run's metrics.
+`# <Category>` headings of five each. A batch root (`output/agentic_batch50`, and one per model,
+`…_haiku`, `…_opus`, and the Codex batches `…_deepseek`, `…_deepseek_max`, `…_kimi`) has one folder
+per run and `_batches/<id>/summary.csv` per batch launch, with the columns `instruction`, `path`,
+`status` and the run's metrics.
 
 **Picking** (`ar_categories.latest_runs`): batches are read in id (timestamp) order and,
 for each instruction, the last row whose run folder exists wins, so an object rerun in a
@@ -292,6 +294,7 @@ python3 ar_categories.py --batch-root output/agentic_batch50                # So
 python3 ar_categories.py --batch-root output/agentic_batch50_haiku --suffix _haiku
 python3 ar_categories.py --batch-root output/agentic_batch50_opus  --suffix _opus --segmentation
 python3 ar_categories.py --batch-root output/agentic_batch50_deepseek --suffix _deepseek   # Codex
+python3 ar_categories.py --batch-root output/agentic_batch50_deepseek_max --suffix _deepseek_max
 python3 ar_categories.py --batch-root output/agentic_batch50_kimi     --suffix _kimi       # Codex
 ```
 
@@ -319,10 +322,11 @@ letter pages (8.5 × 11 in, portrait) for the supplementary information.
 **Two or three models.** The paper's pages are Claude Haiku, Sonnet and Opus
 (`ARC_HAIKU/SONNET/OPUS`, `plan --haiku --sonnet --opus`). `ARC_MODELS="KEY=ROOT …"`
 (`plan --model KEY=ROOT`, repeated, left to right) takes any two or three batch roots
-instead, e.g. the two Codex batches:
+instead, e.g. the three Codex batches (`agentic_results_compare_open_p1-3`):
 
 ```shell
-cd illustrations && ARC_MODELS="deepseek=output/agentic_batch50_deepseek kimi=output/agentic_batch50_kimi" \
+cd illustrations && ARC_MODELS="deepseek=output/agentic_batch50_deepseek \
+    deepseek_max=output/agentic_batch50_deepseek_max kimi=output/agentic_batch50_kimi" \
     ARC_NAME=agentic_results_compare_open ./build.sh agenticcompare
 ```
 
@@ -337,7 +341,9 @@ organisation, route or date suffix: `zai-org/glm-5.2` → "GLM 5.2"). A run whos
 V4.1 Flash with Codex", "Kimi K3.1 Pro with Codex"; read from the harness, not the model
 id); a Claude run keeps the plain name ("Claude Opus 5.5"). A name two or more columns share
 (the same model run at two reasoning efforts) gets each column's `metrics.json` `effort`
-("DeepSeek V4.1 Flash with Codex, medium effort" / "…, max effort"; 48 mm at 6 pt, inside a
+as the model served it ("DeepSeek V4.1 Flash with Codex, high effort" / "…, max effort": the
+`deepseek` batch was run with `--effort medium`, which DeepSeek serves as high,
+`ar_compare.served_effort` and `codex_models.json` `effort_served`; 48 mm at 6 pt, inside a
 three-model group), or its key when a batch's efforts are mixed or missing
 (`ar_compare.distinct_labels`); a name no other column has is left as it is. The tables follow
 suit (`ar_figure.write_table`, `write_time_table`): the token table gains an `effort` column when
@@ -639,7 +645,10 @@ Each sweep row's authoring prompt (the one call that wrote its 9 cases), as sent
 `experiments/agentic_batch/showcase_authoring_prompt_{material,bc}.txt`; `build.sh showcase`
 refreshes them after each build with `sc_record.py`.
 
-## 9. The three-model evaluation
+## 9. The model evaluation
 
-Moved to [`experiments/model_eval/`](../experiments/model_eval/README.md): the rubric, the evaluator
-prompts, the three evaluators' ratings and the voted table (`evaluation_table.{md,xlsx}`).
+Moved to [`experiments/model_eval/`](../experiments/model_eval/README.md): the rubric and the
+blinded grading of all six operator sets (DeepSeek high and max, Kimi, Haiku, Sonnet, Opus) by
+Fable and GPT-6-Astra evaluators, with its prompts, ratings and voted tables in `results/`. The
+paper's grading of Haiku, Sonnet and Opus is kept in `records/paper/`. The grading reads the
+category figures of §4 (`ar_categories.py`), staged per model.

@@ -1,0 +1,3234 @@
+{
+ "E_log10_range_Pa": [
+  8.0,
+  11.5
+ ],
+ "view_dir_default": [
+  1.5,
+  1.25,
+  3.0
+ ],
+ "runs": [
+  {
+   "index": 0,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_kimi/school-chair-with-a-steel-frame-and-a-plastic-se-20261118-023941/workflow/84a54143155c",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "school-chair-with-a-steel-frame-and-a-plastic-se-20261118-023941",
+    "instruction": "a school chair with a steel frame and a plastic seat",
+    "agent": "codex",
+    "model": "moonshotai/Kimi-K3.1-Pro",
+    "model_label": "Kimi K3.1 Pro",
+    "model_requested": "kimi-k3.1-pro",
+    "provider": "hf",
+    "route": "moonshotai",
+    "session_id": "84a54143155c",
+    "session_ids": [
+     "84a54143155c"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1ed98-e20b-7072-9a29-5f46e68a5e4c",
+    "input_tokens": 115396,
+    "cache_read_input_tokens": 5538868,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 23024,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 5654264,
+     "cached_input_tokens": 5538868,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 23024,
+     "reasoning_output_tokens": 4789
+    },
+    "thinking_tokens": 4789,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 65,
+     "write_stdin": 40,
+     "view_image": 16
+    },
+    "images_viewed": 16,
+    "cost_usd": 1.568806,
+    "cost_basis": {
+     "input": 2.0,
+     "cached_input": 0.2,
+     "cache_write": 2.0,
+     "output": 10.0,
+     "date": "2026-11-17",
+     "source": "Moonshot API price (input 2, cached input 0.2, cache write at the default 5-min TTL 2, output 10 USD per M)"
+    },
+    "wall_clock_s": 678.901,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 22,
+     "answer": 1,
+     "judge": 1
+    },
+    "runner_runs": 22,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a school chair with a steel frame and a plastic seat",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T02:39:41-05:00",
+    "finished_at": "2026-11-18T02:51:00-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T02-39-41-01a1ed98-e20b-7072-9a29-5f46e68a5e4c.jsonl",
+    "case": {
+     "material_mode": "parts",
+     "parts": [
+      {
+       "density": 7925.0,
+       "id": 0,
+       "poisson_ratio": 0.285,
+       "youngs_modulus": 200000000000.0
+      },
+      {
+       "density": 1100.0,
+       "id": 1,
+       "poisson_ratio": 0.38,
+       "youngs_modulus": 2500000000.0
+      },
+      {
+       "density": 1100.0,
+       "id": 2,
+       "poisson_ratio": 0.38,
+       "youngs_modulus": 2500000000.0
+      },
+      {
+       "density": 7925.0,
+       "id": 3,
+       "poisson_ratio": 0.285,
+       "youngs_modulus": 200000000000.0
+      },
+      {
+       "density": 7925.0,
+       "id": 4,
+       "poisson_ratio": 0.285,
+       "youngs_modulus": 200000000000.0
+      },
+      {
+       "density": 7925.0,
+       "id": 5,
+       "poisson_ratio": 0.285,
+       "youngs_modulus": 200000000000.0
+      },
+      {
+       "density": 1100.0,
+       "id": 6,
+       "poisson_ratio": 0.38,
+       "youngs_modulus": 2500000000.0
+      },
+      {
+       "density": 7925.0,
+       "id": 7,
+       "poisson_ratio": 0.285,
+       "youngs_modulus": 200000000000.0
+      }
+     ],
+     "youngs_modulus_range": [
+      2500000000.0,
+      199999995904.0
+     ],
+     "youngs_modulus_contrast": 80.0,
+     "held": [
+      {
+       "name": "leg0_down_low",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      },
+      {
+       "name": "legs345_down_low",
+       "components": [
+        1
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "seat_upward_load",
+       "traction": [
+        0.0,
+        -5664.069078657634,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -1.06676,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 1,
+      "image": 0,
+      "texture": null
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "parts_montage": "materials/parts/montage.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-02-48-59/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 369.1,
+      "geometry_drawing": 12.8,
+      "geometry_generation": 62.0,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.3,
+      "setup_segmentation": 21.9,
+      "setup_regions": 7.9,
+      "setup_values_material": 7.0,
+      "paint": 3.6,
+      "solve": 16.4,
+      "solve_after": 59.7,
+      "overhead_startup": 47.3,
+      "overhead_between": 6.2,
+      "overhead_stop": 55.5,
+      "overhead_commands": 7.2
+     },
+     "groups": {
+      "agent": 369.1,
+      "workflow": 117.5,
+      "solver": 76.1,
+      "overhead": 116.2
+     },
+     "wall_clock_s": 678.901,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T02-39-41-01a1ed98-e20b-7072-9a29-5f46e68a5e4c.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "SDXL \u2192 TripoSG",
+   "surface": {
+    "vertices": 149966,
+    "faces": 300000
+   },
+   "extent": 0.7878787736408412,
+   "dims": [
+    0.6373366187908687,
+    0.7878787736408412,
+    0.657183650531806
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.472,
+     0.547,
+     0.718
+    ],
+    "rgb_spread": 0.2644741283910846,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "leg0_down_low",
+      "category": "dirichlet",
+      "faces": 1295,
+      "mean_normal": [
+       -0.057,
+       -0.998,
+       0.02
+      ],
+      "area": 0.002059193060443797,
+      "proj_area": 3.783199214342072e-05,
+      "facing_camera": 0.056125776122103406,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.7359550561797753,
+       "gap": 0.003151515094563365,
+       "tube_radius": 0.004727272641845048,
+       "why": "faces the camera at 5.6% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_1",
+      "name": "legs345_down_low",
+      "category": "dirichlet",
+      "faces": 4542,
+      "mean_normal": [
+       -0.009,
+       -1.0,
+       -0.006
+      ],
+      "area": 0.007441102692088412,
+      "proj_area": 9.705415990107083e-05,
+      "facing_camera": 0.03786536278180087,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.36403508771929827,
+       "gap": 0.003151515094563365,
+       "tube_radius": 0.004727272641845048,
+       "why": "faces the camera at 3.8% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_2",
+      "name": "seat_upward_load",
+      "category": "neumann",
+      "faces": 14593,
+      "mean_normal": [
+       -0.03,
+       1.0,
+       0.001
+      ],
+      "area": 0.13186428416152712,
+      "proj_area": 0.048421004353048205,
+      "facing_camera": 0.9968717415336259,
+      "unoccluded_facing": 0.8534279873429608
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -1.06676,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 0.10877924673563347,
+     "volume": 0.005799935730728498,
+     "surface_watertight": true,
+     "density": 4062.84765625,
+     "mass": 23.564255289990907,
+     "weight_method": "volume of geometry/physical.glb x mean density of the material field (materials/parts/field/manifest.json) x |loads.acceleration|",
+     "mass_kg": 23.564255289990907,
+     "weight_N": 25.137404973150698,
+     "real_mass_kg": 5.0,
+     "real_weight_N": 49.033249999999995,
+     "weight_over_real_weight": 0.5126603880662755,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.22457519444289534,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "seat_upward_load",
+      "traction": [
+       0.0,
+       -5664.069078657634,
+       0.0
+      ],
+      "tail": [
+       0.39754208468899166,
+       0.6429565769656523,
+       0.1763844917369581
+      ],
+      "tip": [
+       0.39754208468899166,
+       0.5011383977103009,
+       0.1763844917369581
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "seat_upward_load",
+      "traction": [
+       0.0,
+       -5664.069078657634,
+       0.0
+      ],
+      "tail": [
+       0.29562526783204085,
+       0.6225518968758964,
+       0.30018962418633904
+      ],
+      "tip": [
+       0.29562526783204085,
+       0.48073371762054495,
+       0.30018962418633904
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "seat_upward_load",
+      "traction": [
+       0.0,
+       -5664.069078657634,
+       0.0
+      ],
+      "tail": [
+       0.2731166905181355,
+       0.6354846009155765,
+       0.4546918582172897
+      ],
+      "tip": [
+       0.2731166905181355,
+       0.49366642166022506,
+       0.4546918582172897
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "parts",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-02-48-59",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-02-48-59/vtu/solution_t0000.vtu",
+    "nodes": 125486,
+    "hexes": 97184,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 3.3306690738754696e-16,
+    "outside_points": 0,
+    "umax_surface": 0.0014385170511572968,
+    "umax_nodes": 0.001541750312791963,
+    "umax_workflow_export": 0.0014374726451933384,
+    "ratio_to_workflow_export": 1.0007265571052435,
+    "umax_surface_m": 0.0014385170511572968
+   },
+   "scale": {
+    "factor": 50.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 162.78570641497478,
+     "reach": 0.3,
+     "physical_extent": 0.78,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.09129050681933033,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 6.376215943292529e-09
+   },
+   "E_source": "solve VTU youngs_modulus",
+   "E_nodes": [
+    2500000000.0,
+    199999995904.0
+   ],
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    2499999999.999999,
+    199999995904.00006
+   ],
+   "E_surface_Pa": [
+    2499999999.999999,
+    199999995904.00006
+   ],
+   "view": {
+    "dir": [
+     -0.7819732048072273,
+     0.3492151478847891,
+     -0.5163009659600871
+    ],
+    "azimuth_deg": 210,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -5664.069078657634,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 33.4,
+    "silhouette_area_over_R2": 0.52,
+    "visible_area_over_R2": 1.0547,
+    "panel_fill": 0.16,
+    "height_shown": 1.0,
+    "shows": 0.934,
+    "paper_view_shows": 0.939,
+    "turn_from_paper_deg": 129.7,
+    "why": "paper view preferred (shows 96% of the best); the view nearest it within 95% of the best; after 5 preferred view(s) predicted to fail the compose's print checks",
+    "worst_load_shown_fraction_of_its_best": 0.8472545955261546,
+    "worst_support_shown_fraction_of_its_best": 0.643894043885952,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 6,
+     "rejected": [
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.959,
+       "misses": [
+        "label 'SDXL \u2192 TripoSG' on the object (br/tr)",
+        "label 'Body load 25 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.56,
+        "regions": {
+         "leg0_down_low": 0.55,
+         "legs345_down_low": 0.95,
+         "seat_upward_load": 17.99
+        },
+        "corners": {
+         "SDXL \u2192 TripoSG": null,
+         "0.2 m": "bl",
+         "Body load 25 N": null,
+         "\u00d750": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 15,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.975,
+       "misses": [
+        "'leg0_down_low' 0.49 mm2 (floor 0.5)",
+        "label 'SDXL \u2192 TripoSG' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.72,
+        "regions": {
+         "leg0_down_low": 0.49,
+         "legs345_down_low": 0.85,
+         "seat_upward_load": 17.91
+        },
+        "corners": {
+         "SDXL \u2192 TripoSG": null,
+         "0.2 m": "bl",
+         "Body load 25 N": "br",
+         "\u00d750": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 90,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.993,
+       "misses": [
+        "'leg0_down_low' 0.39 mm2 (floor 0.5)",
+        "label 'SDXL \u2192 TripoSG' on the object (br/tr)",
+        "label 'Body load 25 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.56,
+        "regions": {
+         "leg0_down_low": 0.39,
+         "legs345_down_low": 1.01,
+         "seat_upward_load": 19.23
+        },
+        "corners": {
+         "SDXL \u2192 TripoSG": null,
+         "0.2 m": "bl",
+         "Body load 25 N": null,
+         "\u00d750": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 105,
+       "elevation_deg": 20.4,
+       "shows_over_best": 1.0,
+       "misses": [
+        "'leg0_down_low' 0.38 mm2 (floor 0.5)",
+        "label 'SDXL \u2192 TripoSG' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.68,
+        "regions": {
+         "leg0_down_low": 0.38,
+         "legs345_down_low": 0.98,
+         "seat_upward_load": 18.1
+        },
+        "corners": {
+         "SDXL \u2192 TripoSG": null,
+         "0.2 m": "bl",
+         "Body load 25 N": "br",
+         "\u00d750": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 120,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.995,
+       "misses": [
+        "'leg0_down_low' 0.39 mm2 (floor 0.5)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 11.64,
+        "regions": {
+         "leg0_down_low": 0.39,
+         "legs345_down_low": 0.98,
+         "seat_upward_load": 17.7
+        },
+        "corners": {
+         "SDXL \u2192 TripoSG": "br",
+         "0.2 m": "bl",
+         "Body load 25 N": "br",
+         "\u00d750": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": {
+      "preview_px_per_mm": 11.1,
+      "regions": {
+       "leg0_down_low": 0.61,
+       "legs345_down_low": 0.9,
+       "seat_upward_load": 20.99
+      },
+      "corners": {
+       "SDXL \u2192 TripoSG": "br",
+       "0.2 m": "bl",
+       "Body load 25 N": "br",
+       "\u00d750": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca school chair",
+     "with a steel frame",
+     "and a plastic seat\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.007349735081427349,
+    "key_light_ray": [
+     0.5315,
+     -0.771,
+     0.3509
+    ],
+    "grid": {
+     "cell": 0.2,
+     "rings": 9,
+     "reach": 1.8
+    }
+   },
+   "panels": [
+    "ar_0_arrows.vtk",
+    "ar_0_bc.vtk",
+    "ar_0_fit.vtk",
+    "ar_0_grid.vtk",
+    "ar_0_materials.vtk",
+    "ar_0_painted.vtk",
+    "ar_0_shadow.vtk",
+    "ar_0_shadow_def.vtk",
+    "ar_0_solve.vtk",
+    "ar_0_support.vtk"
+   ]
+  },
+  {
+   "index": 1,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_kimi/glass-top-dining-table-20261118-025101/workflow/97b3916bd322",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "glass-top-dining-table-20261118-025101",
+    "instruction": "a glass-top dining table",
+    "agent": "codex",
+    "model": "moonshotai/Kimi-K3.1-Pro",
+    "model_label": "Kimi K3.1 Pro",
+    "model_requested": "kimi-k3.1-pro",
+    "provider": "hf",
+    "route": "moonshotai",
+    "session_id": "97b3916bd322",
+    "session_ids": [
+     "97b3916bd322"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1eda3-41be-7e12-8b08-1c667484e56f",
+    "input_tokens": 80976,
+    "cache_read_input_tokens": 1792893,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 16084,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 1873869,
+     "cached_input_tokens": 1792893,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 16084,
+     "reasoning_output_tokens": 4998
+    },
+    "thinking_tokens": 4998,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 41,
+     "write_stdin": 14,
+     "view_image": 12
+    },
+    "images_viewed": 12,
+    "cost_usd": 0.681371,
+    "cost_basis": {
+     "input": 2.0,
+     "cached_input": 0.2,
+     "cache_write": 2.0,
+     "output": 10.0,
+     "date": "2026-11-17",
+     "source": "Moonshot API price (input 2, cached input 0.2, cache write at the default 5-min TTL 2, output 10 USD per M)"
+    },
+    "wall_clock_s": 367.156,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 8,
+     "judge": 1
+    },
+    "runner_runs": 8,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a glass-top dining table",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T02:51:01-05:00",
+    "finished_at": "2026-11-18T02:57:08-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T02-51-01-01a1eda3-41be-7e12-8b08-1c667484e56f.jsonl",
+    "case": {
+     "material_mode": "parts",
+     "parts": [
+      {
+       "density": 700.0,
+       "id": 0,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 2500.0,
+       "id": 1,
+       "poisson_ratio": 0.23,
+       "youngs_modulus": 70000000000.0
+      },
+      {
+       "density": 700.0,
+       "id": 2,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 700.0,
+       "id": 3,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 700.0,
+       "id": 4,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 700.0,
+       "id": 5,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 12000000000.0
+      },
+      {
+       "density": 2500.0,
+       "id": 6,
+       "poisson_ratio": 0.23,
+       "youngs_modulus": 70000000000.0
+      },
+      {
+       "density": 2500.0,
+       "id": 7,
+       "poisson_ratio": 0.23,
+       "youngs_modulus": 70000000000.0
+      }
+     ],
+     "youngs_modulus_range": [
+      12000000000.0,
+      70000001024.0
+     ],
+     "youngs_modulus_contrast": 5.833,
+     "held": [
+      {
+       "name": "fix_legs_down",
+       "components": [
+        1
+       ]
+      },
+      {
+       "name": "fix_leg2_down",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "traction_top_box",
+       "traction": [
+        0.0,
+        -371.8651767734895,
+        0.0
+       ]
+      },
+      {
+       "name": "traction_top_lowz",
+       "traction": [
+        0.0,
+        -983.6301380178692,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "parts_montage": "materials/parts/montage.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-02-55-40/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 259.6,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 2.9,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.7,
+      "setup_segmentation": 7.8,
+      "setup_regions": 10.3,
+      "setup_values_material": 4.4,
+      "paint": 0.1,
+      "solve": 6.4,
+      "solve_after": 20.6,
+      "overhead_startup": 13.1,
+      "overhead_between": 5.2,
+      "overhead_stop": 20.2,
+      "overhead_commands": 13.9
+     },
+     "groups": {
+      "agent": 259.6,
+      "workflow": 28.2,
+      "solver": 27.0,
+      "overhead": 52.4
+     },
+     "wall_clock_s": 367.156,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T02-51-01-01a1eda3-41be-7e12-8b08-1c667484e56f.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 21538,
+    "faces": 43072
+   },
+   "extent": 1.6161615811288357,
+   "dims": [
+    1.6161615811288357,
+    0.8235887271584943,
+    0.9029004364274442
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.618,
+     0.634,
+     0.534
+    ],
+    "rgb_spread": 0.18287042075506676,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "fix_legs_down",
+      "category": "dirichlet",
+      "faces": 42,
+      "mean_normal": [
+       -0.0,
+       -1.0,
+       -0.0
+      ],
+      "area": 0.0018626465620201218,
+      "proj_area": 1.9651005535257337e-05,
+      "facing_camera": 0.030108823998644667,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.6666666666666666,
+       "gap": 0.006464646324515343,
+       "tube_radius": 0.009696969486773014,
+       "why": "faces the camera at 3.0% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_1",
+      "name": "fix_leg2_down",
+      "category": "dirichlet",
+      "faces": 18,
+      "mean_normal": [
+       0.001,
+       -1.0,
+       0.0
+      ],
+      "area": 0.0007698018412340017,
+      "proj_area": 1.2078370405424721e-05,
+      "facing_camera": 0.04271214135113599,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.75,
+       "gap": 0.006464646324515343,
+       "tube_radius": 0.009696969486773014,
+       "why": "faces the camera at 4.3% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_2",
+      "name": "traction_top_box",
+      "category": "neumann",
+      "faces": 3600,
+      "mean_normal": [
+       -0.0,
+       1.0,
+       0.0
+      ],
+      "area": 0.3164605669827266,
+      "proj_area": 0.11064920049351593,
+      "facing_camera": 1.0,
+      "unoccluded_facing": 1.0003831067905096
+     },
+     {
+      "key": "neumann_3",
+      "name": "traction_top_lowz",
+      "category": "neumann",
+      "faces": 2313,
+      "mean_normal": [
+       -0.0,
+       1.0,
+       -0.006
+      ],
+      "area": 0.20353771837354304,
+      "proj_area": 0.07001285973593721,
+      "facing_camera": 1.0,
+      "unoccluded_facing": 0.9984553315046848
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 0.03335957630866051,
+     "surface_watertight": true,
+     "density": 2500.0,
+     "mass": 83.39894077165127,
+     "weight_method": "volume of geometry/physical.glb x mean density of the material field (materials/parts/field/manifest.json) x |loads.acceleration|",
+     "mass_kg": 83.39894077165127,
+     "weight_N": 817.8642225183139,
+     "real_mass_kg": 60.0,
+     "real_weight_N": 588.399,
+     "weight_over_real_weight": 1.3899823461941878,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.7447685490654826,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "traction_top_box",
+      "traction": [
+       0.0,
+       -371.8651767734895,
+       0.0
+      ],
+      "tail": [
+       1.100545048713684,
+       1.118138391762972,
+       0.4650258421897888
+      ],
+      "tip": [
+       1.100545048713684,
+       0.8272293071597815,
+       0.4650258421897888
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "traction_top_box",
+      "traction": [
+       0.0,
+       -371.8651767734895,
+       0.0
+      ],
+      "tail": [
+       0.8972351352373759,
+       1.118242401868105,
+       0.4561862846215566
+      ],
+      "tip": [
+       0.8972351352373759,
+       0.8273333172649145,
+       0.4561862846215566
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "traction_top_box",
+      "traction": [
+       0.0,
+       -371.8651767734895,
+       0.0
+      ],
+      "tail": [
+       0.7027648289998373,
+       1.1182469482640036,
+       0.43850049477331826
+      ],
+      "tip": [
+       0.7027648289998373,
+       0.8273378636608132,
+       0.43850049477331826
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "traction_top_box",
+      "traction": [
+       0.0,
+       -371.8651767734895,
+       0.0
+      ],
+      "tail": [
+       0.5259736577669779,
+       1.1181228349506855,
+       0.38988958795865375
+      ],
+      "tip": [
+       0.5259736577669779,
+       0.8272137503474951,
+       0.38988958795865375
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 104,
+      "region": "traction_top_lowz",
+      "traction": [
+       0.0,
+       -983.6301380178692,
+       0.0
+      ],
+      "tail": [
+       1.3347934087117512,
+       1.118511811206225,
+       0.08510263004212523
+      ],
+      "tip": [
+       1.3347934087117512,
+       0.8276027266030345,
+       0.08510263004212523
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 105,
+      "region": "traction_top_lowz",
+      "traction": [
+       0.0,
+       -983.6301380178692,
+       0.0
+      ],
+      "tail": [
+       0.7823208769162496,
+       1.1183751381929006,
+       0.10703011276315881
+      ],
+      "tip": [
+       0.7823208769162496,
+       0.8274660535897103,
+       0.10703011276315881
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 106,
+      "region": "traction_top_lowz",
+      "traction": [
+       0.0,
+       -983.6301380178692,
+       0.0
+      ],
+      "tail": [
+       0.27846595644950867,
+       1.11858561716214,
+       0.08073798208631636
+      ],
+      "tip": [
+       0.27846595644950867,
+       0.8276765325589495,
+       0.08073798208631636
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "parts",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-02-55-40",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-02-55-40/vtu/solution_t0000.vtu",
+    "nodes": 22801,
+    "hexes": 17157,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 5.438959822042073e-16,
+    "outside_points": 0,
+    "umax_surface": 0.0004088026643986932,
+    "umax_nodes": 0.00041051070227397107,
+    "umax_workflow_export": 0.000408704683650285,
+    "ratio_to_workflow_export": 1.0002397348313532,
+    "umax_surface_m": 0.0004088026643986932
+   },
+   "scale": {
+    "factor": 500.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 1174.4421319397454,
+     "reach": 0.3,
+     "physical_extent": 1.6,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.12647332703984893,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0
+   },
+   "E_source": "solve VTU youngs_modulus",
+   "E_nodes": [
+    70000001024.0,
+    70000001024.0
+   ],
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    70000001023.99998,
+    70000001024.00002
+   ],
+   "E_surface_Pa": [
+    70000001023.99998,
+    70000001024.00002
+   ],
+   "view": {
+    "dir": [
+     -0.5163009659600871,
+     0.3492151478847891,
+     0.7819732048072273
+    ],
+    "azimuth_deg": 300,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -983.6301380178692,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 33.4,
+    "silhouette_area_over_R2": 0.6464,
+    "visible_area_over_R2": 1.6447,
+    "panel_fill": 0.273,
+    "height_shown": 1.0,
+    "shows": 0.888,
+    "paper_view_shows": 0.906,
+    "turn_from_paper_deg": 55.9,
+    "why": "paper view preferred (shows 95% of the best); a passing view at 93% of the best; after 2 preferred view(s) predicted to fail the compose's print checks",
+    "worst_load_shown_fraction_of_its_best": 1.0,
+    "worst_support_shown_fraction_of_its_best": 0.5340715517697459,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 3,
+     "rejected": [
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.952,
+       "misses": [
+        "label 'Body load 818 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.65,
+        "regions": {
+         "fix_legs_down": 0.41,
+         "fix_leg2_down": 1.2,
+         "traction_top_box": 20.56,
+         "traction_top_lowz": 8.59
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "tr",
+         "0.5 m": "bl",
+         "Body load 818 N": null,
+         "\u00d7500": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 30.0,
+       "shows_over_best": 1.0,
+       "misses": [
+        "label 'Body load 818 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 10.34,
+        "regions": {
+         "fix_legs_down": 0.37,
+         "fix_leg2_down": 1.05,
+         "traction_top_box": 25.95,
+         "traction_top_lowz": 13.41
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "tr",
+         "0.5 m": "bl",
+         "Body load 818 N": null,
+         "\u00d7500": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": {
+      "preview_px_per_mm": 9.78,
+      "regions": {
+       "fix_legs_down": 0.45,
+       "fix_leg2_down": 0.77,
+       "traction_top_box": 19.07,
+       "traction_top_lowz": 8.26
+      },
+      "corners": {
+       "Text \u2192 TripoSG": "br",
+       "0.5 m": "bl",
+       "Body load 818 N": "br",
+       "\u00d7500": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca glass-top",
+     "dining table\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.014115990590627615,
+    "key_light_ray": [
+     0.3509,
+     -0.771,
+     -0.5315
+    ],
+    "grid": {
+     "cell": 0.5,
+     "rings": 8,
+     "reach": 4.0
+    }
+   },
+   "panels": [
+    "ar_1_arrows.vtk",
+    "ar_1_bc.vtk",
+    "ar_1_fit.vtk",
+    "ar_1_grid.vtk",
+    "ar_1_materials.vtk",
+    "ar_1_painted.vtk",
+    "ar_1_shadow.vtk",
+    "ar_1_shadow_def.vtk",
+    "ar_1_solve.vtk",
+    "ar_1_support.vtk"
+   ]
+  },
+  {
+   "index": 2,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_kimi/park-bench-20261118-025708/workflow/921a1ece04db",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "park-bench-20261118-025708",
+    "instruction": "a park bench",
+    "agent": "codex",
+    "model": "moonshotai/Kimi-K3.1-Pro",
+    "model_label": "Kimi K3.1 Pro",
+    "model_requested": "kimi-k3.1-pro",
+    "provider": "hf",
+    "route": "moonshotai",
+    "session_id": "921a1ece04db",
+    "session_ids": [
+     "921a1ece04db"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1eda8-dd7b-7483-a688-793eb80749b4",
+    "input_tokens": 104299,
+    "cache_read_input_tokens": 4922838,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 21383,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 5027137,
+     "cached_input_tokens": 4922838,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 21383,
+     "reasoning_output_tokens": 6706
+    },
+    "thinking_tokens": 6706,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 54,
+     "write_stdin": 17,
+     "view_image": 18
+    },
+    "images_viewed": 18,
+    "cost_usd": 1.406996,
+    "cost_basis": {
+     "input": 2.0,
+     "cached_input": 0.2,
+     "cache_write": 2.0,
+     "output": 10.0,
+     "date": "2026-11-17",
+     "source": "Moonshot API price (input 2, cached input 0.2, cache write at the default 5-min TTL 2, output 10 USD per M)"
+    },
+    "wall_clock_s": 630.174,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 15,
+     "judge": 1
+    },
+    "runner_runs": 15,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a park bench",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T02:57:09-05:00",
+    "finished_at": "2026-11-18T03:07:39-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T02-57-09-01a1eda8-dd7b-7483-a688-793eb80749b4.jsonl",
+    "case": {
+     "material_mode": "parts",
+     "parts": [
+      {
+       "density": 7200.0,
+       "id": 0,
+       "poisson_ratio": 0.25,
+       "youngs_modulus": 120000000000.0
+      },
+      {
+       "density": 650.0,
+       "id": 1,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 11000000000.0
+      },
+      {
+       "density": 7200.0,
+       "id": 2,
+       "poisson_ratio": 0.25,
+       "youngs_modulus": 120000000000.0
+      },
+      {
+       "density": 650.0,
+       "id": 3,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 11000000000.0
+      },
+      {
+       "density": 7200.0,
+       "id": 4,
+       "poisson_ratio": 0.25,
+       "youngs_modulus": 120000000000.0
+      },
+      {
+       "density": 7200.0,
+       "id": 5,
+       "poisson_ratio": 0.25,
+       "youngs_modulus": 120000000000.0
+      },
+      {
+       "density": 7200.0,
+       "id": 6,
+       "poisson_ratio": 0.25,
+       "youngs_modulus": 120000000000.0
+      },
+      {
+       "density": 650.0,
+       "id": 7,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 11000000000.0
+      }
+     ],
+     "youngs_modulus_range": [
+      11000000512.0,
+      120000004096.0
+     ],
+     "youngs_modulus_contrast": 10.909,
+     "held": [
+      {
+       "name": "ground_anchors",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "upper_traction",
+       "traction": [
+        0.0,
+        -15939.797621375532,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -9.80665,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 1,
+      "image": 0,
+      "texture": null
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "parts_montage": "materials/parts/montage.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-03-05-36/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 487.3,
+      "geometry_drawing": 13.0,
+      "geometry_generation": 17.1,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.5,
+      "setup_segmentation": 8.6,
+      "setup_regions": 7.0,
+      "setup_values_material": 4.6,
+      "paint": 1.9,
+      "solve": 6.2,
+      "solve_after": 4.5,
+      "overhead_startup": 27.7,
+      "overhead_between": 5.5,
+      "overhead_stop": 35.1,
+      "overhead_commands": 9.2
+     },
+     "groups": {
+      "agent": 487.3,
+      "workflow": 54.7,
+      "solver": 10.7,
+      "overhead": 77.5
+     },
+     "wall_clock_s": 630.174,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T02-57-09-01a1eda8-dd7b-7483-a688-793eb80749b4.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "SDXL \u2192 TripoSG",
+   "surface": {
+    "vertices": 18703,
+    "faces": 37578
+   },
+   "extent": 1.8181818025186658,
+   "dims": [
+    0.6383204236626625,
+    0.8382544703781605,
+    1.8181818025186658
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.635,
+     0.571,
+     0.522
+    ],
+    "rgb_spread": 0.06444773297339873,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "ground_anchors",
+      "category": "dirichlet",
+      "faces": 126,
+      "mean_normal": [
+       0.028,
+       -1.0,
+       0.0
+      ],
+      "area": 0.011248801501071569,
+      "proj_area": 0.00014964302519329434,
+      "facing_camera": 0.03517578348718253,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.6086956521739131,
+       "gap": 0.007272727210074663,
+       "tube_radius": 0.010909090815111995,
+       "why": "faces the camera at 3.5% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_1",
+      "name": "upper_traction",
+      "category": "neumann",
+      "faces": 1809,
+      "mean_normal": [
+       -0.152,
+       0.988,
+       0.0
+      ],
+      "area": 0.16177217499683022,
+      "proj_area": 0.07011562608153107,
+      "facing_camera": 0.9541388753398989,
+      "unoccluded_facing": 0.8068740205197067
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -9.80665,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 1.0,
+     "volume": 0.0362117610131345,
+     "surface_watertight": true,
+     "density": 3561.790771484375,
+     "mass": 128.97871619578015,
+     "weight_method": "volume of geometry/physical.glb x mean density of the material field (materials/parts/field/manifest.json) x |loads.acceleration|",
+     "mass_kg": 128.97871619578015,
+     "weight_N": 1264.8491271813473,
+     "real_mass_kg": 45.0,
+     "real_weight_N": 441.29925,
+     "weight_over_real_weight": 2.8661936932395586,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.8732347505944567,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "upper_traction",
+      "traction": [
+       0.0,
+       -15939.797621375532,
+       0.0
+      ],
+      "tail": [
+       0.26483529415128926,
+       0.7240481676395312,
+       1.5166320678687102
+      ],
+      "tip": [
+       0.26483529415128926,
+       0.39677544318617136,
+       1.5166320678687102
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "upper_traction",
+      "traction": [
+       0.0,
+       -15939.797621375532,
+       0.0
+      ],
+      "tail": [
+       0.2433189599285005,
+       0.7239950494351558,
+       0.986630380153656
+      ],
+      "tip": [
+       0.2433189599285005,
+       0.396722324981796,
+       0.986630380153656
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "upper_traction",
+      "traction": [
+       0.0,
+       -15939.797621375532,
+       0.0
+      ],
+      "tail": [
+       0.24334367568958062,
+       0.7238151858998643,
+       0.25280607838101027
+      ],
+      "tip": [
+       0.24334367568958062,
+       0.3965424614465044,
+       0.25280607838101027
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "parts",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-03-05-36",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-03-05-36/vtu/solution_t0000.vtu",
+    "nodes": 16873,
+    "hexes": 12804,
+    "coord_check_inside_fraction": 0.9976474362401754,
+    "coord_check_max_err_inside": 5.087681048627601e-16,
+    "outside_points": 44,
+    "umax_surface": 0.0005721753041345782,
+    "umax_nodes": 0.000647000864493667,
+    "umax_workflow_export": 0.0005664246855303645,
+    "ratio_to_workflow_export": 1.0101524858487216,
+    "umax_surface_m": 0.0005721753041345782
+   },
+   "scale": {
+    "factor": 300.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 953.3482805297901,
+     "reach": 0.3,
+     "physical_extent": 1.8,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.09440892599551316,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.019381978325848342
+   },
+   "E_source": "solve VTU youngs_modulus",
+   "E_nodes": [
+    11000000512.0,
+    120000004096.0
+   ],
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    11000000511.999996,
+    120000004096.00003
+   ],
+   "E_surface_Pa": [
+    11000000511.999996,
+    120000004096.00003
+   ],
+   "view": {
+    "dir": [
+     -0.701097995322806,
+     0.3492151478847891,
+     0.6216995909940326
+    ],
+    "azimuth_deg": 285,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -15939.797621375532,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 41.6,
+    "silhouette_area_over_R2": 0.6455,
+    "visible_area_over_R2": 1.2405,
+    "panel_fill": 0.278,
+    "height_shown": 1.0,
+    "shows": 0.991,
+    "paper_view_shows": 0.673,
+    "turn_from_paper_deg": 69.6,
+    "why": "paper view excluded (shows a load region at < 50 % of its best); the view nearest it within 95% of the best",
+    "worst_load_shown_fraction_of_its_best": 0.881888578686687,
+    "worst_support_shown_fraction_of_its_best": 0.7702101957131338,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 1,
+     "rejected": [],
+     "predicted": {
+      "preview_px_per_mm": 9.03,
+      "regions": {
+       "ground_anchors": 1.45,
+       "upper_traction": 15.78
+      },
+      "corners": {
+       "SDXL \u2192 TripoSG": "tr",
+       "0.5 m": "bl",
+       "Body load 1.3 kN": "tr",
+       "\u00d7300": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca park bench\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.01598641129044553,
+    "key_light_ray": [
+     0.4765,
+     -0.771,
+     -0.4226
+    ],
+    "grid": {
+     "cell": 0.5,
+     "rings": 8,
+     "reach": 4.0
+    }
+   },
+   "panels": [
+    "ar_2_arrows.vtk",
+    "ar_2_bc.vtk",
+    "ar_2_fit.vtk",
+    "ar_2_grid.vtk",
+    "ar_2_materials.vtk",
+    "ar_2_painted.vtk",
+    "ar_2_shadow.vtk",
+    "ar_2_shadow_def.vtk",
+    "ar_2_solve.vtk",
+    "ar_2_support.vtk"
+   ]
+  },
+  {
+   "index": 3,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_kimi/bar-stool-20261118-030739/workflow/df0f348be915",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "bar-stool-20261118-030739",
+    "instruction": "a bar stool",
+    "agent": "codex",
+    "model": "moonshotai/Kimi-K3.1-Pro",
+    "model_label": "Kimi K3.1 Pro",
+    "model_requested": "kimi-k3.1-pro",
+    "provider": "hf",
+    "route": "moonshotai",
+    "session_id": "df0f348be915",
+    "session_ids": [
+     "df0f348be915"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1edb2-7c86-7583-bbe5-80fec1450ab4",
+    "input_tokens": 101640,
+    "cache_read_input_tokens": 2802917,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 19957,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 2904557,
+     "cached_input_tokens": 2802917,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 19957,
+     "reasoning_output_tokens": 5859
+    },
+    "thinking_tokens": 5859,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 55,
+     "write_stdin": 16,
+     "view_image": 18
+    },
+    "images_viewed": 18,
+    "cost_usd": 0.963433,
+    "cost_basis": {
+     "input": 2.0,
+     "cached_input": 0.2,
+     "cache_write": 2.0,
+     "output": 10.0,
+     "date": "2026-11-17",
+     "source": "Moonshot API price (input 2, cached input 0.2, cache write at the default 5-min TTL 2, output 10 USD per M)"
+    },
+    "wall_clock_s": 606.949,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 14,
+     "judge": 1
+    },
+    "runner_runs": 14,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a bar stool",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T03:07:39-05:00",
+    "finished_at": "2026-11-18T03:17:46-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T03-07-39-01a1edb2-7c86-7583-bbe5-80fec1450ab4.jsonl",
+    "case": {
+     "material_mode": "uniform",
+     "youngs_modulus": 200000000000.0,
+     "poisson_ratio": 0.29,
+     "density": 7850.0,
+     "held": [
+      {
+       "name": "front_left_foot",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      },
+      {
+       "name": "front_right_foot",
+       "components": [
+        1
+       ]
+      },
+      {
+       "name": "back_left_foot",
+       "components": [
+        1
+       ]
+      },
+      {
+       "name": "back_right_foot",
+       "components": [
+        1
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "seat_top",
+       "traction": [
+        0.0,
+        -13460.96937061822,
+        0.0
+       ]
+      },
+      {
+       "name": "footrest_top",
+       "traction": [
+        0.0,
+        -35858.301731701635,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -2.33018,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": 0,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-03-16-29/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 335.8,
+      "geometry_drawing": 12.8,
+      "geometry_generation": 123.9,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.1,
+      "setup_segmentation": 6.7,
+      "setup_regions": 9.0,
+      "setup_values_material": 0.2,
+      "paint": 0.1,
+      "solve": 12.4,
+      "solve_after": 2.3,
+      "overhead_startup": 57.9,
+      "overhead_between": 4.3,
+      "overhead_stop": 31.3,
+      "overhead_commands": 8.1
+     },
+     "groups": {
+      "agent": 335.8,
+      "workflow": 154.8,
+      "solver": 14.7,
+      "overhead": 101.6
+     },
+     "wall_clock_s": 606.949,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T03-07-39-01a1edb2-7c86-7583-bbe5-80fec1450ab4.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "SDXL \u2192 Hunyuan3D",
+   "surface": {
+    "vertices": 12792,
+    "faces": 25612
+   },
+   "extent": 0.7575757540762424,
+   "dims": [
+    0.3569005758035928,
+    0.7575757540762424,
+    0.33213095273822546
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.66,
+     0.521,
+     0.306
+    ],
+    "rgb_spread": 0.2970739096449408,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "front_left_foot",
+      "category": "dirichlet",
+      "faces": 86,
+      "mean_normal": [
+       -0.021,
+       -0.999,
+       -0.035
+      ],
+      "area": 0.0012924427403987232,
+      "proj_area": 4.414092834529315e-05,
+      "facing_camera": 0.0854954312144819,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.7692307692307693,
+       "gap": 0.0030303030163049698,
+       "tube_radius": 0.004545454524457455,
+       "why": "faces the camera at 8.5% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_1",
+      "name": "front_right_foot",
+      "category": "dirichlet",
+      "faces": 61,
+      "mean_normal": [
+       -0.01,
+       -1.0,
+       -0.017
+      ],
+      "area": 0.0008738119194194172,
+      "proj_area": 1.7521451066310294e-05,
+      "facing_camera": 0.0539970730534262,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.6190476190476191,
+       "gap": 0.0030303030163049698,
+       "tube_radius": 0.004545454524457455,
+       "why": "faces the camera at 5.4% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_2",
+      "name": "back_left_foot",
+      "category": "dirichlet",
+      "faces": 64,
+      "mean_normal": [
+       -0.023,
+       -0.999,
+       -0.028
+      ],
+      "area": 0.001138836469159009,
+      "proj_area": 4.0962422389338965e-05,
+      "facing_camera": 0.08828016965966251,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.7631578947368421,
+       "gap": 0.0030303030163049698,
+       "tube_radius": 0.004545454524457455,
+       "why": "faces the camera at 8.8% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_3",
+      "name": "back_right_foot",
+      "category": "dirichlet",
+      "faces": 59,
+      "mean_normal": [
+       0.055,
+       -0.998,
+       -0.032
+      ],
+      "area": 0.0007474730408465342,
+      "proj_area": 3.1806739389114374e-05,
+      "facing_camera": 0.10851908552783383,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.74,
+       "gap": 0.0030303030163049698,
+       "tube_radius": 0.004545454524457455,
+       "why": "faces the camera at 10.9% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_4",
+      "name": "seat_top",
+      "category": "neumann",
+      "faces": 1224,
+      "mean_normal": [
+       0.019,
+       1.0,
+       -0.014
+      ],
+      "area": 0.07621365098602717,
+      "proj_area": 0.02582466460229075,
+      "facing_camera": 0.974463362594473,
+      "unoccluded_facing": 0.9753275373679547
+     },
+     {
+      "key": "neumann_5",
+      "name": "footrest_top",
+      "category": "neumann",
+      "faces": 1161,
+      "mean_normal": [
+       -0.003,
+       1.0,
+       -0.006
+      ],
+      "area": 0.024602101520034145,
+      "proj_area": 0.008274017442587624,
+      "facing_camera": 0.9306469401357684,
+      "unoccluded_facing": 0.7600638503601395
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -2.33018,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 0.23761223251569089,
+     "volume": 0.010722410474442721,
+     "surface_watertight": true,
+     "density": 7850.0,
+     "mass": 84.17092222437536,
+     "weight_method": "volume of geometry/physical.glb x case material.density x |loads.acceleration|",
+     "mass_kg": 84.17092222437536,
+     "weight_N": 196.13339954879498,
+     "real_mass_kg": 6.0,
+     "real_weight_N": 58.8399,
+     "weight_over_real_weight": 3.333340123773069,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 0.19886202953041218,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "seat_top",
+      "traction": [
+       0.0,
+       -13460.96937061822,
+       0.0
+      ],
+      "tail": [
+       0.2804541901315841,
+       0.8875671413518015,
+       0.15515721306431587
+      ],
+      "tip": [
+       0.2804541901315841,
+       0.7512035056180778,
+       0.15515721306431587
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "seat_top",
+      "traction": [
+       0.0,
+       -13460.96937061822,
+       0.0
+      ],
+      "tail": [
+       0.19417807826672245,
+       0.8828496037790755,
+       0.15205806945939382
+      ],
+      "tip": [
+       0.19417807826672245,
+       0.7464859680453518,
+       0.15205806945939382
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "seat_top",
+      "traction": [
+       0.0,
+       -13460.96937061822,
+       0.0
+      ],
+      "tail": [
+       0.09803551250219604,
+       0.8915072853194451,
+       0.2508584492406686
+      ],
+      "tip": [
+       0.09803551250219604,
+       0.7551436495857214,
+       0.2508584492406686
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "footrest_top",
+      "traction": [
+       0.0,
+       -35858.301731701635,
+       0.0
+      ],
+      "tail": [
+       0.06325403255571298,
+       0.34891392942502086,
+       0.1764218252826576
+      ],
+      "tip": [
+       0.06325403255571298,
+       0.21255029369129724,
+       0.1764218252826576
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 104,
+      "region": "footrest_top",
+      "traction": [
+       0.0,
+       -35858.301731701635,
+       0.0
+      ],
+      "tail": [
+       0.21175540059133663,
+       0.3737588962594861,
+       0.07823813434618439
+      ],
+      "tip": [
+       0.21175540059133663,
+       0.23739526052576249,
+       0.07823813434618439
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "uniform",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-03-16-29",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-03-16-29/vtu/solution_t0000.vtu",
+    "nodes": 29613,
+    "hexes": 22207,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 2.3551386880256624e-16,
+    "outside_points": 0,
+    "umax_surface": 3.6759875365137053e-06,
+    "umax_nodes": 3.820568967842645e-06,
+    "umax_workflow_export": 3.6735677895194385e-06,
+    "ratio_to_workflow_export": 1.0006586912595352,
+    "umax_surface_m": 3.6759875365137053e-06
+   },
+   "scale": {
+    "factor": 30000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 61248.35933119764,
+     "reach": 0.3,
+     "physical_extent": 0.75,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.14556910711837884,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.0
+   },
+   "E_source": "case/material.json (uniform)",
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    200000000000.0,
+    200000000000.0
+   ],
+   "E_surface_Pa": [
+    200000000000.0,
+    200000000000.0
+   ],
+   "view": {
+    "dir": [
+     1.5,
+     1.25,
+     3.0
+    ],
+    "azimuth_deg": 0,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -13460.96937061822,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 26.6,
+    "silhouette_area_over_R2": 0.8938,
+    "visible_area_over_R2": 1.6718,
+    "panel_fill": 0.2,
+    "height_shown": 1.0,
+    "shows": 0.995,
+    "paper_view_shows": 0.995,
+    "turn_from_paper_deg": 0.0,
+    "why": "paper view",
+    "worst_load_shown_fraction_of_its_best": 0.6774810132503559,
+    "worst_support_shown_fraction_of_its_best": 0.6674738732985215,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 1,
+     "rejected": [],
+     "predicted": {
+      "preview_px_per_mm": 12.27,
+      "regions": {
+       "front_left_foot": 0.74,
+       "front_right_foot": 0.57,
+       "back_left_foot": 0.5,
+       "back_right_foot": 0.67,
+       "seat_top": 11.96,
+       "footrest_top": 3.47
+      },
+      "corners": {
+       "SDXL \u2192 Hunyuan3D": "tr",
+       "0.2 m": "bl",
+       "Body load 196 N": "br",
+       "\u00d730,000": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca bar stool\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.010076253227873066,
+    "key_light_ray": [
+     -0.2848,
+     -0.771,
+     -0.5697
+    ],
+    "grid": {
+     "cell": 0.2,
+     "rings": 9,
+     "reach": 1.8
+    }
+   },
+   "panels": [
+    "ar_3_arrows.vtk",
+    "ar_3_bc.vtk",
+    "ar_3_fit.vtk",
+    "ar_3_grid.vtk",
+    "ar_3_materials.vtk",
+    "ar_3_painted.vtk",
+    "ar_3_shadow.vtk",
+    "ar_3_shadow_def.vtk",
+    "ar_3_solve.vtk",
+    "ar_3_support.vtk"
+   ]
+  },
+  {
+   "index": 4,
+   "session": "/mnt/hdd/xl2254/implicit_optimize/output/agentic_batch50_kimi/sofa-20261118-031746/workflow/5f29d2fd0321",
+   "label": null,
+   "view_dir": null,
+   "draw_scale": 1.0,
+   "prompt_max_lines": null,
+   "meta": {
+    "run_name": "sofa-20261118-031746",
+    "instruction": "a sofa",
+    "agent": "codex",
+    "model": "moonshotai/Kimi-K3.1-Pro",
+    "model_label": "Kimi K3.1 Pro",
+    "model_requested": "kimi-k3.1-pro",
+    "provider": "hf",
+    "route": "moonshotai",
+    "session_id": "5f29d2fd0321",
+    "session_ids": [
+     "5f29d2fd0321"
+    ],
+    "session_id_found_by": "drive.py start output in the transcript; primary named in the final reply",
+    "codex_thread_id": "01a1edbb-c10c-79d3-a24e-fb329cca9cad",
+    "input_tokens": 78311,
+    "cache_read_input_tokens": 1577336,
+    "cache_creation_input_tokens": 0,
+    "output_tokens": 14390,
+    "tokens_source": "codex exec --json turn.completed usage",
+    "tokens_raw": {
+     "input_tokens": 1655647,
+     "cached_input_tokens": 1577336,
+     "cache_write_input_tokens": 0,
+     "output_tokens": 14390,
+     "reasoning_output_tokens": 3754
+    },
+    "thinking_tokens": 3754,
+    "effort": "medium",
+    "system_note": "Environment note: the repository root and working directory is /mnt/hdd/xl2254/implicit_optimize_ddf393a. It is a git worktree; the \".claude/worktrees/...\" part is part of the repository path, not a configuration folder. Every file you write goes under this root: a relative path such as output/fem_workflow_operator/<session_id>/operator/brief.md resolves here, and an absolute path must start with /mnt/hdd/xl2254/implicit_optimize_ddf393a/.",
+    "tool_calls": {
+     "exec_command": 42,
+     "write_stdin": 10,
+     "view_image": 14
+    },
+    "images_viewed": 14,
+    "cost_usd": 0.615989,
+    "cost_basis": {
+     "input": 2.0,
+     "cached_input": 0.2,
+     "cache_write": 2.0,
+     "output": 10.0,
+     "date": "2026-11-17",
+     "source": "Moonshot API price (input 2, cached input 0.2, cache write at the default 5-min TTL 2, output 10 USD per M)"
+    },
+    "wall_clock_s": 338.397,
+    "num_turns": 1,
+    "status": "ok",
+    "exit_code": 0,
+    "cli_errors_retried": 0,
+    "drive_commands": {
+     "start": 1,
+     "run": 8,
+     "judge": 1
+    },
+    "runner_runs": 8,
+    "workflow_last_stop": "finished",
+    "anchor_instruction": "a sofa",
+    "anchor_instruction_matches": true,
+    "started_at": "2026-11-18T03:17:46-05:00",
+    "finished_at": "2026-11-18T03:23:25-05:00",
+    "transcript_source": "codex_home/sessions/2026/11/18/rollout-2026-11-18T03-17-47-01a1edbb-c10c-79d3-a24e-fb329cca9cad.jsonl",
+    "case": {
+     "material_mode": "parts",
+     "parts": [
+      {
+       "density": 575.0,
+       "id": 0,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 10000000000.0
+      },
+      {
+       "density": 565.0,
+       "id": 1,
+       "poisson_ratio": 0.325,
+       "youngs_modulus": 100000000.0
+      },
+      {
+       "density": 565.0,
+       "id": 2,
+       "poisson_ratio": 0.325,
+       "youngs_modulus": 100000000.0
+      },
+      {
+       "density": 575.0,
+       "id": 3,
+       "poisson_ratio": 0.35,
+       "youngs_modulus": 10000000000.0
+      },
+      {
+       "density": 565.0,
+       "id": 4,
+       "poisson_ratio": 0.325,
+       "youngs_modulus": 100000000.0
+      }
+     ],
+     "youngs_modulus_range": [
+      100000000.0,
+      10000000000.0
+     ],
+     "youngs_modulus_contrast": 100.0,
+     "held": [
+      {
+       "name": "foot_left_front",
+       "components": [
+        0,
+        1,
+        2
+       ]
+      },
+      {
+       "name": "foot_right_front",
+       "components": [
+        1,
+        2
+       ]
+      },
+      {
+       "name": "feet_rear",
+       "components": [
+        1
+       ]
+      }
+     ],
+     "loaded": [
+      {
+       "name": "seat_top",
+       "traction": [
+        0.0,
+        -1377.8879437003973,
+        0.0
+       ]
+      }
+     ],
+     "body_loads": {
+      "acceleration": [
+       0.0,
+       -0.97343,
+       0.0
+      ],
+      "body_force": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "generation_seeds": {
+      "geometry": 0,
+      "image": null,
+      "texture": 0
+     },
+     "figure_files": {
+      "views": "geometry/views.png",
+      "body_glb": "geometry/physical.glb",
+      "textured_views": "operator/texture_views.png",
+      "segments": "operator/segments.png",
+      "regions": "operator/regions.png",
+      "parts_montage": "materials/parts/montage.png",
+      "displacement_png": "operator/displacement_magnitude.png",
+      "stress_png": "operator/stress_von_mises.png",
+      "displacement_glb": "solve/displacement_magnitude.glb",
+      "stress_glb": "solve/stress_von_mises.glb",
+      "solve_vtu_dir": "solve/api_fem_forward-2026-11-18-03-22-09/vtu"
+     }
+    },
+    "time_split": {
+     "sections": {
+      "agent": 241.7,
+      "geometry_drawing": 0.0,
+      "geometry_generation": 3.3,
+      "geometry_revision": 0.0,
+      "geometry_built": 0.0,
+      "setup_scale": 2.5,
+      "setup_segmentation": 8.6,
+      "setup_regions": 11.1,
+      "setup_values_material": 5.4,
+      "paint": 0.1,
+      "solve": 14.5,
+      "solve_after": 4.6,
+      "overhead_startup": 13.6,
+      "overhead_between": 5.0,
+      "overhead_stop": 19.5,
+      "overhead_commands": 8.5
+     },
+     "groups": {
+      "agent": 241.7,
+      "workflow": 31.0,
+      "solver": 19.1,
+      "overhead": 46.6
+     },
+     "wall_clock_s": 338.397,
+     "notes": [
+      "runner commands timed from the Codex rollout codex_home/sessions/2026/11/18/rollout-2026-11-18T03-17-47-01a1edbb-c10c-79d3-a24e-fb329cca9cad.jsonl"
+     ]
+    }
+   },
+   "source": {
+    "run_name": "metrics.json",
+    "instruction": "metrics.json",
+    "agent": "metrics.json",
+    "model": "metrics.json",
+    "model_label": "metrics.json",
+    "model_requested": "metrics.json",
+    "provider": "metrics.json",
+    "route": "metrics.json",
+    "session_id": "metrics.json",
+    "session_ids": "metrics.json",
+    "session_id_found_by": "metrics.json",
+    "codex_thread_id": "metrics.json",
+    "input_tokens": "metrics.json",
+    "cache_read_input_tokens": "metrics.json",
+    "cache_creation_input_tokens": "metrics.json",
+    "output_tokens": "metrics.json",
+    "tokens_source": "metrics.json",
+    "tokens_raw": "metrics.json",
+    "thinking_tokens": "metrics.json",
+    "effort": "metrics.json",
+    "system_note": "metrics.json",
+    "tool_calls": "metrics.json",
+    "images_viewed": "metrics.json",
+    "cost_usd": "metrics.json",
+    "cost_basis": "metrics.json",
+    "wall_clock_s": "metrics.json",
+    "num_turns": "metrics.json",
+    "status": "metrics.json",
+    "exit_code": "metrics.json",
+    "cli_errors_retried": "metrics.json",
+    "drive_commands": "metrics.json",
+    "runner_runs": "metrics.json",
+    "workflow_last_stop": "metrics.json",
+    "anchor_instruction": "metrics.json",
+    "anchor_instruction_matches": "metrics.json",
+    "started_at": "metrics.json",
+    "finished_at": "metrics.json",
+    "transcript_source": "metrics.json",
+    "case": "metrics.json",
+    "time_split": "ar_time.split_run (transcript + driver_log.jsonl)"
+   },
+   "notes": [],
+   "files": {
+    "surface": "geometry/physical.glb"
+   },
+   "body_source": "Text \u2192 TripoSG",
+   "surface": {
+    "vertices": 33161,
+    "faces": 66326
+   },
+   "extent": 2.12121210899204,
+   "dims": [
+    2.12121210899204,
+    1.1043658936396241,
+    1.0803204748081043
+   ],
+   "unit_system": "SI (m-kg-s)",
+   "painted": {
+    "source": "texture step",
+    "file": "materials/texture/textured.glb",
+    "transfer": "same vertices",
+    "rgb_mean": [
+     0.757,
+     0.629,
+     0.479
+    ],
+    "rgb_spread": 0.09542146951844725,
+    "near_uniform": false
+   },
+   "bc": {
+    "regions": [
+     {
+      "key": "dirichlet_0",
+      "name": "foot_left_front",
+      "category": "dirichlet",
+      "faces": 22,
+      "mean_normal": [
+       -0.139,
+       -0.977,
+       0.165
+      ],
+      "area": 0.002557271086725613,
+      "proj_area": 7.20291363832046e-05,
+      "facing_camera": 0.08281861241055051,
+      "support_seen_through": true,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.0,
+       "gap": 0.00848484843596816,
+       "tube_radius": 0.01272727265395224,
+       "why": "faces the camera at 8.3% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_1",
+      "name": "foot_right_front",
+      "category": "dirichlet",
+      "faces": 25,
+      "mean_normal": [
+       -0.046,
+       -0.904,
+       0.425
+      ],
+      "area": 0.00151453133320162,
+      "proj_area": 8.707296413225103e-05,
+      "facing_camera": 0.35986400166683646,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.9230769230769231,
+       "gap": 0.00848484843596816,
+       "tube_radius": 0.01272727265395224,
+       "why": "faces the camera at 36.0% (< 5%)"
+      }
+     },
+     {
+      "key": "dirichlet_2",
+      "name": "feet_rear",
+      "category": "dirichlet",
+      "faces": 77,
+      "mean_normal": [
+       -0.037,
+       -0.999,
+       -0.026
+      ],
+      "area": 0.005471351779474084,
+      "proj_area": 4.352652303801702e-07,
+      "facing_camera": 0.00020923952255239502,
+      "marker": {
+       "kind": "outline",
+       "visible_fraction": 0.6451612903225806,
+       "gap": 0.00848484843596816,
+       "tube_radius": 0.01272727265395224,
+       "why": "faces the camera at 0.0% (< 5%)"
+      }
+     },
+     {
+      "key": "neumann_3",
+      "name": "seat_top",
+      "category": "neumann",
+      "faces": 7478,
+      "mean_normal": [
+       0.001,
+       1.0,
+       0.005
+      ],
+      "area": 1.0843136450659498,
+      "proj_area": 0.37710274280803374,
+      "facing_camera": 1.0,
+      "unoccluded_facing": 0.9097734734698851
+     }
+    ],
+    "overlap_faces": 0,
+    "body_load": {
+     "kind": "acceleration",
+     "vector": [
+      0.0,
+      -0.97343,
+      0.0
+     ],
+     "dir": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "g": 0.09926223531991048,
+     "volume": 0.7909481865576115,
+     "surface_watertight": true,
+     "density": 568.4434204101562,
+     "mass": 449.609292534019,
+     "weight_method": "volume of geometry/physical.glb x mean density of the material field (materials/parts/field/manifest.json) x |loads.acceleration|",
+     "mass_kg": 449.609292534019,
+     "weight_N": 437.6631736313901,
+     "real_mass_kg": 45.0,
+     "real_weight_N": 441.29925,
+     "weight_over_real_weight": 0.9917605199451169,
+     "projected_fraction": 0.9370425713316364
+    },
+    "surface_proj_area": 2.285168935965412,
+    "arrows": [
+     {
+      "id": 100,
+      "region": "seat_top",
+      "traction": [
+       0.0,
+       -1377.8879437003973,
+       0.0
+      ],
+      "tail": [
+       1.6292399565378826,
+       0.9124948984488039,
+       0.6214667782859128
+      ],
+      "tip": [
+       1.6292399565378826,
+       0.5306767188302367,
+       0.6214667782859128
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 101,
+      "region": "seat_top",
+      "traction": [
+       0.0,
+       -1377.8879437003973,
+       0.0
+      ],
+      "tail": [
+       1.2990839732841173,
+       0.9207669375676655,
+       0.7779600565491831
+      ],
+      "tip": [
+       1.2990839732841173,
+       0.5389487579490982,
+       0.7779600565491831
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 102,
+      "region": "seat_top",
+      "traction": [
+       0.0,
+       -1377.8879437003973,
+       0.0
+      ],
+      "tail": [
+       0.8530584375063578,
+       0.9195684401376926,
+       0.7548010986462995
+      ],
+      "tip": [
+       0.8530584375063578,
+       0.5377502605191253,
+       0.7548010986462995
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     },
+     {
+      "id": 103,
+      "region": "seat_top",
+      "traction": [
+       0.0,
+       -1377.8879437003973,
+       0.0
+      ],
+      "tail": [
+       0.4186284343401591,
+       0.9214317602221156,
+       0.7895550882297382
+      ],
+      "tip": [
+       0.4186284343401591,
+       0.5396135806035484,
+       0.7895550882297382
+      ],
+      "projected_fraction": 0.9370425713316364,
+      "seen_through": false
+     }
+    ]
+   },
+   "material_mode": "parts",
+   "solve": {
+    "run": "api_fem_forward-2026-11-18-03-22-09",
+    "chosen_by": "operator/report.md",
+    "vtu": "solve/api_fem_forward-2026-11-18-03-22-09/vtu/solution_t0000.vtu",
+    "nodes": 44034,
+    "hexes": 35203,
+    "coord_check_inside_fraction": 1.0,
+    "coord_check_max_err_inside": 8.95090418262362e-16,
+    "outside_points": 0,
+    "umax_surface": 4.731504216355888e-05,
+    "umax_nodes": 5.1149541427945264e-05,
+    "umax_workflow_export": 4.732531670015305e-05,
+    "ratio_to_workflow_export": 0.9997828955554747,
+    "umax_surface_m": 4.731504216355888e-05
+   },
+   "scale": {
+    "factor": 5000.0,
+    "rule": "1/2/3/5 x 10^k nearest (log ratio) to 0.12 x largest extent / |u|max, s >= 1; standing bodies step down until they sink <= 0.02 x extent",
+    "ui": {
+     "scale": 13312.113767597091,
+     "reach": 0.3,
+     "physical_extent": 2.1,
+     "steps": 10
+    },
+    "displayed_peak_over_extent": 0.11152831431374889,
+    "standing_on_support": true,
+    "stepped_down_from": [],
+    "below_floor_over_extent": 0.005994459183580461
+   },
+   "E_source": "solve VTU youngs_modulus",
+   "E_nodes": [
+    100000000.0,
+    10000000000.0
+   ],
+   "pa_per_stress_unit": 1.0,
+   "m_per_length_unit": 1.0,
+   "E_surface": [
+    99999999.99999997,
+    10000000000.000004
+   ],
+   "E_surface_Pa": [
+    99999999.99999997,
+    10000000000.000004
+   ],
+   "view": {
+    "dir": [
+     0.6216995909940329,
+     0.3492151478847891,
+     0.7010979953228058
+    ],
+    "azimuth_deg": 15,
+    "elevation_deg": 20.4,
+    "governing_load_dir": [
+     0.0,
+     -1377.8879437003973,
+     0.0
+    ],
+    "line_of_sight_deg": 69.6,
+    "axis_off_deg": 41.6,
+    "silhouette_area_over_R2": 1.2444,
+    "visible_area_over_R2": 2.2169,
+    "panel_fill": 0.536,
+    "height_shown": 1.0,
+    "shows": 0.88,
+    "paper_view_shows": 0.946,
+    "turn_from_paper_deg": 14.1,
+    "why": "paper view preferred (shows 100% of the best); a passing view at 93% of the best; after 3 preferred view(s) predicted to fail the compose's print checks",
+    "worst_load_shown_fraction_of_its_best": 0.9184146440080693,
+    "print_check": {
+     "passes": true,
+     "candidates_checked": 4,
+     "rejected": [
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 20.4,
+       "shows_over_best": 1.0,
+       "misses": [
+        "'foot_right_front' 0.00 mm2 (floor 0.25)",
+        "label 'Body load 438 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.77,
+        "regions": {
+         "foot_left_front": 1.41,
+         "foot_right_front": 0.0,
+         "feet_rear": 0.91,
+         "seat_top": 74.73
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.5 m": "bl",
+         "Body load 438 N": null,
+         "\u00d75000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 0,
+       "elevation_deg": 30.0,
+       "shows_over_best": 0.954,
+       "misses": [
+        "label 'Body load 438 N' on the object (br/tr)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 9.66,
+        "regions": {
+         "foot_left_front": 1.16,
+         "foot_right_front": 0.77,
+         "feet_rear": 0.71,
+         "seat_top": 84.72
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.5 m": "bl",
+         "Body load 438 N": null,
+         "\u00d75000": "tr"
+        }
+       }
+      },
+      {
+       "azimuth_deg": 300,
+       "elevation_deg": 20.4,
+       "shows_over_best": 0.98,
+       "misses": [
+        "'foot_right_front' 0.00 mm2 (floor 0.25)"
+       ],
+       "predicted": {
+        "preview_px_per_mm": 8.93,
+        "regions": {
+         "foot_left_front": 1.65,
+         "foot_right_front": 0.0,
+         "feet_rear": 0.82,
+         "seat_top": 71.44
+        },
+        "corners": {
+         "Text \u2192 TripoSG": "br",
+         "0.5 m": "tl",
+         "Body load 438 N": "br",
+         "\u00d75000": "tr"
+        }
+       }
+      }
+     ],
+     "predicted": {
+      "preview_px_per_mm": 9.32,
+      "regions": {
+       "foot_left_front": 1.19,
+       "foot_right_front": 1.12,
+       "feet_rear": 0.81,
+       "seat_top": 60.27
+      },
+      "corners": {
+       "Text \u2192 TripoSG": "br",
+       "0.5 m": "bl",
+       "Body load 438 N": "br",
+       "\u00d75000": "tr"
+      }
+     }
+    }
+   },
+   "prompt": {
+    "max_lines": null,
+    "fs": 7.0,
+    "lines": [
+     "\u201ca sofa\u201d"
+    ],
+    "rule": "card size 7 pt"
+   },
+   "ground": {
+    "floor": -0.009612233703596743,
+    "key_light_ray": [
+     -0.4226,
+     -0.771,
+     -0.4765
+    ],
+    "grid": {
+     "cell": 0.5,
+     "rings": 10,
+     "reach": 5.0
+    }
+   },
+   "panels": [
+    "ar_4_arrows.vtk",
+    "ar_4_bc.vtk",
+    "ar_4_fit.vtk",
+    "ar_4_grid.vtk",
+    "ar_4_materials.vtk",
+    "ar_4_painted.vtk",
+    "ar_4_shadow.vtk",
+    "ar_4_shadow_def.vtk",
+    "ar_4_solve.vtk",
+    "ar_4_support.vtk",
+    "ar_4_support_hidden.vtk"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,387 @@
+{
+ "description": "All six operator sets on the same 50 objects, graded together: DeepSeek-V4.1-Flash-1017 at high (medium requested, served as high) and at max reasoning effort and Kimi-K3.1-Pro (Codex CLI), and the paper's Claude Haiku, Sonnet and Opus batches (Claude Code); six agents A-F, 300 simulations per evaluator, three Fable evaluators (scripts/run_fable.sh) and three Astra evaluators (scripts/run_astra.sh) reading the same self-contained packets.",
+ "objects": "experiments/agentic_batch/objects_50.txt",
+ "models": [
+  {
+   "key": "deepseek",
+   "display": "DeepSeek-V4.1-Flash-1017, high effort (medium requested)",
+   "root": "output/agentic_batch50_deepseek",
+   "suffix": "_deepseek",
+   "leak_terms": [
+    "deepseek-ai",
+    "deepseek[-_ ]?v\\d+(\\.\\d+)*",
+    "v4\\.1[-_ ]?flash",
+    "flash[-_ ]?1017"
+   ],
+   "effort_note": "Run with --effort medium (metrics.json effort 'medium'), which DeepSeek serves as high (user, 2026-11-19; experiments/agentic_batch/codex_models.json effort_served), so this is a high-effort batch. The key 'deepseek' and the batch folder keep their names."
+  },
+  {
+   "key": "deepseek_max",
+   "display": "DeepSeek-V4.1-Flash-1017, max effort",
+   "root": "output/agentic_batch50_deepseek_max",
+   "suffix": "_deepseek_max",
+   "leak_terms": [
+    "deepseek-ai",
+    "deepseek[-_ ]?v\\d+(\\.\\d+)*",
+    "v4\\.1[-_ ]?flash",
+    "flash[-_ ]?1017"
+   ]
+  },
+  {
+   "key": "kimi",
+   "display": "Kimi-K3.1-Pro",
+   "root": "output/agentic_batch50_kimi",
+   "suffix": "_kimi",
+   "leak_terms": [
+    "kimi\\w*",
+    "moonshot\\w*",
+    "k3\\.\\d\\w*"
+   ]
+  },
+  {
+   "key": "haiku",
+   "display": "Claude Haiku 5.5",
+   "root": "output/agentic_batch50_haiku",
+   "suffix": "_haiku",
+   "leak_terms": [],
+   "note": "The paper round's batch (graded there too): the same 50 runs and the exact category figures the paper-round evaluators saw, copied from its packets (output/agentic_object_record/model_eval/packet_k/figures)."
+  },
+  {
+   "key": "sonnet",
+   "display": "Claude Sonnet 5.5",
+   "root": "output/agentic_batch50",
+   "suffix": "_sonnet",
+   "leak_terms": [],
+   "note": "The paper round's batch (graded there too): the same 50 runs and the exact category figures the paper-round evaluators saw, copied from its packets (output/agentic_object_record/model_eval/packet_k/figures)."
+  },
+  {
+   "key": "opus",
+   "display": "Claude Opus 5.5",
+   "root": "output/agentic_batch50_opus",
+   "suffix": "_opus",
+   "leak_terms": [],
+   "note": "The paper round's batch (graded there too): the same 50 runs and the exact category figures the paper-round evaluators saw, copied from its packets (output/agentic_object_record/model_eval/packet_k/figures)."
+  }
+ ],
+ "evaluators": 3,
+ "label_seed": 2198,
+ "label_seed_note": "2198 is the first seed from 2026 on that gives each model one early (A/B), one middle (C/D) and one late (E/F) label over the three evaluators (deepseek B/E/C, deepseek_max C/B/E, kimi D/F/A, haiku A/D/F, sonnet E/A/D, opus F/C/B for k = 1, 2, 3): evaluators grade in label order, so no model is always graded early or always late, when an evaluator is freshest or most tired.",
+ "figures": "output/agentic_object_record/model_eval_figures/agentic_results_{slug}{suffix}.png",
+ "figures_note": "Staged copies of the category figures: the open-weight sets built by illustrations/agentic_results/ar_categories.py (Kimi 2026-11-18, both DeepSeek batches 2026-11-19); Haiku, Sonnet and Opus the exact figures of the paper round's packets (the Opus figures in illustrations/ were rebuilt after that grading and are not used).",
+ "packets": "output/agentic_object_record/model_eval_round3",
+ "results": "experiments/model_eval/results",
+ "packet_edits": [
+  {
+   "model": "kimi",
+   "object": "a car brake disc",
+   "file": "reply",
+   "old": "so Kimi rewrote",
+   "new": "so I rewrote",
+   "why": "The agent named itself (leak_check.py flags it)."
+  },
+  {
+   "model": "deepseek",
+   "object": "a wooden toy train engine",
+   "file": "reply",
+   "old": "- The skill says read files with Read/Grep; per the environment note I used `sed`/`cat` for read-only access.\n",
+   "new": "",
+   "why": "The line says it followed the environment note's tool mapping (sed/cat instead of Read/Grep): the Codex mapping only the open-weight runs had. No leak term matches it. The DeepSeek batch run with --effort medium (served as high) was rerun on 2026-11-18, so the old run's crocodile edit no longer applies; this one was found by reading the new run's 50 replies."
+  },
+  {
+   "model": "deepseek",
+   "object": "a car wheel with its rubber tyre",
+   "file": "reply",
+   "old": "- Tooling: I typed `drive.py` commands as plain commands per the batch note; the skill's own line said every command is run that way, but the note that only one exact form gets GPU/network access had to override any variant.\n",
+   "new": "",
+   "why": "The line cites the Codex batch note (codex_note.txt: one exact command form gets GPU/network access), which only the open-weight runs had. The DeepSeek batch run with --effort medium (served as high) was rerun on 2026-11-18, so the old run's crocodile edit no longer applies; this one was found by reading the new run's 50 replies."
+  },
+  {
+   "model": "deepseek",
+   "object": "a jackhammer",
+   "file": "reply",
+   "old": "\n- Minor: the skill says the plan may be edited with a \"whole-file Write\", but `apply_patch` cannot delete and add the same path in one patch; I used two patches.",
+   "new": "",
+   "why": "The reply's last line names apply_patch, the Codex file-edit tool, against the skill's Write. The newline before it goes too, so the reply still ends without one. The DeepSeek batch run with --effort medium (served as high) was rerun on 2026-11-18, so the old run's crocodile edit no longer applies; this one was found by reading the new run's 50 replies."
+  },
+  {
+   "model": "deepseek_max",
+   "object": "a crocodile",
+   "file": "reply",
+   "old": "\n- I wrote the brief, plan and judgement with `apply_patch` heredocs as the harness required, rather than the skill’s Write/Edit.",
+   "new": "",
+   "why": "The reply's last line names apply_patch, the Codex file-edit tool, and 'the harness', against the skill's Write/Edit. The newline before it goes too, so the reply still ends without one. Found by reading the max batch's 50 replies (2026-11-19)."
+  },
+  {
+   "model": "haiku",
+   "object": "a bar stool",
+   "file": "reply",
+   "old": "- The first `bash cat` of SKILL.md was refused, so I read it with the Read tool. Bash was used only for `drive.py`.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. The Codex harness counterpart is removed from the open-weight replies (sed/cat per the environment note, apply_patch)."
+  },
+  {
+   "model": "haiku",
+   "object": "a car brake disc",
+   "file": "reply",
+   "old": "**Deviation:** I tried one `cat` on SKILL.md through Bash, which was refused, and then read the skill and references with the Read tool. I never",
+   "new": "I never",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. The rest of the line is kept."
+  },
+  {
+   "model": "haiku",
+   "object": "a car suspension control arm with rubber bushings",
+   "file": "reply",
+   "old": "Bash `cat` was refused on SKILL.md, so I read it with the Read tool. ",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. The rest of the line is kept."
+  },
+  {
+   "model": "haiku",
+   "object": "a car wheel with its rubber tyre",
+   "file": "reply",
+   "old": "- **Bash read refused:** the first `cat` of SKILL.md was denied, so I read it with the Read tool. The skill says to read files that way anyway.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a coffee mug",
+   "file": "reply",
+   "old": "- **Reading the skill:** a Bash `cat` of SKILL.md was refused, so I read it with the Read tool.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a crankshaft",
+   "file": "reply",
+   "old": "A Bash `cat` of SKILL.md was refused, so I read it with the Read tool. ",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. The rest of the line is kept."
+  },
+  {
+   "model": "haiku",
+   "object": "a dental crown",
+   "file": "reply",
+   "old": "- Reading `SKILL.md` through Bash `cat` was refused, so I read it with the Read tool.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "an electric toothbrush",
+   "file": "reply",
+   "old": "\n- **Blocked command:** Bash refused a plain `ls` of the session folder, so I used Glob for that check.",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a giraffe",
+   "file": "reply",
+   "old": "- The first `cat` of SKILL.md through Bash was refused, so I read it with the Read tool. The rest of the skill was read the same way.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "an igloo",
+   "file": "reply",
+   "old": "- **Bash `cat` was refused**, so I read `SKILL.md` and the references with the Read tool instead. Bash was used only for `drive.py`.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a jelly dessert",
+   "file": "reply",
+   "old": "- **Reading:** Bash `cat` of SKILL.md was refused, so I read it with the Read tool.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a layered birthday cake",
+   "file": "reply",
+   "old": "- Bash `cat` of SKILL.md was refused, so I read it with the Read tool. Every `drive.py` command ran normally.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a lighthouse",
+   "file": "reply",
+   "old": "- **Bash was narrow:** `cat` was refused, so I read the skill and its references with the Read tool.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a loaf of bread",
+   "file": "reply",
+   "old": " I also ran `ls` and `cat` through Bash, which the skill forbids, and was denied; I used Glob after that.",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. The rest of the line is kept."
+  },
+  {
+   "model": "haiku",
+   "object": "a road roller with a steel drum and rubber tyres",
+   "file": "reply",
+   "old": "- **Reading the skill:** Bash `cat` on `SKILL.md` was refused, so I read it with the Read tool, as the skill itself says to.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a slice of watermelon",
+   "file": "reply",
+   "old": "- **`cat` through Bash was refused**, so I read the skill with the Read tool. I used the Read tool for every reference too.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "the Taj Mahal",
+   "file": "reply",
+   "old": "- **Bash read refused:** the first `cat` of SKILL.md was denied, so I read it and the references with the Read tool. The `drive.py` commands ran as written.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a teddy bear",
+   "file": "reply",
+   "old": "Bash refused `cat` on SKILL.md, so I read it with the Read tool. ",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. The rest of the line is kept."
+  },
+  {
+   "model": "haiku",
+   "object": "a USB stick",
+   "file": "reply",
+   "old": "\n- **Reading.** Bash `cat` was refused for SKILL.md, so I read it with the Read tool.",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a yo-yo",
+   "file": "reply",
+   "old": "- Bash refused `cat` on SKILL.md, so I read it with the Read tool.\n",
+   "new": "",
+   "why": "Bash `cat` of SKILL.md (or another Bash command) was refused and the Read tool (or Glob) used instead: Claude Code's permission rules, which only the Claude runs had. "
+  },
+  {
+   "model": "haiku",
+   "object": "a pogo stick",
+   "file": "reply",
+   "old": "a stray `</content>` tag",
+   "new": "a stray closing tag",
+   "why": "`</content>` is an artefact of Claude's file-write tool format (borderline; the content is kept)."
+  },
+  {
+   "model": "haiku",
+   "object": "a walking cane with a rubber tip",
+   "file": "reply",
+   "old": "\n- **Tooling:** `Glob` with a relative path returned nothing; passing the absolute path worked.",
+   "new": "",
+   "why": "Describes how Claude Code's Glob tool behaved (borderline)."
+  },
+  {
+   "model": "sonnet",
+   "object": "an elephant",
+   "file": "reply",
+   "old": "while I had it open, and the harness flagged the change. I treated",
+   "new": "; I treated",
+   "why": "Names 'the harness' flagging a changed file it had read: Claude Code. The rest is kept."
+  },
+  {
+   "model": "sonnet",
+   "object": "a park bench",
+   "file": "reply",
+   "old": "`inspect_session.py summary` was allowed, but",
+   "new": "I used `inspect_session.py summary`, but",
+   "why": "'was allowed' points at a permission allowlist (borderline)."
+  },
+  {
+   "model": "opus",
+   "object": "a thatched stone cottage",
+   "file": "reply",
+   "old": ", because Bash is limited to the run commands.",
+   "new": ".",
+   "why": "'Bash is limited to the run commands' reveals Claude Code's Bash allowlist."
+  },
+  {
+   "model": "opus",
+   "object": "an elephant",
+   "file": "reply",
+   "old": "commands it doesn't allow",
+   "new": "commands outside the skill's list",
+   "why": "Could read as a permission rule (weak)."
+  },
+  {
+   "model": "kimi",
+   "object": "the Leaning Tower of Pisa",
+   "file": "reply",
+   "old": "judgement.md:1`",
+   "new": "judgement.md`",
+   "why": "A `path:line` citation is a Codex output habit: 5 Kimi replies and none of the 150 Claude replies have one."
+  },
+  {
+   "model": "kimi",
+   "object": "a coffee mug",
+   "file": "reply",
+   "old": "judgement.md:1`",
+   "new": "judgement.md`",
+   "why": "A `path:line` citation is a Codex output habit: 5 Kimi replies and none of the 150 Claude replies have one."
+  },
+  {
+   "model": "kimi",
+   "object": "a glass-top dining table",
+   "file": "reply",
+   "old": "judgement.md:1`",
+   "new": "judgement.md`",
+   "why": "A `path:line` citation is a Codex output habit: 5 Kimi replies and none of the 150 Claude replies have one."
+  },
+  {
+   "model": "kimi",
+   "object": "a rhinoceros",
+   "file": "reply",
+   "old": "judgement.md:1`",
+   "new": "judgement.md`",
+   "why": "A `path:line` citation is a Codex output habit: 5 Kimi replies and none of the 150 Claude replies have one."
+  },
+  {
+   "model": "kimi",
+   "object": "an industrial robot arm",
+   "file": "reply",
+   "old": "judgement.md:1`",
+   "new": "judgement.md`",
+   "why": "A `path:line` citation is a Codex output habit: 5 Kimi replies and none of the 150 Claude replies have one."
+  }
+ ],
+ "families": {
+  "fable": {
+   "display": "Fable",
+   "title": "Fable (the `fable` alias, not pinned), high effort",
+   "model": "fable",
+   "effort": "high",
+   "harness": "headless Claude Code (claude -p) in bubblewrap, scripts/run_fable.sh",
+   "out": "{packets}/fable/evaluator_{k}/eval_{k}.json",
+   "logs": "{packets}/fable/logs",
+   "home": "{packets}/fable/home_{k}",
+   "model_note": "Not pinned (user, 2026-11-19): the runner passes Claude Code's `fable` alias, which serves the current Fable; on 2026-11-19 it resolved to claude-fable-5-2 (the paper's evaluators ran claude-fable-5-1). Each run's init event and transcript record the model it was served."
+  },
+  "astra": {
+   "display": "Astra",
+   "title": "GPT-6-Astra, high effort",
+   "model": "gpt-6-astra",
+   "effort": "high",
+   "harness": "Codex CLI (codex exec) in bubblewrap, scripts/run_astra.sh",
+   "out": "{packets}/astra/evaluator_{k}/eval_{k}.json",
+   "logs": "{packets}/astra/logs",
+   "home": "{packets}/astra/home_{k}"
+  }
+ },
+ "cost_note": "Cost: metrics.json cost_usd of each run. For the Claude Code runs (Haiku, Sonnet, Opus) that is the CLI's total_cost_usd at API prices; for the Codex runs it is the batch runner's price from the token counts with its dated price table, not a billed amount. n/p: no price for that run (left out of the totals and the mean); the FEM workflow's own API calls are excluded."
+}

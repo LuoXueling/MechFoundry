@@ -25,6 +25,7 @@
 #                       as the CLI's --effort; without it a run would take whatever
 #                       ~/.claude/settings.json says, unrecorded.  Codex: sent as
 #                       model_reasoning_effort; without it the model's effort in codex_models.json (medium)
+#                       (DeepSeek serves low and medium as high: codex_models.json effort_served)
 #   --no-path-note      do not append the one-line system-prompt note that says where the
 #                       repository root is (default: appended; see run_one)
 #   --memory            leave auto-memory on (default: off, --settings autoMemoryEnabled

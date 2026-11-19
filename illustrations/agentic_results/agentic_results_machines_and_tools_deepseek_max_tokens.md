@@ -1,0 +1,9 @@
+Supplementary table. Token use per run of agentic_results (sources: agentic_results/ar_stats.json). Cached = input tokens read from the prompt cache (cache_read_input_tokens); tokens written to the cache (cache_creation_input_tokens) were processed in full and count as not cached, with the plain uncached input (input_tokens).  Input total = cached + not cached.  Codex runs (agent codex): metrics.json records Codex's counts in these fields (cache_read_input_tokens = cached_input_tokens, cache_creation_input_tokens = cache_write_input_tokens, input_tokens = the rest of the input).  The figure's cost bars are relative to the largest run: 15 M input tokens, 190 k output tokens, 27 min 43 s.
+
+| row | instruction | session_id | model | agent | input_tokens_total | input_tokens_cached | input_tokens_not_cached | of_which_written_to_cache | of_which_plain_uncached | output_tokens | wall_clock_s | status | displacement_scale |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | a road roller with a steel drum and rubber tyres | 8e29d1b16762 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 14821460 | 14443392 | 378068 | 0 | 378068 | 148657 | 1662.5 | ok | 20000.0 |
+| 2 | a jackhammer | 0c5216ec6a91 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 9006826 | 8639360 | 367466 | 0 | 367466 | 191611 | 1503.1 | ok | 100000.0 |
+| 3 | an industrial robot arm | 8f0ce822392b | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 3200883 | 3094016 | 106867 | 0 | 106867 | 56138 | 522.0 | ok | 300.0 |
+| 4 | an adjustable wrench | c6ee337e5cb7 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 1562911 | 1466112 | 96799 | 0 | 96799 | 54833 | 422.4 | ok | 50.0 |
+| 5 | a claw hammer | 6d26b093c8c1 | deepseek-ai/DeepSeek-V4.1-Flash-1017 | codex | 2485858 | 2385280 | 100578 | 0 | 100578 | 55667 | 463.6 | ok | 50.0 |

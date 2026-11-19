@@ -110,9 +110,10 @@ experiments/              research studies behind the paper, not production (eac
                           Codex session on an open-weight model (codex_tools.txt maps the skill's tool
                           names, codex_note.txt adds the batch's rules); realization/material/BC sweeps for the showcase; tests/ with a
                           stubbed claude and a stubbed codex
-  model_eval/             three blinded evaluators grading the Haiku/Sonnet/Opus batches: the Fable
-                          round (top level: prompts, eval_<k>.json, evaluation_table.{md,xlsx}) and
-                          the GPT-6-Astra round (astra_high/, with agreement.md between the two)
+  model_eval/             blinded grading of the six operator sets together (DeepSeek high/max, Kimi,
+                          Haiku, Sonnet, Opus) by three Fable and three GPT-6-Astra evaluators:
+                          grading.json, scripts/, results/ (prompts, ratings, tables, agreement.md,
+                          drift.md); records/paper/ keeps the paper's Haiku/Sonnet/Opus grading
   bodyfitted_vs_nitsche/  TetGen body-fitted P1 vs each Opus session's diffused-Nitsche solve;
                           summary/ (summary.{md,csv,xlsx,json}) and summary/tables/ (SI tables, .tex, AUDIT.md)
   geometry_cleanup/       short volume-as-is shape optimization of the 50 Opus bodies (defect clean-up)

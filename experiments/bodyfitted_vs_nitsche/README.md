@@ -377,7 +377,7 @@ percentile ratios); cost (solver and mesh retries, preparation and solve time
 of the successful attempt with the all-attempts total in parentheses, solve
 time to $10^{-2}$), with medians over all and unflagged objects.  Object names
 and row order are those of the model-evaluation table
-(`experiments/model_eval/evaluation_table.md`): the instruction verbatim from
+(`experiments/model_eval/records/paper/evaluation_table.md`): the instruction verbatim from
 `experiments/agentic_batch/objects_50.txt`, in its category order (categories
 not shown).  The tables carry no notes: each caption defines the symbols, the
 flags (T, G, L, S with thresholds), units, the parenthesized all-attempts
